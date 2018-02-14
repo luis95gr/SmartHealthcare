@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Healthcare 4.0.iml" filepath="$PROJECT_DIR$/Healthcare 4.0.iml" />
+      <module fileurl="file://C:\Users\eap_0\Desktop\Healthcare4.0\Healthcare 4.0.iml" filepath="C:\Users\eap_0\Desktop\Healthcare4.0\Healthcare 4.0.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Healthcare4.0.iml" filepath="$PROJECT_DIR$/.idea/Healthcare4.0.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\eap_0\Desktop\Healthcare4.0\app\app.iml" filepath="C:\Users\eap_0\Desktop\Healthcare4.0\app\app.iml" />
     </modules>
   </component>
 </project>

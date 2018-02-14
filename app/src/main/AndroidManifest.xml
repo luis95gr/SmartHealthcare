@@ -26,6 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".CrearCuenta" />
+        <activity android:name=".MainScreen"></activity>
     </application>
 
 </manifest>

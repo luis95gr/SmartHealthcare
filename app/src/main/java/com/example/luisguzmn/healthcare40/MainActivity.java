@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     EditText etEmail, etPass;
     Button btnLog;
     String ip = "meddata.sytes.net";
+    //String ip = "192.168.15.13";
     TextView txtCreateA;
     JSONArray jsonArray;
 
@@ -39,12 +40,10 @@ public class MainActivity extends AppCompatActivity {
         LottieAnimationView animationView = (LottieAnimationView)findViewById(R.id.animation_view);
         animationView.setMinAndMaxFrame(0,20);
         animationView.playAnimation();
-
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPass = (EditText) findViewById(R.id.etPass);
         btnLog = (Button) findViewById(R.id.btnLog);
         txtCreateA = (TextView) findViewById(R.id.txtCreateA);
-
         txtCreateA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
         btnLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,12 +66,9 @@ public class MainActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
                 try {
                     jsonArray = new JSONArray(response);
-
                     GlobalVars g = (GlobalVars)getApplication();
-
                     g.setName(jsonArray.getString(0));
                     g.setEmail(jsonArray.getString(1));
                     g.setPass(jsonArray.getString(2));
@@ -87,13 +82,10 @@ public class MainActivity extends AppCompatActivity {
                     g.setHours_ex(jsonArray.getString(10));
                     g.setEx_int(jsonArray.getInt(11));
                     g.setWeight(jsonArray.getInt(12));
-                    g.setWeight(jsonArray.getInt(13));
+                    g.setHeight(jsonArray.getInt(13));
                     g.setImage(jsonArray.getString(14));
-
-
                     if (etEmail.getText().toString().equals(g.getEmail()) &
                             etPass.getText().toString().equals(g.getPass())) {
-
                         Toast.makeText(getApplicationContext(), "Welcome " + g.getName(), Toast.LENGTH_SHORT).show();
                         LottieAnimationView animationView = (LottieAnimationView)findViewById(R.id.animation_view);
                         //animationView.setMinAndMaxFrame(20,100);
@@ -102,15 +94,12 @@ public class MainActivity extends AppCompatActivity {
                         new Handler().postDelayed(new Runnable(){
                             @Override
                             public void run(){
-                                //Intent intent = new Intent(MainActivity.this,menu_principal.class);
-                                //startActivity(intent);
+                                Intent intent = new Intent(MainActivity.this,MainScreen.class);
+                                startActivity(intent);
                             }
                         },4000);
-
-
-
                     } else {
-                        Toast.makeText(getApplicationContext(), "Incorrect user or password" + g.getEmail(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Incorrect user or password", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

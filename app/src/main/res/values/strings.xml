@@ -150,4 +150,13 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+
+    <string name="drawer_item_main">Main</string>
+    <string name="drawer_item_profile">Profile</string>
+    <string name="drawer_item_records">Records</string>
+    <string name="drawer_item_statistics">Statistics</string>
+    <string name="drawer_item_healt">Healthcare Information</string>
+    <string name="drawer_item_settinds">Settings</string>
+    <string name="drawer_item_about">About us</string>
+
 </resources>

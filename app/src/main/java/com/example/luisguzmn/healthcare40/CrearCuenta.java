@@ -37,9 +37,7 @@ public class CrearCuenta extends AppCompatActivity {
     RadioButton rbFemale, rbMale;
     TextView txtNext;
     CheckBox cbSmart, cbHead, cbBlood;
-
     String ip = "meddata.sytes.net";
-
     String CompleteName, Email, Password, Phone, Weight, Height, Birthday, Country, Gender, DeviceS,
             DeviceH, DeviceB, ExDays, ExHours, ExInt;
 
@@ -171,7 +169,6 @@ public class CrearCuenta extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "DONE!" , Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(CrearCuenta.this, MainActivity.class);
                 startActivity(intent);
-
             }
         }, new Response.ErrorListener() {
             @Override
