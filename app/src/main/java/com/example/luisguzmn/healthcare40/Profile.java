@@ -1,11 +1,13 @@
 package com.example.luisguzmn.healthcare40;
 
-import android.app.Activity;
-import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -15,37 +17,13 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothClass;
-import android.graphics.Color;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-import com.airbnb.lottie.LottieAnimationView;
 import com.squareup.picasso.Picasso;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import app.akexorcist.bluetotohspp.library.BluetoothSPP;
-import app.akexorcist.bluetotohspp.library.BluetoothState;
-import app.akexorcist.bluetotohspp.library.DeviceList;
 
-public class MainScreen extends AppCompatActivity {
+public class Profile extends AppCompatActivity {
 
     //VARIABLES
     TextView text_monday;
@@ -55,21 +33,15 @@ public class MainScreen extends AppCompatActivity {
     TextView text_friday;
     TextView text_saturday;
     TextView text_sunday;
-    TextView texto;
-    private static final int REQUEST_ENABLED = 0;
-    private static final int REQUEST_ENABLED_BT = 1;
-    private static final int REQUEST_DISCOVERABLE = 0;
+    LottieAnimationView bici;
     //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_screen);
+        setContentView(R.layout.profile);
 
         //CAST
-        ImageView image_profile = (ImageView)findViewById(R.id.image_profile);
-        TextView textNameMain = (TextView)findViewById(R.id.textNameMain);
-        BluetoothSPP bt = new BluetoothSPP(this);
         text_monday = (TextView)findViewById(R.id.text_monday);
         text_tuesday = (TextView)findViewById(R.id.text_tuesday);
         text_wednesday = (TextView)findViewById(R.id.text_wednesday);
@@ -77,7 +49,8 @@ public class MainScreen extends AppCompatActivity {
         text_friday = (TextView)findViewById(R.id.text_friday);
         text_saturday = (TextView)findViewById(R.id.text_saturday);
         text_sunday = (TextView)findViewById(R.id.text_sunday);
-        texto = (TextView)findViewById(R.id.textView3);
+        ImageView image_profile = (ImageView)findViewById(R.id.image_profile);
+        bici = (LottieAnimationView)findViewById(R.id.bicicleta);
         //MENU
         //-----------------------------------------------
         android.support.v7.widget.Toolbar toolbar =(android.support.v7.widget.Toolbar)findViewById(R.id.toolbarMain);
@@ -92,7 +65,7 @@ public class MainScreen extends AppCompatActivity {
                 .withSelectionListEnabledForSingleProfile(false).withHeaderBackground(R.drawable.header)
                 .build();
         //if you want to update the items at a later time it is recommended to keep it in a variable
-        final PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.drawer_item_main).withIcon(GoogleMaterial.Icon.gmd_accessibility);
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.drawer_item_main).withIcon(GoogleMaterial.Icon.gmd_accessibility);
         PrimaryDrawerItem item2 = new PrimaryDrawerItem().withIdentifier(2).withName(R.string.drawer_item_profile).withIcon(GoogleMaterial.Icon.gmd_account_balance);
         PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(3).withName(R.string.drawer_item_records).withIcon(GoogleMaterial.Icon.gmd_add_to_photos);
         PrimaryDrawerItem item4 = new PrimaryDrawerItem().withIdentifier(4).withName(R.string.drawer_item_statistics).withIcon(GoogleMaterial.Icon.gmd_adb);
@@ -120,11 +93,6 @@ public class MainScreen extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         // do something with the clicked item :D
-                        if(position == 2){
-                            Intent intent = new Intent(MainScreen.this, Profile.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.left_in,R.anim.left_out);
-                        }
 
                         return false;
                     }
@@ -134,16 +102,16 @@ public class MainScreen extends AppCompatActivity {
         //-------------------------------------------------------------------------------------------
         //MENU
 
-        //MAIN SCREEN
-        LottieAnimationView animationView_nivel = (LottieAnimationView)findViewById(R.id.animation_view_nivel);
-        LottieAnimationView animationView_nivel_rojo = (LottieAnimationView)findViewById(R.id.animation_view_nivel_rojo);
+        //PROFILE SCREEN
         Picasso.with(this).load("http://meddata.sytes.net/newuser/profileImg/" + g.getImage())
                 .resize(250,250).centerCrop().into(image_profile);
-        animationView_nivel.setSpeed(10f);
-        animationView_nivel_rojo.setSpeed(100f);
-        animationView_nivel.playAnimation(0,10);
-        animationView_nivel_rojo.playAnimation(0,30);
-        textNameMain.setText(g.getName());
+        bici.setSpeed(4f);
+        bici.playAnimation();
+
+
+
+
+
 
         //DIAS
         Date today = Calendar.getInstance().getTime();
@@ -186,32 +154,6 @@ public class MainScreen extends AppCompatActivity {
             text_sunday.setBackgroundColor(Color.parseColor("#FFFFFF"));
         }
 
-        //
-        //BLUETOOTH
-        if(!bt.isBluetoothAvailable()) {
-            // any command for bluetooth is not available
-            Toast.makeText(getApplicationContext(), "NO ", Toast.LENGTH_SHORT).show();
-        }else { Toast.makeText(getApplicationContext(), "SI ", Toast.LENGTH_SHORT).show();
-        }
-        if(!bt.isBluetoothEnabled()) {
-            // Do somthing if bluetooth is disable
-            Toast.makeText(getApplicationContext(), "ACTIVATE  ", Toast.LENGTH_SHORT).show();
-        } else {
-            // Do something if bluetooth is already enable
-            Toast.makeText(getApplicationContext(), "GOOD ", Toast.LENGTH_SHORT).show();
-        }
-
-        bt.startService(BluetoothState.DEVICE_ANDROID);
-
-
-
-
-
-    }
-    //ELIMINAR BACK PRESS
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        return (keyCode == KeyEvent.KEYCODE_BACK ? true : super.onKeyDown(keyCode, event));
+        //END DIAS
     }
 }

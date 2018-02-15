@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.luisguzmn.healthcare40.MainScreen"
-    >
+    tools:context="com.example.luisguzmn.healthcare40.Profile">
 
     <!-- MENU -->
     <!--////////////////////////////////////-->
@@ -20,101 +19,66 @@
     <!-- MENU -->
     <!--////////////////////////////////////-->
 
-    <ImageButton
-        android:id="@+id/imageButtonSS"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="5dp"
-        android:backgroundTint="#b8ddcd"
-        app:layout_constraintLeft_toRightOf="@id/imageButtonSH"
-        app:layout_constraintTop_toBottomOf="@id/animation_view_nivel_rojo"
-        app:srcCompat="@mipmap/ic_favorite_black_48dp" />
-
-    <ImageButton
-        android:id="@+id/imageButtonSH"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="5dp"
-        android:backgroundTint="#b8ddcd"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/animation_view_nivel_rojo"
-        app:srcCompat="@mipmap/ic_headset_black_48dp" />
-
-    <ImageButton
-        android:id="@+id/imageButtonSW"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="5dp"
-        android:backgroundTint="#b8ddcd"
-        app:layout_constraintRight_toLeftOf="@id/imageButtonSH"
-        app:layout_constraintTop_toBottomOf="@id/animation_view_nivel_rojo"
-        app:srcCompat="@mipmap/ic_watch_black_48dp" />
-
-    <ImageView
-        android:id="@+id/image_profile"
+    <TextView
+        android:id="@+id/textTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/textNameMain"
-        android:layout_marginBottom="2dp"
+        android:text="Profile"
+        android:textStyle="normal"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/toolbarMain"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="5dp"
         />
 
+        <ImageView
+            android:id="@+id/image_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/textTitle"
+            app:layout_constraintRight_toLeftOf="@id/bicicleta"
+            />
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/bicicleta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:lottie_fileName="cycle_animation.json"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="false"
+            app:lottie_scale="0.25"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textTitle"
+            android:layout_marginTop="5dp"
+            />
     <TextView
-        android:id="@+id/text_nivel"
+        android:id="@+id/textNivel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nivel 2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        />
-
-    <TextView
-        android:id="@+id/textNameMain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
+        android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/text_nivel"
-        android:layout_marginBottom="80dp"
+        android:background="@drawable/round_border"
+        app:layout_constraintTop_toBottomOf="@id/textTitle"
+        app:layout_constraintLeft_toRightOf="@id/bicicleta"
+        android:layout_marginTop="10dp"
 
         />
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animation_view_nivel_rojo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:lottie_fileName="circulo_niv_rojo.json"
-        app:lottie_autoPlay="false"
-        app:lottie_loop="false"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:lottie_scale="0.40"
-        />
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animation_view_nivel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:lottie_fileName="circulo_niv.json"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="false"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:lottie_scale="0.40"
-        />
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- DIAS       -->
     <LinearLayout
@@ -219,16 +183,9 @@
 
     </LinearLayout>
 
-    <TextView
-    android:id="@+id/textView3"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text=""
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    />
 
 
+
+    <!--DIAS /////////////////////////////////////-->
 
 </android.support.constraint.ConstraintLayout>
