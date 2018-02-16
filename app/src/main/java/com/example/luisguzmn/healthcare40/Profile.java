@@ -1,6 +1,7 @@
 package com.example.luisguzmn.healthcare40;
 
 import android.graphics.Color;
+import android.support.annotation.StringDef;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.jar.Attributes;
 
 public class Profile extends AppCompatActivity {
 
@@ -33,6 +35,9 @@ public class Profile extends AppCompatActivity {
     TextView text_friday;
     TextView text_saturday;
     TextView text_sunday;
+    TextView text_name;
+    TextView text_country;
+    TextView text_gender;
     LottieAnimationView bici;
     //
 
@@ -49,6 +54,9 @@ public class Profile extends AppCompatActivity {
         text_friday = (TextView)findViewById(R.id.text_friday);
         text_saturday = (TextView)findViewById(R.id.text_saturday);
         text_sunday = (TextView)findViewById(R.id.text_sunday);
+        text_name = (TextView)findViewById(R.id.text_name);
+        text_country = (TextView)findViewById(R.id.text_country);
+        text_gender = (TextView)findViewById(R.id.text_gender);
         ImageView image_profile = (ImageView)findViewById(R.id.image_profile);
         bici = (LottieAnimationView)findViewById(R.id.bicicleta);
         //MENU
@@ -107,6 +115,9 @@ public class Profile extends AppCompatActivity {
                 .resize(250,250).centerCrop().into(image_profile);
         bici.setSpeed(4f);
         bici.playAnimation();
+        text_name.setText(getApplicationContext().getResources().getString(R.string.name)+ g.getName());
+        text_country.setText(getApplicationContext().getResources().getString(R.string.country)+ g.getCountry());
+        text_gender.setText(getApplicationContext().getResources().getString(R.string.gender)+ g.getGender());
 
 
 

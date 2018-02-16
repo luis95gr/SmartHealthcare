@@ -38,7 +38,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/textTitle"
-            app:layout_constraintRight_toLeftOf="@id/bicicleta"
+            android:layout_marginTop="25dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="10dp"
             />
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/bicicleta"
@@ -63,9 +65,51 @@
         android:background="@drawable/round_border"
         app:layout_constraintTop_toBottomOf="@id/textTitle"
         app:layout_constraintLeft_toRightOf="@id/bicicleta"
-        android:layout_marginTop="10dp"
-
+        android:layout_marginTop="25dp"
         />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bicicleta">
+
+        <TextView
+            android:id="@+id/text_name"
+            android:layout_width="0dp"
+            android:layout_weight="7"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_margin="5dp"
+            android:background="@drawable/border_profile"
+            android:textAlignment="center"
+            />
+        <TextView
+            android:id="@+id/text_country"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_margin="5dp"
+            android:background="@drawable/border_profile"
+            android:textAlignment="center"
+            />
+        <TextView
+            android:id="@+id/text_gender"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_margin="5dp"
+            android:background="@drawable/border_profile"
+            android:textAlignment="center"
+            />
+
+
+
+    </LinearLayout>
 
 
 
