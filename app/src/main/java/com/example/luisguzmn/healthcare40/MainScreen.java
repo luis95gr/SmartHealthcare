@@ -175,7 +175,7 @@ public class MainScreen extends AppCompatActivity {
         }else {
             text_friday.setBackgroundColor(Color.parseColor("#FFFFFF"));
         }
-        if (currentDateTimeStrin.equalsIgnoreCase("Saturday") || currentDateTimeStrin.equalsIgnoreCase("Sabado")){
+        if (currentDateTimeStrin.equalsIgnoreCase("Saturday") || currentDateTimeStrin.equalsIgnoreCase("Sábado")){
             text_saturday.setBackgroundColor(Color.parseColor("#b8ddcd"));
         }else {
             text_saturday.setBackgroundColor(Color.parseColor("#FFFFFF"));

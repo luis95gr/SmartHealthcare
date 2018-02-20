@@ -9,12 +9,12 @@
     <string name="title_activity_create_account">CreateAccount</string>
     <string name="title_activity_create">CreateAc</string>
 
-    <string name="name">Name \n</string>
-    <string name="country">Country \n</string>
-    <string name="gender">Gender \n</string>
-    <string name="birthday">Birthday \n</string>
-    <string name="height">Height \n</string>
-    <string name="weight">Weight \n</string>
+    <string name="name"><![CDATA[<b>Name</b><br><br>]]></string>
+    <string name="country"><![CDATA[<b>Country</b><br><br>]]></string>
+    <string name="gender"><![CDATA[<b>Gender</b><br><br>]]></string>
+    <string name="birthday"><![CDATA[<b>Birthday</b><br><br>]]></string>
+    <string name="height"><![CDATA[<b>Height</b><br><br>]]></string>
+    <string name="weight"><![CDATA[<b>Weight</b><br><br>]]></string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

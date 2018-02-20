@@ -4,7 +4,10 @@ import android.graphics.Color;
 import android.support.annotation.StringDef;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,9 +28,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.jar.Attributes;
 
+import static android.text.Html.fromHtml;
+
 public class Profile extends AppCompatActivity {
 
     //VARIABLES
+    Button button_nv7;
+    Button button_nv6;
+    Button button_nv5;
+    Button button_nv4;
+    Button button_nv3;
+    Button button_nv2;
+    Button button_nv1;
+    int ejercicioInt;
+    int ejercicioDias;
     TextView text_monday;
     TextView text_tuesday;
     TextView text_wednesday;
@@ -38,7 +52,15 @@ public class Profile extends AppCompatActivity {
     TextView text_name;
     TextView text_country;
     TextView text_gender;
+    TextView text_birthday;
+    TextView text_height;
+    TextView text_weight;
     LottieAnimationView bici;
+    ImageButton imB_acos;
+    ImageButton imB_sentado;
+    ImageButton imB_parado;
+    ImageButton imB_caminando;
+    ImageButton imB_corriendo;
     //
 
     @Override
@@ -57,13 +79,30 @@ public class Profile extends AppCompatActivity {
         text_name = (TextView)findViewById(R.id.text_name);
         text_country = (TextView)findViewById(R.id.text_country);
         text_gender = (TextView)findViewById(R.id.text_gender);
+        text_birthday = (TextView)findViewById(R.id.text_birthday);
+        text_height = (TextView)findViewById(R.id.text_height);
+        text_weight = (TextView)findViewById(R.id.text_weight);
         ImageView image_profile = (ImageView)findViewById(R.id.image_profile);
         bici = (LottieAnimationView)findViewById(R.id.bicicleta);
+        imB_acos = (ImageButton)findViewById(R.id.imageButtonAcos);
+        imB_sentado = (ImageButton)findViewById(R.id.imageButtonSen);
+        imB_parado = (ImageButton)findViewById(R.id.imageButtonPara);
+        imB_caminando = (ImageButton)findViewById(R.id.imageButtonCami);
+        imB_corriendo = (ImageButton)findViewById(R.id.imageButtonCorri);
+        button_nv1 = (Button)findViewById(R.id.nivel1);
+        button_nv2 = (Button)findViewById(R.id.nivel2);
+        button_nv3 = (Button)findViewById(R.id.nivel3);
+        button_nv4 = (Button)findViewById(R.id.nivel4);
+        button_nv5 = (Button)findViewById(R.id.nivel5);
+        button_nv6 = (Button)findViewById(R.id.nivel6);
+        button_nv7 = (Button)findViewById(R.id.nivel7);
+
         //MENU
         //-----------------------------------------------
         android.support.v7.widget.Toolbar toolbar =(android.support.v7.widget.Toolbar)findViewById(R.id.toolbarMain);
+        toolbar.setTitle("Profile");
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         GlobalVars g = (GlobalVars)getApplication();
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
@@ -112,12 +151,274 @@ public class Profile extends AppCompatActivity {
 
         //PROFILE SCREEN
         Picasso.with(this).load("http://meddata.sytes.net/newuser/profileImg/" + g.getImage())
-                .resize(250,250).centerCrop().into(image_profile);
+                .resize(150,150).centerCrop().into(image_profile);
         bici.setSpeed(4f);
         bici.playAnimation();
-        text_name.setText(getApplicationContext().getResources().getString(R.string.name)+ g.getName());
-        text_country.setText(getApplicationContext().getResources().getString(R.string.country)+ g.getCountry());
-        text_gender.setText(getApplicationContext().getResources().getString(R.string.gender)+ g.getGender());
+        text_name.setText (Html.fromHtml(getApplicationContext().getResources().getText(R.string.name)+ g.getName()+"<br>"));
+        text_country.setText (Html.fromHtml(getApplicationContext().getResources().getString(R.string.country)+ g.getCountry()+ "<br><br>"));
+        text_gender.setText (Html.fromHtml(getApplicationContext().getResources().getString(R.string.gender)+ g.getGender()+ "<br><br>"));
+        text_birthday.setText (Html.fromHtml(getApplicationContext().getResources().getString(R.string.birthday)+ g.getBirth()+ "<br><br>"));
+        text_height.setText (Html.fromHtml(getApplicationContext().getResources().getString(R.string.height)+ g.getHeight()+ " cm" + "<br><br>"));
+        text_weight.setText (Html.fromHtml(getApplicationContext().getResources().getString(R.string.weight)+ g.getWeight()+ " kg" + "<br><br>"));
+
+        //INTENSIDAD DE EJERCICIO ////////////////////////////////////////////////////////////////////////////////////////
+        //CAMBIO DE COLOR
+        ejercicioInt = g.getEx_int();
+        if(ejercicioInt==1){
+            imB_acos.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen_seleccionado));
+        } else {
+            imB_acos.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+        }
+
+        if(ejercicioInt==2){
+            imB_sentado.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen_seleccionado));
+        } else {
+            imB_sentado.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+        }
+
+        if(ejercicioInt==3){
+            imB_parado.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen_seleccionado));
+        } else {
+            imB_parado.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+        }
+
+        if(ejercicioInt==4){
+            imB_caminando.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen_seleccionado));
+        } else {
+            imB_caminando.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+        }
+
+        if(ejercicioInt==5){
+            imB_corriendo.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen_seleccionado));
+        } else {
+            imB_corriendo.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+        }
+         //TOCAR BOTONES /////////////////////////////////////////////
+        imB_acos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             ejercicioInt=1;
+                imB_acos.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen_seleccionado));
+                imB_sentado.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+                imB_parado.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+                imB_caminando.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+                imB_corriendo.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+            }
+        });
+
+        imB_sentado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             ejercicioInt=2;
+                imB_sentado.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen_seleccionado));
+                imB_parado.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+                imB_parado.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+                imB_caminando.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+                imB_corriendo.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+            }
+        });
+
+        imB_parado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             ejercicioInt=3;
+                imB_parado.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen_seleccionado));
+                imB_sentado.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+                imB_acos.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+                imB_caminando.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+                imB_corriendo.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+            }
+        });
+
+        imB_caminando.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ejercicioInt=4;
+                imB_caminando.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen_seleccionado));
+                imB_sentado.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+                imB_acos.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+                imB_parado.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+                imB_corriendo.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+            }
+        });
+
+        imB_corriendo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ejercicioInt=5;
+                imB_corriendo.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen_seleccionado));
+                imB_sentado.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+                imB_acos.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+                imB_caminando.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+                imB_parado.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+            }
+        });
+        //INTENSIDAD DE EJERCICIO ////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //DIAS A LA SEMANA////////////////////////////////////////////////////////////////////////////////////////////////
+        //CAMBIAR COLOR///////////////////////////////////////////////////////////////////////////////////////////////////
+        ejercicioDias=g.getDays_ex();
+
+        if(ejercicioDias==1){
+            button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv2.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv3.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv4.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv5.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv6.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        if(ejercicioDias==2){
+            button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv3.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv4.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv5.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv6.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        if(ejercicioDias==3){
+            button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv3.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv4.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv5.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv6.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        if(ejercicioDias==4){
+            button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv3.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv4.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv5.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv6.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        if(ejercicioDias==5){
+            button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv3.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv4.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv5.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv6.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        if(ejercicioDias==6){
+            button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv3.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv4.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv5.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv6.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        if(ejercicioDias==7){
+            button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv3.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv4.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv5.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv6.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv7.setBackgroundColor(Color.parseColor("#46B4CC"));
+        }
+
+        ////TOCAR BOTONES ////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        button_nv1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ejercicioDias=1;
+                button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv2.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv3.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv4.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv5.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv6.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            }
+        });
+        button_nv2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ejercicioDias=2;
+                button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv3.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv4.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv5.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv6.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            }
+        });
+        button_nv3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ejercicioDias=3;
+                button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv3.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv4.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv5.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv6.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            }
+        });
+        button_nv4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ejercicioDias=4;
+                button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv3.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv4.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv5.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv6.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            }
+        });
+        button_nv5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ejercicioDias=5;
+                button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv3.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv4.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv5.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv6.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            }
+        });
+        button_nv6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ejercicioDias=6;
+                button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv3.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv4.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv5.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv6.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            }
+        });
+        button_nv7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ejercicioDias=7;
+                button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv3.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv4.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv5.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv6.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv7.setBackgroundColor(Color.parseColor("#46B4CC"));
+
+            }
+        });
+        ////TOCAR BOTONES ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -154,7 +455,7 @@ public class Profile extends AppCompatActivity {
         }else {
             text_friday.setBackgroundColor(Color.parseColor("#FFFFFF"));
         }
-        if (currentDateTimeStrin.equalsIgnoreCase("Saturday") || currentDateTimeStrin.equalsIgnoreCase("Sabado")){
+        if (currentDateTimeStrin.equalsIgnoreCase("Saturday") || currentDateTimeStrin.equalsIgnoreCase("Sábado")){
             text_saturday.setBackgroundColor(Color.parseColor("#b8ddcd"));
         }else {
             text_saturday.setBackgroundColor(Color.parseColor("#FFFFFF"));

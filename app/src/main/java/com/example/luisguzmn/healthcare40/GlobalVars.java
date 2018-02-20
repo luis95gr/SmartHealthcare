@@ -40,6 +40,12 @@ public class GlobalVars extends Application{
     }
     public void setGender(String gender){
         this.gender=gender;
+        if(gender.equals("1")){
+            this.gender="Male";
+        }
+        if(gender.equals("2")){
+            this.gender="Female";
+        }
     }
     public String getCountry(){
         return this.country;
