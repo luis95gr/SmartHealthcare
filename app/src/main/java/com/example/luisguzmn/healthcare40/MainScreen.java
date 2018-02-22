@@ -2,8 +2,11 @@ package com.example.luisguzmn.healthcare40;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.View;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -19,25 +22,32 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothClass;
 import android.graphics.Color;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import android.util.Log;
+
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -48,6 +58,7 @@ import app.akexorcist.bluetotohspp.library.DeviceList;
 public class MainScreen extends AppCompatActivity {
 
     //VARIABLES
+
     TextView text_monday;
     TextView text_tuesday;
     TextView text_wednesday;
@@ -65,6 +76,9 @@ public class MainScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
+        //
+        SharedPreferences sp = getSharedPreferences("login",MODE_PRIVATE);
+        //
 
         //CAST
         ImageView image_profile = (ImageView)findViewById(R.id.image_profile);
@@ -82,7 +96,8 @@ public class MainScreen extends AppCompatActivity {
         //-----------------------------------------------
         android.support.v7.widget.Toolbar toolbar =(android.support.v7.widget.Toolbar)findViewById(R.id.toolbarMain);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setTitle("Main");
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         GlobalVars g = (GlobalVars)getApplication();
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
@@ -137,13 +152,13 @@ public class MainScreen extends AppCompatActivity {
         //MAIN SCREEN
         LottieAnimationView animationView_nivel = (LottieAnimationView)findViewById(R.id.animation_view_nivel);
         LottieAnimationView animationView_nivel_rojo = (LottieAnimationView)findViewById(R.id.animation_view_nivel_rojo);
-        Picasso.with(this).load("http://meddata.sytes.net/newuser/profileImg/" + g.getImage())
+        Picasso.with(this).load("http://meddata.sytes.net/newuser/profileImg/" + sp.getString("imagen","No Image"))
                 .resize(250,250).centerCrop().into(image_profile);
         animationView_nivel.setSpeed(10f);
         animationView_nivel_rojo.setSpeed(100f);
         animationView_nivel.playAnimation(0,10);
         animationView_nivel_rojo.playAnimation(0,30);
-        textNameMain.setText(g.getName());
+        textNameMain.setText(sp.getString("name","No name"));
 
         //DIAS
         Date today = Calendar.getInstance().getTime();
@@ -188,7 +203,7 @@ public class MainScreen extends AppCompatActivity {
 
         //
         //BLUETOOTH
-        if(!bt.isBluetoothAvailable()) {
+        /*if(!bt.isBluetoothAvailable()) {
             // any command for bluetooth is not available
             Toast.makeText(getApplicationContext(), "NO ", Toast.LENGTH_SHORT).show();
         }else { Toast.makeText(getApplicationContext(), "SI ", Toast.LENGTH_SHORT).show();
@@ -201,7 +216,7 @@ public class MainScreen extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "GOOD ", Toast.LENGTH_SHORT).show();
         }
 
-        bt.startService(BluetoothState.DEVICE_ANDROID);
+        bt.startService(BluetoothState.DEVICE_ANDROID); */
 
 
 
@@ -214,4 +229,34 @@ public class MainScreen extends AppCompatActivity {
     {
         return (keyCode == KeyEvent.KEYCODE_BACK ? true : super.onKeyDown(keyCode, event));
     }
+    //MENU 3 DOTS
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.settings:
+                startActivity(new Intent(MainScreen.this,MainScreen.class));
+                return true;
+
+            case R.id.logout:
+                SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
+                SharedPreferences.Editor e = sp.edit();
+                e.clear();
+                e.apply();
+                startActivity(new Intent(MainScreen.this,MainActivity.class));
+                finish();
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
+    }
+    //END MENU 3 DOTS
+
 }

@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context="com.example.luisguzmn.healthcare40.Profile">
 
+
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -24,6 +26,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF">
+
+
     </android.support.v7.widget.Toolbar>
     <!-- MENU -->
     <!--////////////////////////////////////-->
@@ -109,6 +113,7 @@
             android:layout_margin="5dp"
             android:background="@drawable/border_profile"
             android:textAlignment="center"
+            android:clickable="true"
             />
         <TextView
             android:id="@+id/text_country"
@@ -254,8 +259,31 @@
 
     </LinearLayout>
 
-
-
+<!--TITULOS///////////////////////////////////////////////-->
+            <TextView
+                android:id="@+id/text_titleInt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="___________________Exercise Intensity____________________"
+                android:textAlignment="center"
+                android:textSize="15dp"
+                android:textColor="@color/blue"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linear3"
+                />
+            <TextView
+                android:id="@+id/text_titleDays"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="____________________Exercise Time_____________________"
+                android:textAlignment="center"
+                android:textSize="15dp"
+                android:textColor="@color/blue"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linear4"
+                />
 
 
 
@@ -376,7 +404,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/linear3"
+                app:layout_constraintTop_toBottomOf="@id/text_titleInt"
                 android:layout_marginTop="15dp"
                 >
             <LinearLayout
@@ -386,6 +414,8 @@
                 android:layout_height="300dp"
                 android:gravity="center"
                 android:orientation="vertical"
+                android:background="#D0EDF0"
+
                 >
 
                 <Button
@@ -468,6 +498,7 @@
 
 
             </LinearLayout>
+                <!--HORAS //////////////////////-->
                 <LinearLayout
                     android:id="@+id/linear4.2_horas"
                     android:layout_width="0dp"
@@ -476,6 +507,41 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     >
+
+                    <Button
+                        android:id="@+id/button_horas1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:layout_margin="15dp"
+                        android:background="@drawable/round_border2"
+                        android:text="1 hour or less"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        />
+                    <Button
+                        android:id="@+id/button_horas2_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:layout_margin="15dp"
+                        android:background="@drawable/round_border2"
+                        android:text="2 to 3 hours"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        />
+                    <Button
+                        android:id="@+id/button_horas4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:layout_margin="15dp"
+                        android:background="@drawable/round_border2"
+                        android:text="4 hours or more"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        />
+
                 </LinearLayout>
 
 

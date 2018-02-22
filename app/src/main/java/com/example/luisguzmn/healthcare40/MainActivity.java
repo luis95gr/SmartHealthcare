@@ -1,8 +1,10 @@
 package com.example.luisguzmn.healthcare40;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,19 +26,36 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
+
 public class MainActivity extends AppCompatActivity {
 
-    EditText etEmail, etPass;
+    SharedPreferences sp;
+    //String cuenta;
+    //String contraseña;
+    EditText etEmail;
+    EditText etPass;
     Button btnLog;
     String ip = "meddata.sytes.net";
     //String ip = "192.168.15.13";
     TextView txtCreateA;
     JSONArray jsonArray;
+    int acceso=0;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //LOGIN SOLO
+        sp = getSharedPreferences("login",MODE_PRIVATE);
+        if(sp.contains("email") && sp.contains("pass")){
+            startActivity(new Intent(MainActivity.this,MainScreen.class));
+            finish();   //finish current activity
+        }
+
+        //END LOGIN SOLO
         LottieAnimationView animationView = (LottieAnimationView)findViewById(R.id.animation_view);
         animationView.setMinAndMaxFrame(0,20);
         animationView.playAnimation();
@@ -60,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    private void VolleyPetition(String URL) {
+    public void VolleyPetition(String URL) {
         Log.i("url", "" + URL);
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
@@ -86,6 +105,25 @@ public class MainActivity extends AppCompatActivity {
                     g.setImage(jsonArray.getString(14));
                     if (etEmail.getText().toString().equals(g.getEmail()) &
                             etPass.getText().toString().equals(g.getPass())) {
+                        //
+                        SharedPreferences.Editor e = sp.edit();
+                        e.putString("email",etEmail.getText().toString());
+                        e.putString("pass",etPass.getText().toString());
+                        e.putString("name",g.getName());
+                        e.putString("country",g.getCountry());
+                        e.putString("imagen",g.getImage());
+                        e.putString("birth",g.getBirth());
+                        e.putString("gender",g.getGender());
+                        e.putInt("deviceS",g.getDeviceS());
+                        e.putInt("deviceH",g.getDeviceH());
+                        e.putInt("deviceB",g.getDeviceB());
+                        e.putInt("daysEx",g.getDays_ex());
+                        e.putString("hoursEx",g.getHours_ex());
+                        e.putInt("exInt",g.getEx_int());
+                        e.putInt("weight",g.getWeight());
+                        e.putInt("height",g.getHeight());
+                        e.apply();
+                        //
                         Toast.makeText(getApplicationContext(), "Welcome " + g.getName(), Toast.LENGTH_SHORT).show();
                         LottieAnimationView animationView = (LottieAnimationView)findViewById(R.id.animation_view);
                         //animationView.setMinAndMaxFrame(20,100);
@@ -97,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                                 Intent intent = new Intent(MainActivity.this,MainScreen.class);
                                 startActivity(intent);
                             }
-                        },4000);
+                        },3000);
                     } else {
                         Toast.makeText(getApplicationContext(), "Incorrect user or password", Toast.LENGTH_SHORT).show();
                     }
@@ -113,4 +151,24 @@ public class MainActivity extends AppCompatActivity {
         });
         queue.add(stringRequest);
     }
+
+
+
+    public void onPause (){
+        super.onPause();
+        SharedPreferences datos = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor mieditor = datos.edit();
+        //mieditor.putString("correo",cuenta);
+        //mieditor.putString("contraseña",contraseña);
+        mieditor.putInt("acceso",acceso);
+        mieditor.apply();
+    }
+    /*
+    public void onResume (){
+        super.onResume();
+        SharedPreferences datos = PreferenceManager.getDefaultSharedPreferences(this);
+        acceso=datos.getInt("acceso",0);
+    } */
 }
+
+
