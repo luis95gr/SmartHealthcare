@@ -46,12 +46,13 @@
 
     <TextView
         android:id="@+id/textPersonalInfo"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Personal Information_________________________________"
+        android:textSize="15sp"
         android:textStyle="normal"
         android:textColor="@color/blue"
-        android:textSize="15sp"
+
         app:layout_constraintTop_toBottomOf="@id/textCorreo"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -185,13 +186,12 @@
         android:id="@+id/textExercise"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Exercise Information__________________________________"
+        android:text="Exercise Information_____________________________"
         android:textStyle="normal"
         android:textColor="@color/blue"
         android:textSize="15sp"
         app:layout_constraintTop_toBottomOf="@id/linear2"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="10dp"
         />
 <!-- BOTONES EJERCICIO ///////////////////////////-->
@@ -262,9 +262,9 @@
 <!--TITULOS///////////////////////////////////////////////-->
             <TextView
                 android:id="@+id/text_titleInt"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="___________________Exercise Intensity____________________"
+                android:text="______________Exercise Intensity_______________"
                 android:textAlignment="center"
                 android:textSize="15dp"
                 android:textColor="@color/blue"
@@ -274,9 +274,9 @@
                 />
             <TextView
                 android:id="@+id/text_titleDays"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="____________________Exercise Time_____________________"
+                android:text="_______________Exercise Time________________"
                 android:textAlignment="center"
                 android:textSize="15dp"
                 android:textColor="@color/blue"

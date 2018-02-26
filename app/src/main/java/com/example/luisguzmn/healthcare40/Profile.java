@@ -175,7 +175,7 @@ public class Profile extends AppCompatActivity {
         //MENU
 
         //PROFILE SCREEN
-        Picasso.with(this).load("http://meddata.sytes.net/newuser/profileImg/" + sp.getString("image","No image"))
+        Picasso.with(this).load("http://meddata.sytes.net/newuser/profileImg/" + sp.getString("imagen","No image"))
                 .resize(150, 150).centerCrop().into(image_profile);
         bici.setSpeed(4f);
         bici.playAnimation();
