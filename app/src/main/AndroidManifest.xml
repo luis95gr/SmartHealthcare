@@ -25,9 +25,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="app.akexorcist.bluetoothspp.DeviceList" />
         <activity android:name=".CrearCuenta" />
         <activity android:name=".MainScreen" />
         <activity android:name=".Profile"></activity>
+
     </application>
 
 </manifest>

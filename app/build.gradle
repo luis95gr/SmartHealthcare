@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 
+
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -11,6 +12,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -37,6 +39,9 @@ dependencies {
     }
     implementation 'com.android.support:support-annotations:27.0.2'
     implementation 'com.mikepenz:google-material-typeface:3.0.1.2.original@aar'
+    compile 'com.robotpajamas.blueteeth:blueteeth:0.2.0'
+    compile 'com.akexorcist:bluetoothspp:1.0.0'
+
 
 
 }
