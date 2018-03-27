@@ -1,6 +1,8 @@
 package com.example.luisguzmn.healthcare40;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +34,8 @@ import java.util.Scanner;
 
 public class CrearCuenta extends AppCompatActivity {
 
+    //VARIABLES
+    SharedPreferences spLogin;
     EditText etFname, etLname, etEmail, etRemail, etPass, etRpass, etPhone, etWeight, etHeight;
     Spinner spYear, spMonth, spDay, spCountry, spDaysEx, spHours, spExInt;
     RadioButton rbFemale, rbMale;
@@ -40,13 +44,15 @@ public class CrearCuenta extends AppCompatActivity {
     String ip = "meddata.sytes.net";
     String CompleteName, Email, Password, Phone, Weight, Height, Birthday, Country, Gender, DeviceS,
             DeviceH, DeviceB, ExDays, ExHours, ExInt;
+    //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.crearcuenta);
+
+        spLogin = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences.Editor spLoginEditor = spLogin.edit();
 
 
         txtNext = (TextView) findViewById(R.id.txtNext);
@@ -156,6 +162,12 @@ public class CrearCuenta extends AppCompatActivity {
                         "&deviceS=" + DeviceS + "&deviceH=" + DeviceH + "&deviceB=" + DeviceB + "&days_ex=" + ExDays +
                         "&hours_ex="+ ExHours + "&ex_int=" + ExInt + "&weight=" + Weight + "&height=" + Height);
 
+                spLoginEditor.putString("email",etEmail.getText().toString());
+                spLoginEditor.putString("password",etPass.getText().toString());
+                spLoginEditor.putString("phone",Phone);
+                spLoginEditor.apply();
+                Intent intent = new Intent(CrearCuenta.this,crearCuentaHelo.class);
+                startActivity(intent);
             }
         });
     }
@@ -166,9 +178,9 @@ public class CrearCuenta extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Toast.makeText(getApplicationContext(), "DONE!" , Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(CrearCuenta.this, MainActivity.class);
-                startActivity(intent);
+                //Toast.makeText(getApplicationContext(), "DONE!" , Toast.LENGTH_SHORT).show();
+                //Intent intent = new Intent(CrearCuenta.this, MainActivity.class);
+                //startActivity(intent);
             }
         }, new Response.ErrorListener() {
             @Override
