@@ -30,6 +30,7 @@ import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
 public class MainActivity extends AppCompatActivity {
 
+    //VARIABLES
     SharedPreferences sp;
     //String cuenta;
     //String contraseña;
@@ -41,21 +42,21 @@ public class MainActivity extends AppCompatActivity {
     TextView txtCreateA;
     JSONArray jsonArray;
     int acceso=0;
-
+    //
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //LOGIN SOLO
+        //LOGIN AUTO
         sp = getSharedPreferences("login",MODE_PRIVATE);
         if(sp.contains("email") && sp.contains("pass")){
             startActivity(new Intent(MainActivity.this,MainScreen.class));
             finish();   //finish current activity
         }
 
-        //END LOGIN SOLO
+        //END LOGIN AUTO
         LottieAnimationView animationView = (LottieAnimationView)findViewById(R.id.animation_view);
         animationView.setMinAndMaxFrame(0,20);
         animationView.playAnimation();

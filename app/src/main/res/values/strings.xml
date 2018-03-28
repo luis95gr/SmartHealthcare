@@ -166,4 +166,10 @@
     <string name="drawer_item_settinds">Settings</string>
     <string name="drawer_item_about">About us</string>
 
+    <string name="select_your_country">select your country</string>
+    <string name="regist_country">Country</string>
+    <string name="prefix">prefix</string>
+    <string name="rationale_title">Need Permission</string>
+    <string name="rationale_message">Connector sample app need permissions. Please enable it.</string>
+
 </resources>

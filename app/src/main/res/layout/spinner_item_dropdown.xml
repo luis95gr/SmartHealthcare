@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?><!--<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    style="@style/registerInput"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#F6F6F2"
+    android:ellipsize="marquee"
+    android:maxLines="1" />
+
+    style="?android:attr/spinnerDropDownItemStyle"
+    -->
+
+<!--<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    style="@style/registerInput"
+    android:layout_width="wrap_content"
+    android:layout_height="40dp"
+    android:ellipsize="marquee"
+    android:singleLine="true"
+    android:textColor="#000000" />-->
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    style="?android:attr/spinnerDropDownItemStyle"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:ellipsize="marquee"
+    android:singleLine="true" />

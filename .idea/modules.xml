@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Healthcare 4.0.iml" filepath="$PROJECT_DIR$/Healthcare 4.0.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Healthcare4.0.iml" filepath="$PROJECT_DIR$/Healthcare4.0.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android-connector-20180322/android-connector-20180322.iml" filepath="$PROJECT_DIR$/android-connector-20180322/android-connector-20180322.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

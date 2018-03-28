@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:text="Login Page"
+        android:textColor="@android:color/holo_blue_light"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="App Key"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/app_key"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="App Token"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/app_token"
+        />
+    <!--android:text="150961922069403885"
+    android:text="8928EF06068F9FF1DE54A95887DB5ED1DAD276C1"-->
+    <EditText
+        android:text=""
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        />
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/countrySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:prompt="@string/select_your_country"
+        android:textSize="10sp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/text_1"
+            style="@style/Registration.text"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="@dimen/marginright_login_bodyinfo"
+            android:hint="@string/prefix"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/phonenumber"
+            style="@style/Registration.edittext"
+            android:layout_marginBottom="16dp"
+            android:hint="PhoneNumber"
+            android:inputType="phone"
+            android:maxLines="1" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/login_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/login"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="Login" />
+
+        <!--<Button
+            android:id="@+id/login_prod"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="Prod Lpgin" />-->
+    </LinearLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Callback API Buttons" />
+
+        <LinearLayout
+            android:id="@+id/bottom_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="5dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/CallBack_Phone_Pin"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="Phone Pin" />
+
+            <Button
+                android:id="@+id/CallBack_Email_Pin"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="Email Pin" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

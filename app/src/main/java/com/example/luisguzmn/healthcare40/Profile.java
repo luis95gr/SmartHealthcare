@@ -296,67 +296,67 @@ public class Profile extends AppCompatActivity {
         ejercicioDias = sp.getInt("daysEx",0);
 
         if (ejercicioDias == 1) {
-            button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv2.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            button_nv3.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            button_nv4.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            button_nv5.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            button_nv6.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv1.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv2.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+            button_nv3.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+            button_nv4.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+            button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+            button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+            button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
         }
         if (ejercicioDias == 2) {
-            button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv3.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            button_nv4.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            button_nv5.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            button_nv6.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv1.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv2.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv3.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+            button_nv4.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+            button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+            button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+            button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
         }
         if (ejercicioDias == 3) {
-            button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv3.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv4.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            button_nv5.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            button_nv6.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv1.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv2.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv3.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv4.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+            button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+            button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+            button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
         }
         if (ejercicioDias == 4) {
-            button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv3.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv4.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv5.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            button_nv6.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv1.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv2.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv3.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv4.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+            button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+            button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
         }
         if (ejercicioDias == 5) {
-            button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv3.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv4.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv5.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv6.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv1.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv2.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv3.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv4.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+            button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
         }
         if (ejercicioDias == 6) {
-            button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv3.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv4.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv5.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv6.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            button_nv1.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv2.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv3.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv4.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
         }
         if (ejercicioDias == 7) {
-            button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv3.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv4.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv5.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv6.setBackgroundColor(Color.parseColor("#46B4CC"));
-            button_nv7.setBackgroundColor(Color.parseColor("#46B4CC"));
+            button_nv1.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv2.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv3.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv4.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+            button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
         }
 
         ////TOCAR BOTONES ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -365,91 +365,91 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ejercicioDias = 1;
-                button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv2.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                button_nv3.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                button_nv4.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                button_nv5.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                button_nv6.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv1.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv2.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                button_nv3.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                button_nv4.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
             }
         });
         button_nv2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ejercicioDias = 2;
-                button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv3.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                button_nv4.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                button_nv5.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                button_nv6.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv1.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv2.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv3.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                button_nv4.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
             }
         });
         button_nv3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ejercicioDias = 3;
-                button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv3.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv4.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                button_nv5.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                button_nv6.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv1.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv2.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv3.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv4.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
             }
         });
         button_nv4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ejercicioDias = 4;
-                button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv3.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv4.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv5.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                button_nv6.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv1.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv2.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv3.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv4.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
             }
         });
         button_nv5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ejercicioDias = 5;
-                button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv3.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv4.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv5.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv6.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv1.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv2.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv3.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv4.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
             }
         });
         button_nv6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ejercicioDias = 6;
-                button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv3.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv4.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv5.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv6.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv7.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                button_nv1.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv2.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv3.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv4.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
             }
         });
         button_nv7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ejercicioDias = 7;
-                button_nv1.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv2.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv3.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv4.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv5.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv6.setBackgroundColor(Color.parseColor("#46B4CC"));
-                button_nv7.setBackgroundColor(Color.parseColor("#46B4CC"));
+                button_nv1.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv2.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv3.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv4.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
 
             }
         });
@@ -577,5 +577,10 @@ public class Profile extends AppCompatActivity {
 
         }
         //END MENU 3 DOTS
+
+    public void onPause(){
+        super.onPause();
+        finish();
+    }
 
 }

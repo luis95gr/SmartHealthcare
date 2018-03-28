@@ -1,1 +1,1 @@
-include ':app'
+include ':app', ':android-connector-20180322'

@@ -28,19 +28,22 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.android.support:design:26.1.0'
-    compile 'com.android.volley:volley:1.1.0'
-    compile 'com.airbnb.android:lottie:2.2.5'
-    compile 'com.android.support:recyclerview-v7:26.1.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.akexorcist:bluetoothspp:1.0.0'
+    implementation 'com.android.volley:volley:1.1.0'
+    implementation 'com.airbnb.android:lottie:2.2.5'
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.akexorcist:bluetoothspp:1.0.0'
     implementation "com.mikepenz:iconics-core:3.0.2@aar"
     implementation('com.mikepenz:materialdrawer:6.0.6@aar') {
         transitive = true
     }
+    implementation project(":android-connector-20180322")
+
     implementation 'com.android.support:support-annotations:27.0.2'
     implementation 'com.mikepenz:google-material-typeface:3.0.1.2.original@aar'
-    compile 'com.robotpajamas.blueteeth:blueteeth:0.2.0'
-    compile 'com.akexorcist:bluetoothspp:1.0.0'
+    implementation 'com.jjoe64:graphview:4.2.1'
+    implementation 'com.snatik:storage:2.1.0'
+    implementation 'gun0912.ted:tedpermission:2.0.3'
 
 
 

@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <Button
+            android:id="@+id/scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="34"
+            android:onClick="scan"
+            android:text="Scan" />
+
+        <Button
+            android:id="@+id/unpair"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="32"
+            android:onClick="unpair"
+            android:text="Unpair" />
+
+
+        <Button
+            android:id="@+id/cleardata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="34"
+            android:onClick="cleardata"
+            android:text="Clear" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="MAC" />
+
+        <TextView
+            android:id="@+id/mac"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:weightSum="100">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="Last sync time" />
+
+        <TextView
+            android:id="@+id/lastsynctime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:weightSum="100">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="App Version" />
+
+        <TextView
+            android:id="@+id/appversion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="Battery" />
+
+        <TextView
+            android:id="@+id/battery"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="Helo Device Firmware Version" />
+
+        <TextView
+            android:id="@+id/firmware_version"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="100">
+
+        <TextView
+            android:id="@+id/conn_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="" />
+
+        <TextView
+
+            android:id="@+id/bond_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:id="@+id/measure_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50" />
+
+        <TextView
+            android:id="@+id/measure_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="BP" />
+
+        <TextView
+            android:id="@+id/bp_val"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="HR" />
+
+        <TextView
+            android:id="@+id/hr_val"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="ECG" />
+
+        <TextView
+            android:id="@+id/ecg_val"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="BR" />
+
+        <TextView
+            android:id="@+id/br_val"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="Mood" />
+
+        <TextView
+            android:id="@+id/mood_val"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="Fatigue" />
+
+        <TextView
+            android:id="@+id/fatigue_val"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50" />
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="Sleep" />
+
+        <TextView
+            android:id="@+id/sleep_val"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50" />
+    </LinearLayout>
+
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="Steps" />
+
+        <TextView
+            android:id="@+id/steps_val"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="Dynamic Steps" />
+
+        <TextView
+            android:id="@+id/dynamic_steps_val"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="45" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="Dynamic Heart Rate" />
+
+
+        <TextView
+            android:id="@+id/dynamic_heartrate_val"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="45" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="99">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:onClick="measureBP"
+            android:text="BP" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:onClick="measureHR"
+            android:text="HR" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:onClick="measureEcg"
+            android:text="ecg" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="99">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:onClick="measureBR"
+            android:text="br" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:onClick="measureMF"
+            android:text="mf" />
+
+        <Button
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:onClick="stepcount"
+            android:text="steps" />
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="99">
+
+        <Button
+            android:visibility="invisible"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:onClick="sleepcount"
+            android:text="sleep" />
+
+        <Button
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:onClick="setSyncInterval"
+            android:text="sync" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:onClick="measurePW"
+            android:text="pw"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dynamic_measure_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="5dp"
+        android:weightSum="100">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:onClick="startDynamicStepHeartRate"
+            android:text="Start Dynamic Steps &amp; HeartRate"
+            android:textAllCaps="false"
+            android:textStyle="normal" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:onClick="stopDynamicStepHeartRate"
+            android:text="Stop Dynamic Steps &amp; HeartRate"
+            android:textAllCaps="false"
+            android:textStyle="normal" />
+    </LinearLayout>
+</LinearLayout>

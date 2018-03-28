@@ -22,8 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#087683"
-                android:minHeight="?attr/actionBarSize"
-                android:theme="?attr/actionBarTheme" />
+                 />
 
             <TextView
                 android:id="@+id/textView2"
