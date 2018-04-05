@@ -20,6 +20,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.luisguzmn.healthcare40.Helo.HeloConnection;
+
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -36,6 +38,8 @@ public class Bluetooth extends AppCompatActivity {
     private static final int REQUEST_ENABLED = 0;
     private static final int REQUEST_DISCOVERABLE = 0;
     SharedPreferences infoBluetooth;
+    SharedPreferences spLogin;
+    Button buttonHelo;
     //
 
     @Override
@@ -45,6 +49,7 @@ public class Bluetooth extends AppCompatActivity {
         //SHARED PREFERENCES
         infoBluetooth = PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor editorBluetooth = infoBluetooth.edit();
+        spLogin=PreferenceManager.getDefaultSharedPreferences(this);
         //
         //CAST
         b_on = (Button) findViewById(R.id.on);
@@ -52,6 +57,7 @@ public class Bluetooth extends AppCompatActivity {
         b_list = (Button) findViewById(R.id.list);
         list = (ListView) findViewById(R.id.viewlist);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        buttonHelo = (Button)findViewById(R.id.buttonHelo);
         //
 
         if (bluetoothAdapter == null) {
@@ -105,6 +111,19 @@ public class Bluetooth extends AppCompatActivity {
                 list.setAdapter(arrayAdapter);
             }
         });
+        buttonHelo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(spLogin.getBoolean("success",false)==false) {
+                    Intent intent = new Intent(Bluetooth.this, crearCuentaHelo.class);
+                    startActivity(intent);
+                }else {
+                    startActivity(new Intent(Bluetooth.this, HeloConnection.class));
+                }
+            }
+        });
+
+
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -117,7 +136,6 @@ public class Bluetooth extends AppCompatActivity {
                 editorBluetooth.putString("type", type);
                 editorBluetooth.putString("macAdress", macAdress);
                 editorBluetooth.apply();
-                Toast.makeText(getApplicationContext(), "" + type, Toast.LENGTH_LONG).show();
                 ShowDialog();
             }
         });
@@ -136,9 +154,12 @@ public class Bluetooth extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //finish();
-                Intent intent = new Intent(Bluetooth.this, Dashboard_helo.class);
-                startActivity(intent);
+                if(infoBluetooth.getString("name","No name found").equalsIgnoreCase("HeloLx")) {
+                    Intent intent = new Intent(Bluetooth.this, PrincipalDashboard.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(Bluetooth.this, "Not HELOLX", Toast.LENGTH_LONG).show();
+                }
             }
         })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PrincipalDashboard">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#087683"
+        app:layout_constraintTop_toBottomOf="@+id/linearDias"
+        />
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Principal Dashboard"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:layout_constraintLeft_toLeftOf="@id/toolbar"
+        app:layout_constraintRight_toRightOf="@id/toolbar"
+        app:layout_constraintTop_toTopOf="@id/toolbar" />
+
+    <LinearLayout
+        android:id="@+id/linearMeasures"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_hr"
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            app:lottie_fileName="heartRateBri.json"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_scale="0.015"
+            />
+
+        <TextView
+            android:id="@+id/textHR"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Heart Rate:"
+            android:gravity="left"
+            android:textSize="18sp"
+            android:textColor="@color/blue"
+            />
+        <TextView
+            android:id="@+id/textSteps"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Steps:"
+            android:gravity="left"
+            android:textSize="18sp"
+            android:textColor="@color/blue"
+            />
+    </LinearLayout>
+
+
+
+
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearMeasures"
+        android:id="@+id/horizontalScrollButtons"
+        android:layout_marginTop="35dp"
+        android:scrollIndicators="none"
+        >
+
+        <LinearLayout
+            android:id="@+id/linearButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            style="?android:attr/buttonBarStyle"
+            >
+
+            <Button
+                android:id="@+id/buttonBP"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/border_profile"
+                style="?android:attr/buttonBarButtonStyle"
+                android:text="BP"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:onClick="measureBP"/>
+
+            <Button
+                android:id="@+id/buttonECG"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/border_profile"
+                style="?android:attr/buttonBarButtonStyle"
+                android:text="ECG"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:onClick="measureEcg"/>
+
+            <Button
+                android:id="@+id/buttonBR"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_margin="10dp"
+                style="?android:attr/buttonBarButtonStyle"
+                android:background="@drawable/border_profile"
+                android:text="BR"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:onClick="measureBR"/>
+
+            <Button
+                android:id="@+id/buttonMood"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_margin="10dp"
+                style="?android:attr/buttonBarButtonStyle"
+                android:background="@drawable/border_profile"
+                android:text="Mood"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:onClick="measureMF"/>
+
+            <Button
+                android:id="@+id/buttonFatigue"
+                android:layout_width="wrap_content"
+                android:layout_height="85dp"
+                android:layout_margin="10dp"
+                style="?android:attr/buttonBarButtonStyle"
+                android:background="@drawable/border_profile"
+                android:clickable="true"
+                android:text="Fatigue"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:onClick="measureMF"/>
+
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalScrollButtons"
+        android:background="@drawable/circle_timer_empty"
+        android:indeterminate="false"
+        android:visibility="invisible"
+        android:max="100"
+        android:progress="100"
+        android:progressDrawable="@drawable/circle_timer_full"
+        android:rotation="-90"
+        style="?android:attr/progressBarStyleHorizontal"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textReloj"
+        android:textSize="60sp"
+        android:text="50"
+        android:visibility="invisible"
+        android:textColor="@color/blue"
+        app:layout_constraintTop_toBottomOf="@id/horizontalScrollButtons"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="80dp"
+        />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_ecg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_gravity="center"
+        app:lottie_fileName="ecg.json"
+        app:lottie_scale="0.25"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textReloj"
+        />
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_welcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:lottie_fileName="welcomeCuadros.json"
+        app:lottie_loop="true"
+        app:lottie_scale="0.30"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalScrollButtons"
+        />
+
+    <TextView
+        android:id="@+id/textWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="WELCOME"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="50sp"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalScrollButtons" />
+
+    <TextView
+        android:id="@+id/textWelcome2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Waiting for Heart Rate..."
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textWelcome" />
+
+
+    <!-- MEASURES       -->
+
+    <TextView
+        android:id="@+id/textBP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/blue"
+        android:text="Bp"
+        android:visibility="invisible"
+        android:layout_marginTop="80dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalScrollButtons"
+        />
+
+
+
+
+
+    <!-- //////////////////////////// -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- DIAS       -->
+    <LinearLayout
+        android:id="@+id/linearDias"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/text_monday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="MON"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
+
+        <TextView
+            android:id="@+id/text_tuesday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="TUE"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
+        <TextView
+            android:id="@+id/text_wednesday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="WED"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
+        <TextView
+            android:id="@+id/text_thursday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="THU"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
+        <TextView
+            android:id="@+id/text_friday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="FRI"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
+        <TextView
+            android:id="@+id/text_saturday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="SAT"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
+        <TextView
+            android:id="@+id/text_sunday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="SUN"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
+
+    </LinearLayout>
+
+
+
+</android.support.constraint.ConstraintLayout>

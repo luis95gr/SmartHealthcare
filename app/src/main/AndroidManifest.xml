@@ -36,8 +36,15 @@
         <activity android:name=".Bluetooth" />
         <activity android:name=".Dashboard_helo" />
         <activity android:name=".crearCuentaHelo" />
-        <activity android:name=".Helo.BleDevice" />
-        <activity android:name=".Helo.PinActivity"></activity>
+        <activity android:name=".Helo.PinActivity" />
+        <activity android:name=".PrincipalDashboard">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Helo.HeloConnection"></activity>
     </application>
 
 </manifest>

@@ -18,8 +18,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.luisguzmn.healthcare40.Helo.BleDevice;
 import com.example.luisguzmn.healthcare40.Helo.CountrySpinnerItem;
+import com.example.luisguzmn.healthcare40.Helo.HeloConnection;
 import com.example.luisguzmn.healthcare40.Helo.PinActivity;
 import com.worldgn.connector.Connector;
 import com.worldgn.connector.ICallbackPin;
@@ -34,11 +34,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 public class crearCuentaHelo extends Activity {
 
     //VARIABLES
-    SharedPreferences spLogin;
     EditText editTextEmail, editTextPhone, app_key, app_token; //
     AppCompatSpinner countrySpinner;
     TextView text_1;
@@ -46,6 +44,7 @@ public class crearCuentaHelo extends Activity {
     private String prefix = "",countryName;
     private final static String TAG = crearCuentaHelo.class.getSimpleName();
     ProgressDialog progressDialog;
+    SharedPreferences spLogin;
     //
 
     @Override
@@ -54,7 +53,7 @@ public class crearCuentaHelo extends Activity {
         setContentView(R.layout.crear_cuenta_helo);
         spLogin = PreferenceManager.getDefaultSharedPreferences(this);
         if (Connector.getInstance().isLoggedIn()) {
-            startActivity(new Intent(this, BleDevice.class));
+            startActivity(new Intent(this, MainActivity.class));
             finish();
             return;
         }
@@ -74,17 +73,104 @@ public class crearCuentaHelo extends Activity {
         countrySpinner.setAdapter(adapterCountry);
         countrySpinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
         //
-
-        editTextEmail.setText(spLogin.getString("email","no email"));
+        editTextEmail.setText("healthcare4pef@gmail.com");
         editTextPhone.setText(spLogin.getString("phone","no phone"));
         app_key.setText("152174450800554266");
         app_token.setText("B9B2E74B829AC1FCE45FFF44BE772CE8C5DD2200");
+
+        /////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////LOGIN AUTOMATICO/////////////////////////////////////////////////////
+
+        if(!TextUtils.isEmpty(app_key.getText().toString()) && !TextUtils.isEmpty(app_token.getText().toString())) {
+            Connector.getInstance().initialize(this,app_key.getText().toString(), app_token.getText().toString());
+            if (Util.isvalidEmail(editTextEmail.getText().toString()) ) {
+                editTextPhone.getText().clear();//to clear phone number to avoid
+                final String email = editTextEmail.getText().toString();
+                //prefHelper.setString(Constants.PREF_DEV_ENVIRONMENT,"0");
+                progressDialog.show();
+                Connector.getInstance().login(email, new ILoginCallback() {
+
+                    @Override
+                    public void onSuccess(long heloUserId) {
+                        SharedPreferences.Editor spLoginEditor = spLogin.edit();
+                        spLoginEditor.putBoolean("success",true);
+                        spLoginEditor.apply();
+                        progressDialog.cancel();
+                        startActivity(new Intent(crearCuentaHelo.this, HeloConnection.class));
+                        finish();
+                    }
+
+                    @Override
+                    public void onPinverification() {
+                        progressDialog.cancel();
+                        Intent intent = new Intent(crearCuentaHelo.this, PinActivity.class);
+                        intent.putExtra(PinActivity.ACTION_TYPE, PinActivity.ACTION_EMAIL);
+                        intent.putExtra(PinActivity.ACTION_EMAIL, email);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(String description) {
+                        progressDialog.cancel();
+                        Toast.makeText(getApplicationContext(), description, Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void accountVerification() {
+
+                    }
+                });
+            } else if (Util.isvalidPhone(editTextPhone.getText().toString())) {
+                editTextEmail.getText().clear();
+                final String phone = editTextPhone.getText().toString();
+                if (TextUtils.isEmpty(phone)) {
+                    Toast.makeText(getApplicationContext(), "Enter phone address", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                progressDialog.show();
+                Connector.getInstance().login(text_1.getText().toString(), phone, new ILoginCallback() {
+
+                    @Override
+                    public void onSuccess(long heloUserId) {
+                        SharedPreferences.Editor spLoginEditor = spLogin.edit();
+                        spLoginEditor.putBoolean("success",true);
+                        spLoginEditor.apply();
+                        progressDialog.cancel();
+                        startActivity(new Intent(crearCuentaHelo.this, HeloConnection.class));
+                    }
+
+                    @Override
+                    public void onPinverification() {
+                        progressDialog.cancel();
+                        Intent intent = new Intent(crearCuentaHelo.this, PinActivity.class);
+                        intent.putExtra(PinActivity.ACTION_TYPE, PinActivity.ACTION_PHONE);
+                        intent.putExtra(PinActivity.ACTION_PHONE, phone);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(String description) {
+                        progressDialog.cancel();
+                        Toast.makeText(getApplicationContext(), description, Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void accountVerification() {
+
+                    }
+                });
+            }
+        } else {
+            Toast.makeText(this, "Please fill APP KEY and APP TOKEN", Toast.LENGTH_LONG).show();
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////
 
     }
 
     public void onClick(View view) {
 
-        if (view.getId() == R.id.login) {
+        /*if (view.getId() == R.id.login) {
             if(!TextUtils.isEmpty(app_key.getText().toString()) && !TextUtils.isEmpty(app_token.getText().toString())) {
                 Connector.getInstance().initialize(this,app_key.getText().toString(), app_token.getText().toString());
                 if (Util.isvalidEmail(editTextEmail.getText().toString()) ) {
@@ -97,8 +183,7 @@ public class crearCuentaHelo extends Activity {
                         @Override
                         public void onSuccess(long heloUserId) {
                             progressDialog.cancel();
-                            startActivity(new Intent(crearCuentaHelo.this, BleDevice.class));
-//                        startActivity(new Intent(LoginActivity.this, BleDevice.class));
+                            startActivity(new Intent(crearCuentaHelo.this, MainActivity.class));
                             finish();
                         }
 
@@ -135,7 +220,7 @@ public class crearCuentaHelo extends Activity {
                         @Override
                         public void onSuccess(long heloUserId) {
                             progressDialog.cancel();
-                            startActivity(new Intent(crearCuentaHelo.this, BleDevice.class));
+                            startActivity(new Intent(crearCuentaHelo.this, MainActivity.class));
                         }
 
                         @Override
@@ -213,7 +298,7 @@ public class crearCuentaHelo extends Activity {
             }else{
                 Toast.makeText(this,"not valid Email",Toast.LENGTH_LONG).show();
             }
-        }
+        }*/
     }
 
     private List<CountrySpinnerItem> getCountries(Context context) {

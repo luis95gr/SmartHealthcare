@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 
 import android.graphics.PorterDuff;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -323,6 +324,10 @@ public class MainScreen extends AppCompatActivity {
                 SharedPreferences.Editor e = sp.edit();
                 e.clear();
                 e.apply();
+                SharedPreferences spLogin = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor spLoginEditor = spLogin.edit();
+                spLoginEditor.putBoolean("success",false);
+                spLoginEditor.apply();
                 startActivity(new Intent(MainScreen.this,MainActivity.class));
                 finish();
 

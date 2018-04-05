@@ -166,7 +166,7 @@ public class CrearCuenta extends AppCompatActivity {
                 spLoginEditor.putString("password",etPass.getText().toString());
                 spLoginEditor.putString("phone",Phone);
                 spLoginEditor.apply();
-                Intent intent = new Intent(CrearCuenta.this,crearCuentaHelo.class);
+                Intent intent = new Intent(CrearCuenta.this,MainActivity.class);
                 startActivity(intent);
             }
         });

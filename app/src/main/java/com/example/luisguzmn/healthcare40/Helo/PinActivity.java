@@ -10,13 +10,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.luisguzmn.healthcare40.MainActivity;
 import com.example.luisguzmn.healthcare40.R;
 import com.worldgn.connector.Connector;
 import com.worldgn.connector.IPinCallback;
 
-/**
- * Created by mudassarhussain on 9/13/17.
- */
+
 
 public class PinActivity extends Activity{
     public static final int TYPE_EMAIL = 1 ;
@@ -65,7 +64,7 @@ public class PinActivity extends Activity{
                 @Override
                 public void onSuccess(long heloUserId) {
                     progressDialog.cancel();
-                    startActivity(new Intent(PinActivity.this, BleDevice.class));
+                    startActivity(new Intent(PinActivity.this, MainActivity.class));
                     finish();
                 }
 
