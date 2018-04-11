@@ -23,6 +23,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,7 +48,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Helo.HeloConnection"></activity>
+        <activity android:name=".Helo.HeloConnection" />
+
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider593253451027552"
+            android:exported="true" />
+
+        <activity android:name=".Statistics" />
+        <activity android:name=".PopUp"
+            android:theme="@style/AppTheme.CustomTheme"
+        />
     </application>
 
 </manifest>

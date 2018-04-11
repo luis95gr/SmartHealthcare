@@ -16,6 +16,7 @@
     <!-- Base application theme. -->
 
 
+
     <style name="Registration"></style>
 
     <style name="Registration.desc" parent="Registration">
@@ -67,6 +68,12 @@
         <item name="android:textColor">@color/black_translation</item>
         <item name="android:textColorHint">#666</item>
         <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="AppTheme.CustomTheme">
+        <item name ="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+
     </style>
 
 </resources>

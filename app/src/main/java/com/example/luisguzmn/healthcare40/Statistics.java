@@ -1,17 +1,28 @@
 package com.example.luisguzmn.healthcare40;
 
-import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
-
-import android.content.SharedPreferences;
-
-import android.preference.PreferenceManager;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+import android.widget.Toast;
 
-
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.LegendRenderer;
+import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
+import com.jjoe64.graphview.series.BarGraphSeries;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.DataPointInterface;
+import com.jjoe64.graphview.series.OnDataPointTapListener;
+import com.jjoe64.graphview.series.PointsGraphSeries;
+import com.jjoe64.graphview.series.Series;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -22,65 +33,30 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothClass;
-import android.graphics.Color;
-
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.airbnb.lottie.LottieAnimationView;
-import com.squareup.picasso.Picasso;
+import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Set;
+import java.util.Locale;
+
+public class Statistics extends AppCompatActivity {
 
 
-
-public class MainScreen extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
-    //VARIABLES
-    BluetoothAdapter bluetoothAdapter;
-    //AGREGAR ESTAS VARIABALES
-    int headphones = 0;
-    int smartwatch = 0;
-    int tipoDisp = 0;
-
-
-    ImageButton imageButtonSS;
-    ImageButton imageButtonSH;
-    ImageButton imageButtonSW;
-    Button buttonStart;
-    TextView text_monday;
-    TextView text_tuesday;
-    TextView text_wednesday;
-    TextView text_thursday;
-    TextView text_friday;
-    TextView text_saturday;
-    TextView text_sunday;
-    TextView texto;
-    private static final int REQUEST_ENABLED = 0;
-    private static final int REQUEST_ENABLE_BT = 1;
-    private static final int REQUEST_DISCOVERABLE = 0;
+    //DAYS VARIABLES
+    TextView text_monday,text_tuesday,text_wednesday,text_thursday,text_friday,text_saturday,text_sunday;
     //
-
+    //VARIABLES
+    GraphView graphViewBP;
+    TextView textView;
+    //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_screen);
-        //
-        SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
-        //
-
-        //CAST
-        ImageView image_profile = (ImageView) findViewById(R.id.image_profile);
-        TextView textNameMain = (TextView) findViewById(R.id.textNameMain);
+        setContentView(R.layout.statistics);
+        menu();
+        //CAST DAYS
         text_monday = (TextView) findViewById(R.id.text_monday);
         text_tuesday = (TextView) findViewById(R.id.text_tuesday);
         text_wednesday = (TextView) findViewById(R.id.text_wednesday);
@@ -88,15 +64,144 @@ public class MainScreen extends AppCompatActivity {
         text_friday = (TextView) findViewById(R.id.text_friday);
         text_saturday = (TextView) findViewById(R.id.text_saturday);
         text_sunday = (TextView) findViewById(R.id.text_sunday);
-        imageButtonSW = (ImageButton) findViewById(R.id.imageButtonSW);
-        imageButtonSH = (ImageButton) findViewById(R.id.imageButtonSH);
-        imageButtonSS = (ImageButton) findViewById(R.id.imageButtonSS);
-        buttonStart = (Button)findViewById(R.id.buttonStart);
+        //
+        dias();
+        //CAST
+        graphViewBP = (GraphView)findViewById(R.id.graphBP);
+        textView = (TextView)findViewById(R.id.textView78);
+        //
+        //
+        //BP GRAPH
+        Calendar calendar = Calendar.getInstance();
+        Date d1 = calendar.getTime();
+        calendar.add(Calendar.DATE, 1);
+        Date d2 = calendar.getTime();
+        calendar.add(Calendar.DATE, 1);
+        Date d3 = calendar.getTime();
+        calendar.add(Calendar.DATE, 1);
+        Date d4 = calendar.getTime();
+        calendar.add(Calendar.DATE, 1);
+        Date d5 = calendar.getTime();
+        calendar.add(Calendar.DATE, 1);
+        Date d6 = calendar.getTime();
+        calendar.add(Calendar.DATE, 1);
+        Date d7 = calendar.getTime();
+        calendar.add(Calendar.DATE, 1);
+        Date d8 = calendar.getTime();
+
+
+        Date todays = Calendar.getInstance().getTime();
+        SimpleDateFormat formatters = new SimpleDateFormat("h:mm a");
+        String currentDateTimeStrin = formatters.format(todays);
+
+        textView.setText(currentDateTimeStrin);
+
+
+        PointsGraphSeries<DataPoint> series = new PointsGraphSeries<>(new DataPoint[] {
+                new DataPoint(d1, 2),
+                new DataPoint(d2, 5),
+                new DataPoint(d3, 3),
+                new DataPoint(d4, 4),
+                new DataPoint(d5, 6),
+                new DataPoint(d6, 3),
+                new DataPoint(d7, 8),
+                new DataPoint(d8, 3),
+                new DataPoint(d3, 8),
+                new DataPoint(d3, 3),
+                new DataPoint(d8, 7),
+
+        });
+        series.setColor(Color.DKGRAY);
+        graphViewBP.addSeries(series);
+        //
+        PointsGraphSeries<DataPoint> series2 = new PointsGraphSeries<>(new DataPoint[] {
+                new DataPoint(d1, 8),
+                new DataPoint(d2, 9),
+                new DataPoint(d3, 10),
+                new DataPoint(d4, 4),
+                new DataPoint(d5, 6),
+                new DataPoint(d6, 3),
+                new DataPoint(d3, 8),
+                new DataPoint(d3, 3),
+                new DataPoint(d3, 8),
+                new DataPoint(d3, 3),
+                new DataPoint(d3, 7),
+
+        });
+
+
+        /*graphViewBP.getSecondScale().addSeries(series2);
+        graphViewBP.getSecondScale().setMinY(0);
+        graphViewBP.getSecondScale().setMaxY(10);*/
+
+        series.setTitle("BP Max");
+        series2.setTitle("BP Min");
+        graphViewBP.getLegendRenderer().setVisible(true);
+        graphViewBP.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+        //
+        series.setOnDataPointTapListener(new OnDataPointTapListener() {
+            @Override
+            public void onTap(Series series, DataPointInterface dataPoint) {
+                //Toast.makeText(Statistics.this, "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_LONG).show();
+                startActivity(new Intent(Statistics.this, PopUp.class));
+            }
+        });
+
+        // set date label formatter
+        graphViewBP.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
+        graphViewBP.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
+        graphViewBP.getViewport().setScrollable(true);
+       // set manual x bounds to have nice steps
+        graphViewBP.getViewport().setXAxisBoundsManual(true);
+        graphViewBP.getViewport().setMinX(d1.getTime());
+        graphViewBP.getViewport().setMaxX(d3.getTime());
+        // set manual y bounds to have nice steps
+        graphViewBP.getViewport().setYAxisBoundsManual(true);
+        graphViewBP.getViewport().setMinY(0);
+        graphViewBP.getViewport().setMaxY(10);
+        graphViewBP.getGridLabelRenderer().setHumanRounding(false);
+
+
+        //graphViewBP.getViewport().setScrollable(true); // enables horizontal scrolling
+        //graphViewBP.getViewport().setScrollableY(true); // enables vertical scrolling
+        //graphViewBP.getViewport().setScalable(true); // enables horizontal zooming and scrolling
+        //graphViewBP.getViewport().setScalableY(true); // enables vertical zooming and scrolling
+
+        //graphViewBP.getViewport().scrollToEnd();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private void menu() {
         //MENU
         //-----------------------------------------------
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbarMain);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Main");
+        toolbar.setTitle("Statistics");
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         GlobalVars g = (GlobalVars) getApplication();
         AccountHeader headerResult = new AccountHeaderBuilder()
@@ -136,12 +241,12 @@ public class MainScreen extends AppCompatActivity {
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         // do something with the clicked item :D
                         if (position == 2) {
-                            Intent intent = new Intent(MainScreen.this, Profile.class);
+                            Intent intent = new Intent(Statistics.this, Profile.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
-                        if (position == 4){
-                            Intent intent = new Intent(MainScreen.this, Statistics.class);
+                        if (position == 4) {
+                            Intent intent = new Intent(Statistics.this, Statistics.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
@@ -153,18 +258,9 @@ public class MainScreen extends AppCompatActivity {
 
         //-------------------------------------------------------------------------------------------
         //MENU
+    }
 
-        //MAIN SCREEN
-        LottieAnimationView animationView_nivel = (LottieAnimationView) findViewById(R.id.animation_view_nivel);
-        LottieAnimationView animationView_nivel_rojo = (LottieAnimationView) findViewById(R.id.animation_view_nivel_rojo);
-        Picasso.with(this).load("http://meddata.sytes.net/newuser/profileImg/" + sp.getString("imagen", "No Image"))
-                .resize(250, 250).centerCrop().into(image_profile);
-        animationView_nivel.setSpeed(10f);
-        animationView_nivel_rojo.setSpeed(100f);
-        animationView_nivel.playAnimation(0, 10);
-        animationView_nivel_rojo.playAnimation(0, 30);
-        textNameMain.setText(sp.getString("name", "No name"));
-
+    private void dias(){
         //DIAS
         Date today = Calendar.getInstance().getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("EEEE");
@@ -206,131 +302,6 @@ public class MainScreen extends AppCompatActivity {
             text_sunday.setBackgroundColor(Color.parseColor("#FFFFFF"));
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////////////////////////////////////
-        //BOTONES
-        imageButtonSW.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        imageButtonSH.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-        imageButtonSS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        buttonStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainScreen.this, Bluetooth.class);
-                startActivity(intent);
-            }
-        });
-        ///////////////////////////////////////////////////////////////////////
-        ///AQUI ES LA PARTE DEL BLUETOOTH DENTRO DEL ON CREATE
-        //BLUETOOTH/////////
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
-        Set<BluetoothDevice> pairedDevices
-                = bluetoothAdapter.getBondedDevices();
-
-        if (pairedDevices.size() > 0) {
-            //Toast.makeText(getApplicationContext(), pairedDevices.size() + " bLUETOOTH DEVICEs paired.", Toast.LENGTH_SHORT).show();
-            for (BluetoothDevice device : pairedDevices) {
-
-                BluetoothClass bluetoothClass = device.getBluetoothClass();
-                int estado = device.getBondState();
-
-                if (estado == BluetoothDevice.BOND_BONDED) {
-                    int tipoDeDispositivo = bluetoothClass.getDeviceClass();
-                    if (tipoDeDispositivo == 1028 || tipoDeDispositivo==7936) {
-                        headphones = headphones + 1;
-                        imageButtonSH.getBackground().setTint(Color.parseColor("#ADFF2F"));
-                    }
-
-                    if (tipoDeDispositivo == 268 || tipoDeDispositivo==7936) {
-                        imageButtonSW.getBackground().setTint(Color.parseColor("#ADFF2F"));
-                        smartwatch = smartwatch + 1;
-                    }
-                    if(tipoDeDispositivo == 1032){
-                        //imageButtonSS.getBackground().setTint(Color.parseColor("#ADFF2F"));
-                    }
-                }else{
-                    imageButtonSH.getBackground().setTint(Color.parseColor("#b8ddcd"));
-                    imageButtonSW.getBackground().setTint(Color.parseColor("#b8ddcd"));
-                    imageButtonSS.getBackground().setTint(Color.parseColor("#b8ddcd"));
-                }
-
-
-            }
-        }
-
-
-        //Toast.makeText(getApplicationContext(), smartwatch + " smartwatch paired.", Toast.LENGTH_SHORT).show();
-
-        //Toast.makeText(getApplicationContext(), headphones + " headphones paired.", Toast.LENGTH_SHORT).show();
-
-
-        // END BLUETOOTH
-
     }
-
-
-
-
-
-
-
-
-
-    //ELIMINAR BACK PRESS
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return (keyCode == KeyEvent.KEYCODE_BACK ? true : super.onKeyDown(keyCode, event));
-    }
-    //MENU 3 DOTS
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu,menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
-            case R.id.settings:
-                startActivity(new Intent(MainScreen.this,MainScreen.class));
-                return true;
-
-            case R.id.logout:
-                SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
-                SharedPreferences.Editor e = sp.edit();
-                e.clear();
-                e.apply();
-                SharedPreferences spLogin = PreferenceManager.getDefaultSharedPreferences(this);
-                SharedPreferences.Editor spLoginEditor = spLogin.edit();
-                spLoginEditor.putBoolean("success",false);
-                spLoginEditor.apply();
-                startActivity(new Intent(MainScreen.this,MainActivity.class));
-                finish();
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-
-    }
-    //END MENU 3 DOTS
-
 
 }
-
-

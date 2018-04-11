@@ -327,8 +327,8 @@ public class crearCuentaHelo extends Activity {
             Log.i(TAG, "arg2 = " + pos + "   position = " );
             Object item = parent.getItemAtPosition(pos);
             if (item != null) {
-                Toast.makeText(crearCuentaHelo.this, item.toString(),
-                        Toast.LENGTH_SHORT).show();
+                //Toast.makeText(crearCuentaHelo.this, item.toString(),
+                        //Toast.LENGTH_SHORT).show();
             }
             prefix = ((CountrySpinnerItem) countrySpinner.getSelectedItem()).getCode();
             countryName = ((CountrySpinnerItem) countrySpinner.getSelectedItem()).getName();

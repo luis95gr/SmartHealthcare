@@ -16,6 +16,9 @@
     <string name="height"><![CDATA[<b>Height</b><br><br>]]></string>
     <string name="weight"><![CDATA[<b>Weight</b><br><br>]]></string>
 
+    <string name="facebook_app_id">593253451027552</string>
+    <string name="facebook_login_protocol_scheme">fb593253451027552></string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

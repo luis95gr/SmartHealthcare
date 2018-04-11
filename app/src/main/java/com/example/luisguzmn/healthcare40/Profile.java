@@ -2,6 +2,7 @@ package com.example.luisguzmn.healthcare40;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.support.annotation.StringDef;
 import android.support.v7.app.AppCompatActivity;
@@ -162,6 +163,11 @@ public class Profile extends AppCompatActivity {
                         }
                         if (position == 1) {
                             Intent intent = new Intent(Profile.this, MainScreen.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
+                        if (position == 4){
+                            Intent intent = new Intent(Profile.this, Statistics.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
