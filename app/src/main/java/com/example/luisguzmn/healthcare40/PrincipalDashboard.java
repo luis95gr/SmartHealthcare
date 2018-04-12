@@ -2,8 +2,12 @@ package com.example.luisguzmn.healthcare40;
 
 import android.Manifest;
 
+import android.content.SharedPreferences;
 import android.content.pm.Signature;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -88,28 +92,13 @@ public class PrincipalDashboard extends AppCompatActivity {
 
 
     //VARIABLES
-    TextView text_monday;
-    TextView text_tuesday;
-    TextView text_wednesday;
-    TextView text_thursday;
-    TextView text_friday;
-    TextView text_saturday;
-    TextView text_sunday;
+    TextView text_monday, text_tuesday, text_wednesday, text_thursday, text_friday, text_saturday, text_sunday;
     //
-    LottieAnimationView animationViewWelcome;
-    LottieAnimationView animationViewEcg;
-    LottieAnimationView animationFbIcon;
+    LottieAnimationView animationViewWelcome, animationViewEcg, animationFbIcon;
     ProgressBar progressBar;
-    TextView textWelcome;
-    TextView textWelcome2;
+    TextView textWelcome, textWelcome2;
     TextView textReloj;
-    Button buttonBP;
-    Button buttonECG;
-    Button buttonBR;
-    Button buttonMood;
-    Button buttonFatigue;
-    Button buttonSave;
-    Button buttonCancel;
+    Button buttonBP, buttonECG, buttonBR, buttonMood, buttonFatigue, buttonSave, buttonCancel;
     PermissionListener permissionListener;
     IntentFilter intentFilter;
     MeasurementReceiver heloMeasurementReceiver;
@@ -118,37 +107,26 @@ public class PrincipalDashboard extends AppCompatActivity {
     Timer timerHR = new Timer();
     //
     //MEASUREMENT VARIABLES
-    long time=40000;
+    long time = 40000;
     Animation animationBlink;
     boolean booleanAnimations;
-    TextView textHR;
-    TextView textSteps;
-    boolean booleanMood;
-    boolean booleanFatigue;
+    TextView textHR, textSteps;
+    boolean booleanMood, booleanFatigue;
     //
-    String hr;
-    String steps;
-    String bpmax;
-    String bpmin;
-    String br;
-    String mood;
-    String fatigue;
+    String hr, steps, bpmax, bpmin, br, mood, fatigue;
     //
-    TextView textBP,textBR,textMood,textFatigue;
+    TextView textBP, textBR, textMood, textFatigue;
     //SAVED MEASURES
     boolean booleanBpMeasure = false;
     boolean booleanBrMeasure = false;
     boolean booleanEcgMeasure = false;
     boolean booleanMoodMeasure = false;
     boolean booleanFatigueMeasure = false;
-    int contBp = 1;
-    int contBr = 1;
-    int contMood = 1;
-    int contFatigue = 1;
-    double[] doubleBpmaxSaved,doubleBpminSaved,doubleBRSaved,doubleMoodSaved,doubleFatigueSaved;
-    Intent intentEnvio;
+    int contBp, contBr, contMood, contFatigue = 1;
+    double[] doubleBpmaxSaved, doubleBpminSaved, doubleBRSaved, doubleMoodSaved, doubleFatigueSaved;
+    SharedPreferences spMeasuresSaved;
     Calendar calendar;
-    Date[] datesBpmaxSaved,datesBpminSaved,datesBrSaved,datesMoodSaved,datesFatigueSaved;
+    Date[] datesBpmaxSaved, datesBpminSaved, datesBrSaved, datesMoodSaved, datesFatigueSaved;
     String hourBpmaxSaved, hourBpminSaved, hourBrSaved, hourMoodSaved, hourFatigueSaved;
     Date date;
     SimpleDateFormat sdf;
@@ -163,7 +141,9 @@ public class PrincipalDashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.principal_dashboard);
-
+        //SHARED PREFERENCES
+        spMeasuresSaved = PreferenceManager.getDefaultSharedPreferences(this);
+        //
         //INIT FACEBOOK
         callbackManager = CallbackManager.Factory.create();
         shareDialog = new ShareDialog(this);
@@ -179,7 +159,7 @@ public class PrincipalDashboard extends AppCompatActivity {
         //
         animationViewEcg = (LottieAnimationView) findViewById(R.id.animation_ecg);
         animationViewWelcome = (LottieAnimationView) findViewById(R.id.animation_welcome);
-        animationFbIcon = (LottieAnimationView)findViewById(R.id.animation_fb);
+        animationFbIcon = (LottieAnimationView) findViewById(R.id.animation_fb);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         textWelcome = (TextView) findViewById(R.id.textWelcome);
         textWelcome2 = (TextView) findViewById(R.id.textWelcome2);
@@ -192,8 +172,8 @@ public class PrincipalDashboard extends AppCompatActivity {
         buttonMood = (Button) findViewById(R.id.buttonMood);
         buttonFatigue = (Button) findViewById(R.id.buttonFatigue);
         //MEASURES CAST
-        textFatigue = (TextView)findViewById(R.id.textFatigue);
-        textMood = (TextView)findViewById(R.id.textMood);
+        textFatigue = (TextView) findViewById(R.id.textFatigue);
+        textMood = (TextView) findViewById(R.id.textMood);
         textBP = (TextView) findViewById(R.id.textBP);
         textBR = (TextView) findViewById(R.id.textBR);
         //SAVING CAST
@@ -204,7 +184,7 @@ public class PrincipalDashboard extends AppCompatActivity {
         doubleBRSaved = new double[50];
         doubleMoodSaved = new double[50];
         doubleFatigueSaved = new double[50];
-        intentEnvio = new Intent(PrincipalDashboard.this,Statistics.class);
+
         calendar = Calendar.getInstance();
         datesBpmaxSaved = new Date[50];
         datesBpminSaved = new Date[50];
@@ -238,7 +218,7 @@ public class PrincipalDashboard extends AppCompatActivity {
         animationViewWelcome.playAnimation();
         //
         //ANIMATION OF BUTTONS
-        animationBlink = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.blink);
+        animationBlink = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
         //STEPS
         timerSteps.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -312,19 +292,19 @@ public class PrincipalDashboard extends AppCompatActivity {
                 ///
                 buttonBP.clearAnimation();
                 buttonBP.setText("BP");
-                buttonBP.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+                buttonBP.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                 buttonECG.clearAnimation();
                 buttonECG.setText("ECG");
-                buttonECG.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+                buttonECG.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                 buttonBR.clearAnimation();
                 buttonBR.setText("BR");
-                buttonBR.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+                buttonBR.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                 buttonMood.clearAnimation();
                 buttonMood.setText("MOOD");
-                buttonMood.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+                buttonMood.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                 buttonFatigue.clearAnimation();
                 buttonFatigue.setText("FATIGUE");
-                buttonFatigue.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+                buttonFatigue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                 //
 
             }
@@ -349,7 +329,7 @@ public class PrincipalDashboard extends AppCompatActivity {
         startcountDownTimer();
         //BUTTONS
         buttonBP.startAnimation(animationBlink);
-        buttonBP.setTextSize(TypedValue.COMPLEX_UNIT_SP,11);
+        buttonBP.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
         buttonBP.setText("Measuring");
         //ELSE BUTTONS
         buttonBP.setEnabled(false);
@@ -359,6 +339,7 @@ public class PrincipalDashboard extends AppCompatActivity {
         buttonFatigue.setEnabled(false);
         //
     }
+
     public void measureBR(View view) {
         time = 40000;
         textReloj.setText("40");
@@ -367,7 +348,7 @@ public class PrincipalDashboard extends AppCompatActivity {
         startcountDownTimer();
         //BUTTONS
         buttonBR.startAnimation(animationBlink);
-        buttonBR.setTextSize(TypedValue.COMPLEX_UNIT_SP,11);
+        buttonBR.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
         buttonBR.setText("Measuring");
         //ELSE BUTTONS
         buttonBP.setEnabled(false);
@@ -377,8 +358,9 @@ public class PrincipalDashboard extends AppCompatActivity {
         buttonFatigue.setEnabled(false);
         //
     }
+
     public void measureMF(View view) {
-        booleanMood=true;
+        booleanMood = true;
         time = 40000;
         textReloj.setText("40");
         textReloj.setVisibility(View.VISIBLE);
@@ -386,7 +368,7 @@ public class PrincipalDashboard extends AppCompatActivity {
         startcountDownTimer();
         //BUTTONS
         buttonMood.startAnimation(animationBlink);
-        buttonMood.setTextSize(TypedValue.COMPLEX_UNIT_SP,11);
+        buttonMood.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
         buttonMood.setText("Measuring");
         //ELSE BUTTONS
         buttonBP.setEnabled(false);
@@ -396,8 +378,9 @@ public class PrincipalDashboard extends AppCompatActivity {
         buttonFatigue.setEnabled(false);
         //
     }
-    public void measureMFatigue(View view){
-        booleanFatigue=true;
+
+    public void measureMFatigue(View view) {
+        booleanFatigue = true;
         time = 40000;
         textReloj.setText("40");
         textReloj.setVisibility(View.VISIBLE);
@@ -405,7 +388,7 @@ public class PrincipalDashboard extends AppCompatActivity {
         startcountDownTimer();
         //BUTTONS
         buttonFatigue.startAnimation(animationBlink);
-        buttonFatigue.setTextSize(TypedValue.COMPLEX_UNIT_SP,11);
+        buttonFatigue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
         buttonFatigue.setText("Measuring");
         //ELSE BUTTONS
         buttonBP.setEnabled(false);
@@ -415,6 +398,7 @@ public class PrincipalDashboard extends AppCompatActivity {
         buttonFatigue.setEnabled(false);
         //
     }
+
     public void measureEcg(View view) {
         time = 120000;
         textReloj.setText("120");
@@ -423,7 +407,7 @@ public class PrincipalDashboard extends AppCompatActivity {
         startcountDownTimer();
         //BUTTONS
         buttonECG.startAnimation(animationBlink);
-        buttonECG.setTextSize(TypedValue.COMPLEX_UNIT_SP,11);
+        buttonECG.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
         buttonECG.setText("Measuring");
         //ELSE BUTTONS
         buttonBP.setEnabled(false);
@@ -433,6 +417,7 @@ public class PrincipalDashboard extends AppCompatActivity {
         buttonFatigue.setEnabled(false);
         //
     }
+
     ///////////////////////////////////////////////////////////////////////////////
     public class MeasurementReceiver extends BroadcastReceiver {
 
@@ -462,7 +447,7 @@ public class PrincipalDashboard extends AppCompatActivity {
                     ////////////////////////BREATH RATE////////////////////////////////////////
                 } else if (intent.getAction().equals(BROADCAST_ACTION_BR_MEASUREMENT)) {
                     br = intent.getStringExtra(INTENT_KEY_BR_MEASUREMENT);
-                    textBR.setText("Breath Rate: "+br);
+                    textBR.setText("Breath Rate: " + br);
                     textReloj.setVisibility(View.INVISIBLE);
                     textBR.setVisibility(View.VISIBLE);
                     booleanBrMeasure = true;
@@ -484,7 +469,7 @@ public class PrincipalDashboard extends AppCompatActivity {
                         if (booleanFatigue) {
                             textFatigue.setVisibility(View.VISIBLE);
                             booleanFatigueMeasure = true;
-                            booleanFatigue=false;
+                            booleanFatigue = false;
                         }
                     }
                     //BUTTONS
@@ -502,7 +487,7 @@ public class PrincipalDashboard extends AppCompatActivity {
                     if (!mood.isEmpty()) {
                         textMood.setText("Mood: " + mood);
                         textReloj.setVisibility(View.INVISIBLE);
-                        if(booleanMood){
+                        if (booleanMood) {
                             textMood.setVisibility(View.VISIBLE);
                             booleanMood = false;
                             booleanMoodMeasure = true;
@@ -542,7 +527,7 @@ public class PrincipalDashboard extends AppCompatActivity {
                     //////////////////////////////////SLEEP////////////////////////////////////
                 } else if (intent.getAction().equals(BROADCAST_ACTION_SLEEP)) {
 
-                }else if(intent.getAction().equals(BROADCAST_ACTION_MEASUREMENT_WRITE_FAILURE)) {
+                } else if (intent.getAction().equals(BROADCAST_ACTION_MEASUREMENT_WRITE_FAILURE)) {
                     String message = intent.getStringExtra(INTENT_MEASUREMENT_WRITE_FAILURE);
                     Toast.makeText(PrincipalDashboard.this, message, Toast.LENGTH_LONG).show();
                 }
@@ -555,6 +540,7 @@ public class PrincipalDashboard extends AppCompatActivity {
     ///BUTTONS SAVE/CANCEL
     public void saveMeasure(View view) {
         animationFbIcon.setVisibility(View.INVISIBLE);
+        SharedPreferences.Editor spMeasuresSavedEditor = spMeasuresSaved.edit();
         if (booleanBpMeasure) {
             doubleBpmaxSaved[contBp] = Double.parseDouble(bpmax);
             doubleBpminSaved[contBp] = Double.parseDouble(bpmin);
@@ -566,9 +552,7 @@ public class PrincipalDashboard extends AppCompatActivity {
             Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Saved", Snackbar.LENGTH_SHORT);
             snackbar.show();
             //ENVIAR INFO
-            //Intent intentEnvio = new Intent(PrincipalDashboard.this,Statistics.class);
-            intentEnvio.putExtra("bpMaxSaved",doubleBpmaxSaved);
-            intentEnvio.putExtra("bpMinSaved",doubleBpminSaved);
+            checkConnection();
             //
         }
         if (booleanBrMeasure) {
@@ -581,7 +565,7 @@ public class PrincipalDashboard extends AppCompatActivity {
             Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Saved", Snackbar.LENGTH_SHORT);
             snackbar.show();
             //ENVIAR INFO
-            intentEnvio.putExtra("brSaved",doubleBRSaved);
+
             //
         }
         if (booleanMoodMeasure) {
@@ -594,7 +578,7 @@ public class PrincipalDashboard extends AppCompatActivity {
             Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Saved", Snackbar.LENGTH_SHORT);
             snackbar.show();
             //ENVIAR INFO
-            intentEnvio.putExtra("moodSaved",doubleBRSaved);
+
             //
 
         }
@@ -608,7 +592,7 @@ public class PrincipalDashboard extends AppCompatActivity {
             Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Saved", Snackbar.LENGTH_SHORT);
             snackbar.show();
             //ENVIAR INFO
-            intentEnvio.putExtra("fatigueSaved",doubleBRSaved);
+
             //
         }
         //BUTTONS
@@ -631,7 +615,8 @@ public class PrincipalDashboard extends AppCompatActivity {
         buttonFatigue.setEnabled(true);
         //
     }
-    public void cancelMeasure(View view){
+
+    public void cancelMeasure(View view) {
         animationFbIcon.setVisibility(View.INVISIBLE);
         //BUTTONS
         buttonSave.setEnabled(false);
@@ -657,27 +642,28 @@ public class PrincipalDashboard extends AppCompatActivity {
         booleanBrMeasure = false;
         booleanBpMeasure = false;
         booleanEcgMeasure = false;
-        Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard),"Cancel",Snackbar.LENGTH_SHORT);
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Cancel", Snackbar.LENGTH_SHORT);
         snackbar.show();
     }
+
     //
-    public void fbShare(View view){
+    public void fbShare(View view) {
         //INFO
-        String share="No info";
+        String share = "No info";
         if (booleanBpMeasure) {
-            share = "BP Max: " +bpmax + "BP Min: " +bpmin;
+            share = "BP Max: " + bpmax + "BP Min: " + bpmin;
             booleanBpMeasure = false;
         }
         if (booleanBrMeasure) {
-            share = "Breath Rate: " +br;
+            share = "Breath Rate: " + br;
             booleanBrMeasure = false;
         }
         if (booleanMoodMeasure) {
-            share = "Mood: " +mood;
+            share = "Mood: " + mood;
             booleanMoodMeasure = false;
         }
         if (booleanFatigueMeasure) {
-            share = "Fatigue: " +fatigue;
+            share = "Fatigue: " + fatigue;
             booleanFatigueMeasure = false;
         }
         //
@@ -686,13 +672,13 @@ public class PrincipalDashboard extends AppCompatActivity {
                 .setQuote(share)
                 .setContentUrl(Uri.parse("http://meddata.sytes.net/"))
                 .build();
-        if(shareDialog.canShow(ShareLinkContent.class)){
+        if (shareDialog.canShow(ShareLinkContent.class)) {
             shareDialog.show(shareLinkContent);
         }
         shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
             @Override
             public void onSuccess(Sharer.Result result) {
-                Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard),"Share Successful",Snackbar.LENGTH_LONG);
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Share Successful", Snackbar.LENGTH_LONG);
                 snackbar.show();
                 booleanMoodMeasure = false;
                 booleanFatigueMeasure = false;
@@ -703,13 +689,13 @@ public class PrincipalDashboard extends AppCompatActivity {
 
             @Override
             public void onCancel() {
-                Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard),"Share cancel",Snackbar.LENGTH_LONG);
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Share cancel", Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
 
             @Override
             public void onError(FacebookException error) {
-                Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard),error.getMessage(),Snackbar.LENGTH_LONG);
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), error.getMessage(), Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
         });
@@ -729,6 +715,48 @@ public class PrincipalDashboard extends AppCompatActivity {
     }
 
 
+    public void ShowDialog() {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setTitle("DEVICE");
+        builder.setMessage("Please turn on Internet Connection");
+        builder.setPositiveButton("RETRY", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                checkConnection();
+            }
+        })
+                .setNegativeButton("SAVE ON DEVICE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //START SERVICE
+                        //SAVE ON SHARED PREFERENCES
+                    }
+                });
+        builder.create().show();
+    }
+    protected boolean internet() {
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = null;
+        networkInfo = cm.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void checkConnection(){
+        if(internet()){
+            //SEND DATA
+        }else {
+            ShowDialog();
+        }
+    }
 }
+
+
+
 
 

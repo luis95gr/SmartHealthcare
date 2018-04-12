@@ -1,8 +1,12 @@
 package com.example.luisguzmn.healthcare40;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -143,7 +147,8 @@ public class Statistics extends AppCompatActivity {
             @Override
             public void onTap(Series series, DataPointInterface dataPoint) {
                 //Toast.makeText(Statistics.this, "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_LONG).show();
-                startActivity(new Intent(Statistics.this, PopUp.class));
+                checkConnection();
+                //startActivity(new Intent(Statistics.this, PopUp.class));
             }
         });
 
@@ -302,6 +307,54 @@ public class Statistics extends AppCompatActivity {
             text_sunday.setBackgroundColor(Color.parseColor("#FFFFFF"));
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////
+    }
+
+    public void ShowDialog() {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setTitle("INTERNET CONNECTION");
+        builder.setMessage("Please turn on Internet Connection");
+        builder.setPositiveButton("RETRY", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                checkConnection();
+            }
+        })
+                .setNegativeButton("SAVE ON DEVICE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //START SERVICE
+                        //SAVE ON SHARED PREFERENCES
+                    }
+                });
+        builder.create().show();
+    }
+    protected boolean internet() {
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = null;
+        networkInfo = cm.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void checkConnection(){
+        if(internet()){
+            //SEND DATA
+        }else {
+            ShowDialog();
+        }
+    }
+
+    protected boolean type(){
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = null;
+        networkInfo = cm.getActiveNetworkInfo();
+        if(networkInfo.getType()==ConnectivityManager.TYPE_WIFI) return true;
+        else return false;
     }
 
 }
