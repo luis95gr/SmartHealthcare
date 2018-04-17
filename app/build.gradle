@@ -48,8 +48,4 @@ dependencies {
     implementation 'com.facebook.android:facebook-share:[4,5)'
     implementation 'net.gotev:uploadservice:2.1'
     implementation project(':JabraSdk-1_0_0-A1000099-N1_0_12_0-release')
-    implementation 'com.android.support:animated-vector-drawable:26.1.0'
-    implementation 'com.android.support:mediarouter-v7:26.1.0'
-
-
 }
