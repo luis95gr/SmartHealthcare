@@ -39,7 +39,7 @@ public class Bluetooth extends AppCompatActivity {
     private static final int REQUEST_DISCOVERABLE = 0;
     SharedPreferences infoBluetooth;
     SharedPreferences spLogin;
-    Button buttonHelo;
+    Button buttonHelo, btnJabra;
     //
 
     @Override
@@ -58,6 +58,8 @@ public class Bluetooth extends AppCompatActivity {
         list = (ListView) findViewById(R.id.viewlist);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         buttonHelo = (Button)findViewById(R.id.buttonHelo);
+        btnJabra = (Button)findViewById(R.id.btnJabra);
+
         //
 
         if (bluetoothAdapter == null) {
@@ -109,6 +111,13 @@ public class Bluetooth extends AppCompatActivity {
                 }
                 ArrayAdapter arrayAdapter = new ArrayAdapter(Bluetooth.this, android.R.layout.simple_list_item_1, devices);
                 list.setAdapter(arrayAdapter);
+            }
+        });
+        btnJabra.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Bluetooth.this, JabraConnection.class);
+                startActivity(intent);
             }
         });
         buttonHelo.setOnClickListener(new View.OnClickListener() {

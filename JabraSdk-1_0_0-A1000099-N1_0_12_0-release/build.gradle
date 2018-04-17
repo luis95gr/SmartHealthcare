@@ -1,0 +1,2 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('JabraSdk-1_0_0-A1000099-N1_0_12_0-release.aar'))

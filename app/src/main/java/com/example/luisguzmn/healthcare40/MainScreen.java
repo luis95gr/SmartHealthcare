@@ -39,6 +39,7 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -75,7 +76,23 @@ public class MainScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
         //
-        SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
+        SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
+        //
+        //PRUEBA
+        SharedPreferences spMeasuresSaved;
+        spMeasuresSaved = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor spMeasuresSavedEditor = spMeasuresSaved.edit();
+        int contador=1;
+        String[] stringsSet = new String[5];
+        stringsSet[contador] = "odds";
+        contador++;
+        stringsSet[contador] = "odsdf";
+        contador++;
+        stringsSet[contador] = "prfs";
+        for (int mor=1;mor<=contador; mor++){
+            spMeasuresSavedEditor.putString("stringSet" + (mor), stringsSet[mor]);
+        }
+        spMeasuresSavedEditor.apply();
         //
 
         //CAST
@@ -92,6 +109,15 @@ public class MainScreen extends AppCompatActivity {
         imageButtonSH = (ImageButton) findViewById(R.id.imageButtonSH);
         imageButtonSS = (ImageButton) findViewById(R.id.imageButtonSS);
         buttonStart = (Button)findViewById(R.id.buttonStart);
+
+        //set image profile
+        image_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainScreen.this,UploadImage.class);
+                startActivity(intent);
+            }
+        });
         //MENU
         //-----------------------------------------------
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbarMain);

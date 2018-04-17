@@ -1,1 +1,4 @@
 include ':app', ':android-connector-20180322'
+include ':app', ':JabraSdk-1_0_0-A1000099-N1_0_12_0-release'
+
+

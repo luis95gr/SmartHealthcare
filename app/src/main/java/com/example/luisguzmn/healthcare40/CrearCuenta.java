@@ -179,8 +179,8 @@ public class CrearCuenta extends AppCompatActivity {
             public void onResponse(String response) {
 
                 //Toast.makeText(getApplicationContext(), "DONE!" , Toast.LENGTH_SHORT).show();
-                //Intent intent = new Intent(CrearCuenta.this, MainActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(CrearCuenta.this, MainActivity.class);
+                startActivity(intent);
             }
         }, new Response.ErrorListener() {
             @Override

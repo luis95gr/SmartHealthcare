@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                         e.putInt("exInt",g.getEx_int());
                         e.putInt("weight",g.getWeight());
                         e.putInt("height",g.getHeight());
+                        e.putBoolean("connected",true);
                         e.apply();
                         //
                         Toast.makeText(getApplicationContext(), "Welcome " + g.getName(), Toast.LENGTH_SHORT).show();

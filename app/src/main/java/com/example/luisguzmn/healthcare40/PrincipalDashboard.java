@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.ArraySet;
 import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
@@ -61,11 +62,22 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
+
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 public class PrincipalDashboard extends AppCompatActivity {
     public final String BROADCAST_ACTION_BP_MEASUREMENT = "com.worldgn.connector.BP_MEASUREMENT";
@@ -117,23 +129,29 @@ public class PrincipalDashboard extends AppCompatActivity {
     //
     TextView textBP, textBR, textMood, textFatigue;
     //SAVED MEASURES
-    boolean booleanBpMeasure = false;
-    boolean booleanBrMeasure = false;
-    boolean booleanEcgMeasure = false;
-    boolean booleanMoodMeasure = false;
-    boolean booleanFatigueMeasure = false;
-    int contBp, contBr, contMood, contFatigue = 1;
-    double[] doubleBpmaxSaved, doubleBpminSaved, doubleBRSaved, doubleMoodSaved, doubleFatigueSaved;
+    boolean booleanBpMeasure,booleanBrMeasure,booleanEcgMeasure,booleanMoodMeasure,booleanFatigueMeasure = false;
+    int contBp, contBr, contMood, contFatigue = 0;
+    String[] stringBpmaxSaved,stringBpminSaved,stringBrSaved,stringMoodSaved,stringFatigueSaved;
     SharedPreferences spMeasuresSaved;
     Calendar calendar;
-    Date[] datesBpmaxSaved, datesBpminSaved, datesBrSaved, datesMoodSaved, datesFatigueSaved;
-    String hourBpmaxSaved, hourBpminSaved, hourBrSaved, hourMoodSaved, hourFatigueSaved;
+    String stringDateBpSaved, stringDateBrSaved, stringDateMoodSaved, stringDateFatigueSaved;
+    String stringHourBpSaved, stringHourBrSaved, stringHourMoodSaved, stringHourFatigueSaved;
+    String stringDate;
+    String stringHour;
     Date date;
-    SimpleDateFormat sdf;
+    SimpleDateFormat sdfHour;
+    SimpleDateFormat sdfDate;
+    //SEND DATA
+    SharedPreferences spLogin;
+    String stringEmail;
+    String stringPass;
+    final String ip = "meddata.sytes.net";
+    //
     //FACEBOOK
     CallbackManager callbackManager;
     ShareDialog shareDialog;
     //
+
 
 
     @Override
@@ -143,6 +161,9 @@ public class PrincipalDashboard extends AppCompatActivity {
         setContentView(R.layout.principal_dashboard);
         //SHARED PREFERENCES
         spMeasuresSaved = PreferenceManager.getDefaultSharedPreferences(this);
+        spLogin = getSharedPreferences("login", MODE_PRIVATE);
+        stringEmail = spLogin.getString("email",null);
+        stringPass = spLogin.getString("pass",null);
         //
         //INIT FACEBOOK
         callbackManager = CallbackManager.Factory.create();
@@ -179,20 +200,12 @@ public class PrincipalDashboard extends AppCompatActivity {
         //SAVING CAST
         buttonSave = (Button) findViewById(R.id.buttonSave);
         buttonCancel = (Button) findViewById(R.id.buttonCancel);
-        doubleBpminSaved = new double[50];
-        doubleBpmaxSaved = new double[50];
-        doubleBRSaved = new double[50];
-        doubleMoodSaved = new double[50];
-        doubleFatigueSaved = new double[50];
+        stringBpmaxSaved= new String[20];
+        stringBpminSaved = new String[20];
+        stringBrSaved = new String[20];
+        stringMoodSaved = new String[20];
+        stringFatigueSaved = new String[20];
 
-        calendar = Calendar.getInstance();
-        datesBpmaxSaved = new Date[50];
-        datesBpminSaved = new Date[50];
-        datesBrSaved = new Date[50];
-        datesMoodSaved = new Date[50];
-        datesFatigueSaved = new Date[50];
-        date = Calendar.getInstance().getTime();
-        sdf = new SimpleDateFormat("h:mm:a");
         //
         //HELO CAST
         heloMeasurementReceiver = new MeasurementReceiver();
@@ -211,6 +224,7 @@ public class PrincipalDashboard extends AppCompatActivity {
         Typeface font = Typeface.createFromAsset(getAssets(), "Jellee-Roman.ttf");
         textWelcome2.setTypeface(font);
         textWelcome.setTypeface(font);
+        textReloj.setTypeface(font);
         //
 
         //CUBES ANIMATION
@@ -258,7 +272,6 @@ public class PrincipalDashboard extends AppCompatActivity {
 
 
         //
-
     }
 
     //MEASURES TIMER
@@ -536,65 +549,18 @@ public class PrincipalDashboard extends AppCompatActivity {
             }
         }
     }
-
     ///BUTTONS SAVE/CANCEL
     public void saveMeasure(View view) {
         animationFbIcon.setVisibility(View.INVISIBLE);
-        SharedPreferences.Editor spMeasuresSavedEditor = spMeasuresSaved.edit();
-        if (booleanBpMeasure) {
-            doubleBpmaxSaved[contBp] = Double.parseDouble(bpmax);
-            doubleBpminSaved[contBp] = Double.parseDouble(bpmin);
-            booleanBpMeasure = false;
-            //DATE AND HOUR SAVE
-            datesBpminSaved[contBp] = calendar.getTime();
-            //
-            contBp++;
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Saved", Snackbar.LENGTH_SHORT);
-            snackbar.show();
-            //ENVIAR INFO
-            checkConnection();
-            //
-        }
-        if (booleanBrMeasure) {
-            doubleBRSaved[contBr] = Double.parseDouble(br);
-            booleanBrMeasure = false;
-            //DATE AND HOUR SAVE
-            datesBpmaxSaved[contBr] = calendar.getTime();
-            //
-            contBr++;
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Saved", Snackbar.LENGTH_SHORT);
-            snackbar.show();
-            //ENVIAR INFO
-
-            //
-        }
-        if (booleanMoodMeasure) {
-            doubleMoodSaved[contMood] = Double.parseDouble(mood);
-            booleanMoodMeasure = false;
-            //DATE AND HOUR SAVE
-            datesMoodSaved[contMood] = calendar.getTime();
-            //
-            contMood++;
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Saved", Snackbar.LENGTH_SHORT);
-            snackbar.show();
-            //ENVIAR INFO
-
-            //
-
-        }
-        if (booleanFatigueMeasure) {
-            doubleFatigueSaved[contFatigue] = Double.parseDouble(fatigue);
-            booleanFatigueMeasure = false;
-            //DATE AND HOUR SAVE
-            datesFatigueSaved[contFatigue] = calendar.getTime();
-            //
-            contFatigue++;
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Saved", Snackbar.LENGTH_SHORT);
-            snackbar.show();
-            //ENVIAR INFO
-
-            //
-        }
+        //RECOVER DATE AND HOUR
+        calendar = Calendar.getInstance();
+        date = Calendar.getInstance().getTime();
+        sdfDate = new SimpleDateFormat("yyyy.MM.dd");
+        sdfHour = new SimpleDateFormat("h:mm:a");
+        stringDate = sdfDate.format(date);
+        stringHour = sdfHour.format(date);
+        checkConnection();
+        //
         //BUTTONS
         buttonSave.setEnabled(false);
         buttonSave.setVisibility(View.INVISIBLE);
@@ -644,6 +610,182 @@ public class PrincipalDashboard extends AppCompatActivity {
         booleanEcgMeasure = false;
         Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Cancel", Snackbar.LENGTH_SHORT);
         snackbar.show();
+    }
+
+
+
+    public void ShowDialog() {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setTitle("NO INTERNET CONNECTION AVAILABLE");
+        builder.setMessage("Please turn on Internet Connection");
+        builder.setPositiveButton("RETRY", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                checkConnection();
+            }
+        })
+                .setNegativeButton("SAVE ON DEVICE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //SAVE ON SHARED PREFERENCES
+                        if (booleanBpMeasure) {
+                            contBp++;
+                            booleanBpMeasure = false;
+                            //DATE AND HOUR SAVE
+                            stringDateBpSaved = stringDate;
+                            stringHourBpSaved= stringHour;
+                            //
+                            //ENVIAR INFO A SHARED    // SEND ON PAUSE
+                            stringBpmaxSaved[contBp] = "BPmax," + bpmax + "," + stringDateBpSaved + "," + stringHourBpSaved;
+                            stringBpminSaved[contBp] = "BPmin," + bpmin + "," + stringDateBpSaved + "," + stringHourBpSaved;
+                            //
+                        }
+                        if (booleanBrMeasure){
+                            contBr++;
+                            booleanBrMeasure = false;
+                            //DATE AND HOUR SAVE
+                            stringDateBrSaved= stringDate;
+                            stringHourBrSaved= stringHour;
+                            //
+                            //ENVIAR INFO A SHARED
+                            stringBrSaved[contBr] = "BR," + br + "," + stringDateBrSaved + "," + stringHourBrSaved;
+                            //
+                        }
+                        if (booleanMoodMeasure){
+                            contMood++;
+                            booleanMoodMeasure = false;
+                            //DATE AND HOUR SAVE
+                            stringDateMoodSaved= stringDate;
+                            stringHourMoodSaved = stringHour;
+                            //
+                            //ENVIAR INFO A SHARED
+                            stringMoodSaved[contMood] = "Mood," + mood + "," + stringDateMoodSaved+","+stringHourMoodSaved;
+                            //
+                        }
+                        if (booleanFatigueMeasure){
+                            contFatigue++;
+                            booleanFatigueMeasure = false;
+                            //DATE AND HOUR SAVE
+                            stringDateFatigueSaved = stringDate;
+                            stringHourFatigueSaved= stringHour;
+                            //
+                            //ENVIAR INFO A SHARED
+                            stringFatigueSaved[contFatigue] = "Fatigue," + fatigue + "," + stringDateFatigueSaved+","+stringHourFatigueSaved;
+                            //
+                        }
+                        //START SERVICE
+                    }
+                });
+        builder.create().show();
+    }
+
+    public void checkConnection(){
+        if(internet()){
+            if (booleanBpMeasure) {
+                booleanBpMeasure = false;
+                VolleyPetition("http://"+ ip +"/dataVar/register.php?email=" + stringEmail + "&pass=" + stringPass +
+                        "&var=" + "BPmax" + "&value=" + bpmax + "&date=" + stringDate + "&time=" + stringHour);
+                VolleyPetition("http://"+ ip +"/dataVar/register.php?email=" + stringEmail + "&pass=" + stringPass +
+                        "&var=" + "BPmin" + "&value=" + bpmin + "&date=" + stringDate + "&time=" + stringHour);
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Saved", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+            if (booleanBrMeasure) {
+                booleanBrMeasure = false;
+                VolleyPetition("http://"+ ip +"/dataVar/register.php?email=" + stringEmail + "&pass=" + stringPass +
+                        "&var=" + "BR" + "&value=" + br + "&date=" + stringDate + "&time=" + stringHour);
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Saved", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+            if (booleanMoodMeasure) {
+                booleanMoodMeasure = false;
+                VolleyPetition("http://"+ ip +"/dataVar/register.php?email=" + stringEmail + "&pass=" + stringPass +
+                        "&var=" + "Mood" + "&value=" + mood + "&date=" + stringDate + "&time=" + stringHour);
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Saved", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+            if (booleanFatigueMeasure) {
+                booleanFatigueMeasure = false;
+                VolleyPetition("http://"+ ip +"/dataVar/register.php?email=" + stringEmail + "&pass=" + stringPass +
+                        "&var=" + "Fatigue" + "&value=" + fatigue + "&date=" + stringDate + "&time=" + stringHour);
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Saved", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+        } else {
+            ShowDialog();
+        }
+    }
+
+    protected boolean internet() {
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = null;
+        networkInfo = cm.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        final SharedPreferences.Editor spMeasuresSavedEditor = spMeasuresSaved.edit();
+        //SEND CONTS
+        spMeasuresSavedEditor.putInt("contBp",contBp);
+        spMeasuresSavedEditor.putInt("contBr",contBr);
+        spMeasuresSavedEditor.putInt("contMood",contMood);
+        spMeasuresSavedEditor.putInt("contFatigue",contFatigue);
+        //
+        //SEND DATA TO SHARED PREFERENCES
+        ///////BP//////
+        for (int i=1 ; i<=contBp ; i++) {
+            spMeasuresSavedEditor.putString("stringBpmaxSaved" + i, stringBpmaxSaved[i]);
+            spMeasuresSavedEditor.putString("stringBpminSaved" + i, stringBpminSaved[i]);
+        }
+        ///////BR//////
+        for (int j=1 ; j<=contBr; j++) {
+            spMeasuresSavedEditor.putString("stringBrSaved" + j, stringBrSaved[j]);
+        }
+        ///////MOOD//////
+        for (int k=1; k<=contMood; k++) {
+            spMeasuresSavedEditor.putString("stringMoodSaved" + k, stringMoodSaved[k]);
+        }
+        ///////FATIGUE//////
+        for (int m=1; m<=contFatigue; m++) {
+            spMeasuresSavedEditor.putString("stringFatigueSaved" + m, stringFatigueSaved[m]);
+        }
+
+        spMeasuresSavedEditor.apply();
+
+        if (contBp!=0 || contBr !=0 || contMood !=0 || contFatigue !=0) {
+            contBp = contBr = contMood = contFatigue = 0;
+            Intent intent = new Intent(PrincipalDashboard.this, serviceInternet.class);
+            startService(intent);
+        }
+        //unregisterReceiver(heloMeasurementReceiver);
+    }
+
+    private void VolleyPetition(String URL) {
+        Log.i("url", "" + URL);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Saved", Snackbar.LENGTH_SHORT);
+                snackbar.show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error!" , Toast.LENGTH_LONG).show();
+
+            }
+        });
+        queue.add(stringRequest);
     }
 
     //
@@ -702,58 +844,6 @@ public class PrincipalDashboard extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //unregisterReceiver(heloMeasurementReceiver);
-    }
-
-
-    public void ShowDialog() {
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-        builder.setCancelable(false);
-        builder.setTitle("DEVICE");
-        builder.setMessage("Please turn on Internet Connection");
-        builder.setPositiveButton("RETRY", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                checkConnection();
-            }
-        })
-                .setNegativeButton("SAVE ON DEVICE", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //START SERVICE
-                        //SAVE ON SHARED PREFERENCES
-                    }
-                });
-        builder.create().show();
-    }
-    protected boolean internet() {
-        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = null;
-        networkInfo = cm.getActiveNetworkInfo();
-
-        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public void checkConnection(){
-        if(internet()){
-            //SEND DATA
-        }else {
-            ShowDialog();
-        }
-    }
 }
 
 

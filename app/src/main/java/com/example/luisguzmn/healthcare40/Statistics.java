@@ -3,10 +3,12 @@ package com.example.luisguzmn.healthcare40;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -42,8 +44,12 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.Set;
 
 public class Statistics extends AppCompatActivity {
 
@@ -95,7 +101,7 @@ public class Statistics extends AppCompatActivity {
 
 
         Date todays = Calendar.getInstance().getTime();
-        SimpleDateFormat formatters = new SimpleDateFormat("h:mm a");
+        SimpleDateFormat formatters = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         String currentDateTimeStrin = formatters.format(todays);
 
         textView.setText(currentDateTimeStrin);
@@ -143,11 +149,26 @@ public class Statistics extends AppCompatActivity {
         graphViewBP.getLegendRenderer().setVisible(true);
         graphViewBP.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
         //
+
+        //PRUEBA
+        final SharedPreferences spMeasuresSaved = PreferenceManager.getDefaultSharedPreferences(this);
+
+        //
         series.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
             public void onTap(Series series, DataPointInterface dataPoint) {
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Statistics.this);
                 //Toast.makeText(Statistics.this, "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_LONG).show();
-                checkConnection();
+
+                Intent intent = new Intent(Statistics.this, PopUp.class);
+                startActivity(intent);
+
+
+
+                /*for (int i=1; i<=3;i++){
+                    stringSet[i] = spMeasuresSaved.getString("stringSet"+i,"0");
+                    Toast.makeText(Statistics.this,  stringSet[i], Toast.LENGTH_SHORT).show();
+                }*/
                 //startActivity(new Intent(Statistics.this, PopUp.class));
             }
         });
@@ -329,7 +350,7 @@ public class Statistics extends AppCompatActivity {
                 });
         builder.create().show();
     }
-    protected boolean internet() {
+    protected boolean internetCheck() {
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = null;
         networkInfo = cm.getActiveNetworkInfo();
@@ -342,14 +363,14 @@ public class Statistics extends AppCompatActivity {
     }
 
     public void checkConnection(){
-        if(internet()){
+        if(internetCheck()){
             //SEND DATA
         }else {
             ShowDialog();
         }
     }
 
-    protected boolean type(){
+    protected boolean typeConnection(){
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = null;
         networkInfo = cm.getActiveNetworkInfo();

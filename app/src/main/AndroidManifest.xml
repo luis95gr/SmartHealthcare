@@ -18,22 +18,16 @@
     <application
         android:name=".GlobalVars"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher2"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher2"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".CrearCuenta" />
         <activity android:name=".MainScreen" />
         <activity android:name=".Profile" />
@@ -41,13 +35,7 @@
         <activity android:name=".Dashboard_helo" />
         <activity android:name=".crearCuentaHelo" />
         <activity android:name=".Helo.PinActivity" />
-        <activity android:name=".PrincipalDashboard">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".PrincipalDashboard" />
         <activity android:name=".Helo.HeloConnection" />
 
         <provider
@@ -56,9 +44,26 @@
             android:exported="true" />
 
         <activity android:name=".Statistics" />
-        <activity android:name=".PopUp"
-            android:theme="@style/AppTheme.CustomTheme"
-        />
+        <activity
+            android:name=".PopUp"
+            android:theme="@style/AppTheme.CustomTheme" />
+
+        <service android:name=".serviceInternet" />
+
+        <activity
+            android:name=".Splash"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".UploadImage" />
+        <activity android:name=".JabraConnection"></activity>
+        <meta-data
+            android:name="JabraAppId"
+            android:value="TWu93ao7EPvFRWriN0NPDx+YugSAKvCkyUdzpPx7gEM=" />
     </application>
 
 </manifest>
