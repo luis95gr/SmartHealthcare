@@ -106,7 +106,7 @@ public class PrincipalDashboard extends AppCompatActivity {
     //VARIABLES
     TextView text_monday, text_tuesday, text_wednesday, text_thursday, text_friday, text_saturday, text_sunday;
     //
-    LottieAnimationView animationViewWelcome, animationViewEcg, animationFbIcon;
+    LottieAnimationView animationViewWelcome, animationViewEcg, animationFbIcon,animationInfo;
     ProgressBar progressBar;
     TextView textWelcome, textWelcome2;
     TextView textReloj;
@@ -151,6 +151,9 @@ public class PrincipalDashboard extends AppCompatActivity {
     CallbackManager callbackManager;
     ShareDialog shareDialog;
     //
+    //POPUP
+    SharedPreferences spPopup;
+    //
 
 
 
@@ -181,6 +184,7 @@ public class PrincipalDashboard extends AppCompatActivity {
         animationViewEcg = (LottieAnimationView) findViewById(R.id.animation_ecg);
         animationViewWelcome = (LottieAnimationView) findViewById(R.id.animation_welcome);
         animationFbIcon = (LottieAnimationView) findViewById(R.id.animation_fb);
+        animationInfo = (LottieAnimationView) findViewById(R.id.animation_info);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         textWelcome = (TextView) findViewById(R.id.textWelcome);
         textWelcome2 = (TextView) findViewById(R.id.textWelcome2);
@@ -219,7 +223,9 @@ public class PrincipalDashboard extends AppCompatActivity {
         intentFilter.addAction(BROADCAST_ACTION_HR_MEASUREMENT);
         intentFilter.addAction(BROADCAST_ACTION_SLEEP);
         intentFilter.addAction(BROADCAST_ACTION_MEASUREMENT_WRITE_FAILURE);
-
+        //POPUP CAST
+        spPopup =PreferenceManager.getDefaultSharedPreferences(this);
+        //
         //FONTS
         Typeface font = Typeface.createFromAsset(getAssets(), "Jellee-Roman.ttf");
         textWelcome2.setTypeface(font);
@@ -269,7 +275,14 @@ public class PrincipalDashboard extends AppCompatActivity {
                 //
             }
         });
-
+        //ANIMATION CLICK INFO
+        animationInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PrincipalDashboard.this,PopUp.class);
+                startActivity(intent);
+            }
+        });
 
         //
     }
@@ -437,7 +450,9 @@ public class PrincipalDashboard extends AppCompatActivity {
         @Override
         public void onReceive(Context context, final Intent intent) {
             if (intent != null && intent.getAction() != null) {
-                /////////////////BLOOD PRESSURE/////////////////////////////////////////
+                //
+                SharedPreferences.Editor spPopupEditor = spPopup.edit();
+                //
                 if (intent.getAction().equals(BROADCAST_ACTION_BP_MEASUREMENT)) {
                     bpmax = intent.getStringExtra(INTENT_KEY_BP_MEASUREMENT_MAX);
                     bpmin = intent.getStringExtra(INTENT_KEY_BP_MEASUREMENT_MIN);
@@ -445,6 +460,12 @@ public class PrincipalDashboard extends AppCompatActivity {
                     textBP.setVisibility(View.VISIBLE);
                     textBP.setText("BP max: " + bpmax + "\n BP min: " + bpmin);
                     booleanBpMeasure = true;
+                    //
+                    animationInfo.setVisibility(View.VISIBLE);
+                    animationInfo.playAnimation();
+                    spPopupEditor.putString("BPmax",bpmax);
+                    spPopupEditor.putString("BPmin",bpmin);
+                    //
                     //BUTTONS
                     buttonSave.setVisibility(View.VISIBLE);
                     buttonSave.setEnabled(true);
@@ -464,6 +485,11 @@ public class PrincipalDashboard extends AppCompatActivity {
                     textReloj.setVisibility(View.INVISIBLE);
                     textBR.setVisibility(View.VISIBLE);
                     booleanBrMeasure = true;
+                    //
+                    animationInfo.setVisibility(View.VISIBLE);
+                    animationInfo.playAnimation();
+                    spPopupEditor.putString("BR",br);
+                    //
                     //BUTTONS
                     buttonSave.setVisibility(View.VISIBLE);
                     buttonSave.setEnabled(true);
@@ -478,6 +504,11 @@ public class PrincipalDashboard extends AppCompatActivity {
                     fatigue = intent.getStringExtra(INTENT_KEY_FATIGUE_MEASUREMENT);
                     if (!fatigue.isEmpty()) {
                         textFatigue.setText("Fatigue: " + fatigue);
+                        //
+                        animationInfo.setVisibility(View.VISIBLE);
+                        animationInfo.playAnimation();
+                        spPopupEditor.putString("Fatigue",fatigue);
+                        //
                         textReloj.setVisibility(View.INVISIBLE);
                         if (booleanFatigue) {
                             textFatigue.setVisibility(View.VISIBLE);
@@ -499,6 +530,11 @@ public class PrincipalDashboard extends AppCompatActivity {
                     mood = intent.getStringExtra(INTENT_KEY_MOOD_MEASUREMENT);
                     if (!mood.isEmpty()) {
                         textMood.setText("Mood: " + mood);
+                        //
+                        animationInfo.setVisibility(View.VISIBLE);
+                        animationInfo.playAnimation();
+                        spPopupEditor.putString("Mood",mood);
+                        //
                         textReloj.setVisibility(View.INVISIBLE);
                         if (booleanMood) {
                             textMood.setVisibility(View.VISIBLE);
@@ -544,16 +580,16 @@ public class PrincipalDashboard extends AppCompatActivity {
                     String message = intent.getStringExtra(INTENT_MEASUREMENT_WRITE_FAILURE);
                     Toast.makeText(PrincipalDashboard.this, message, Toast.LENGTH_LONG).show();
                 }
-
+                spPopupEditor.apply();
 
             }
         }
     }
     ///BUTTONS SAVE/CANCEL
     public void saveMeasure(View view) {
+        animationInfo.setVisibility(View.INVISIBLE);
         animationFbIcon.setVisibility(View.INVISIBLE);
         //RECOVER DATE AND HOUR
-        calendar = Calendar.getInstance();
         date = Calendar.getInstance().getTime();
         sdfDate = new SimpleDateFormat("yyyy.MM.dd");
         sdfHour = new SimpleDateFormat("h:mm:a");
@@ -579,10 +615,15 @@ public class PrincipalDashboard extends AppCompatActivity {
         buttonBR.setEnabled(true);
         buttonMood.setEnabled(true);
         buttonFatigue.setEnabled(true);
+        //POPUP
+        SharedPreferences.Editor spPopupEditor = spPopup.edit();
+        spPopupEditor.clear();
+        spPopupEditor.apply();
         //
     }
 
     public void cancelMeasure(View view) {
+        animationInfo.setVisibility(View.INVISIBLE);
         animationFbIcon.setVisibility(View.INVISIBLE);
         //BUTTONS
         buttonSave.setEnabled(false);
@@ -608,8 +649,13 @@ public class PrincipalDashboard extends AppCompatActivity {
         booleanBrMeasure = false;
         booleanBpMeasure = false;
         booleanEcgMeasure = false;
-        Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Cancel", Snackbar.LENGTH_SHORT);
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Cancelled", Snackbar.LENGTH_SHORT);
         snackbar.show();
+        //POPUP
+        SharedPreferences.Editor spPopupEditor = spPopup.edit();
+        spPopupEditor.clear();
+        spPopupEditor.apply();
+        //
     }
 
 

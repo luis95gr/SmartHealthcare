@@ -9,7 +9,6 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-        manifestPlaceholders = [JABRA_APP_ID: "TWu93ao7EPvFRWriN0NPDx+YugSAKvCkyUdzpPx7gEM="]
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -47,5 +46,4 @@ dependencies {
     implementation 'gun0912.ted:tedpermission:2.0.3'
     implementation 'com.facebook.android:facebook-share:[4,5)'
     implementation 'net.gotev:uploadservice:2.1'
-    implementation project(':JabraSdk-1_0_0-A1000099-N1_0_12_0-release')
 }

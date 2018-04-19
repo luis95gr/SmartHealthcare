@@ -114,8 +114,6 @@ public class MainScreen extends AppCompatActivity {
         image_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainScreen.this,UploadImage.class);
-                startActivity(intent);
             }
         });
         //MENU

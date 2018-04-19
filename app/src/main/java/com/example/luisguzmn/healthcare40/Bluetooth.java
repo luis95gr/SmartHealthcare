@@ -116,8 +116,6 @@ public class Bluetooth extends AppCompatActivity {
         btnJabra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Bluetooth.this, JabraConnection.class);
-                startActivity(intent);
             }
         });
         buttonHelo.setOnClickListener(new View.OnClickListener() {

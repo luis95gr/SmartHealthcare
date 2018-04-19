@@ -83,7 +83,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linearMeasures"
         android:id="@+id/horizontalScrollButtons"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="25dp"
         android:scrollIndicators="none"
         >
 
@@ -179,6 +179,20 @@
         android:rotation="-90"
         style="?android:attr/progressBarStyleHorizontal"
         />
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:lottie_fileName="question.json"
+        android:visibility="invisible"
+        app:lottie_loop="true"
+        app:lottie_scale="0.12"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/textFatigue"
+        android:layout_marginTop="5dp"
+        />
+
+
 
     <TextView
         android:layout_width="wrap_content"

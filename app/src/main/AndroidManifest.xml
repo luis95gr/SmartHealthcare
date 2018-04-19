@@ -59,11 +59,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UploadImage" />
-        <activity android:name=".JabraConnection"></activity>
-        <meta-data
-            android:name="JabraAppId"
-            android:value="TWu93ao7EPvFRWriN0NPDx+YugSAKvCkyUdzpPx7gEM=" />
+
     </application>
 
 </manifest>
