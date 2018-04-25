@@ -17,7 +17,7 @@
         android:id="@+id/textTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Helo Connection"
+        android:text="Conexión Helo"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@id/toolbar"
@@ -41,7 +41,7 @@
             android:layout_weight="1"
             android:textAlignment="viewEnd"
             android:textColor="@color/black"
-            android:text="Connection status: " />
+            android:text="Estado de conexión: " />
 
         <TextView
             android:id="@+id/conn_status"
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/blue"
-            android:text="Disconnected" />
+            android:text="Desconectado" />
     </LinearLayout>
 
     <TextView
@@ -80,7 +80,7 @@
             android:layout_weight="1"
             android:textColor="@color/black"
             android:textAlignment="viewEnd"
-            android:text="Bind status: " />
+            android:text="Estado de enlace: " />
 
         <TextView
             android:id="@+id/bond_status"
@@ -159,7 +159,7 @@
             android:layout_weight="50"
             android:textColor="@color/black"
             android:textAlignment="viewEnd"
-            android:text="Last sync time: " />
+            android:text="Última conexión: " />
 
         <TextView
             android:id="@+id/lastsynctime"
@@ -167,7 +167,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="50"
             android:textColor="@color/blue"
-            android:text="Not Available" />
+            android:text="No disponible" />
     </LinearLayout>
 
     <TextView
@@ -197,7 +197,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="50"
-            android:text="App Version: "
+            android:text="Versión de App: "
             android:textAlignment="viewEnd"
             android:textColor="@color/black"/>
 
@@ -207,7 +207,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="50"
             android:textColor="@color/blue"
-            android:text="Not Available" />
+            android:text="No disponible" />
     </LinearLayout>
 
     <TextView
@@ -238,7 +238,7 @@
             android:layout_weight="50"
             android:textColor="@color/black"
             android:textAlignment="viewEnd"
-            android:text="Battery: " />
+            android:text="Batería: " />
 
         <TextView
             android:id="@+id/battery"
@@ -276,7 +276,7 @@
             android:layout_weight="60"
             android:textColor="@color/black"
             android:textAlignment="viewEnd"
-            android:text="Helo Device Firmware Version: " />
+            android:text="Versión del firmware: " />
 
         <TextView
             android:id="@+id/firmware_version"
@@ -317,7 +317,7 @@
             android:layout_weight="34"
             android:onClick="scan"
             android:backgroundTint="#b8ddcd"
-            android:text="Scan"
+            android:text="ESCANEAR"
             />
 
         <Button
@@ -327,7 +327,7 @@
             android:layout_weight="32"
             android:onClick="unpair"
             android:backgroundTint="#b8ddcd"
-            android:text="Unpair"
+            android:text="DESCONECTAR"
             />
     </LinearLayout>
 
@@ -336,7 +336,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:onClick="cleardata"
-        android:text="CONTINUE"
+        android:text="CONTINUAR"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -366,7 +366,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/blue"
         android:textAlignment="center"
-        android:text="Scanning..."
+        android:text="Escaneando..."
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toTopOf="@id/progressBar"

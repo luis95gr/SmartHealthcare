@@ -64,7 +64,7 @@ public class Bluetooth extends AppCompatActivity {
 
         if (bluetoothAdapter == null) {
 
-            Toast.makeText(this, "Bluetooth not supported", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Bluetooth no disponible", Toast.LENGTH_LONG).show();
         }
         //BLUETOOTH START
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
@@ -74,7 +74,7 @@ public class Bluetooth extends AppCompatActivity {
         for (BluetoothDevice bt : pairedDevices) {
             BluetoothClass bluetoothClass = bt.getBluetoothClass();
             int tipoDeDispositivo = bluetoothClass.getDeviceClass();
-            devices.add("Name: " + bt.getName() + "\n Class: " + tipoDeDispositivo + "\n MAC ADRESS: " + bt.getAddress());
+            devices.add("Nombre: " + bt.getName() + "\n Class: " + tipoDeDispositivo + "\n DIRECCIÓN MAC: " + bt.getAddress());
         }
         ArrayAdapter arrayAdapter = new ArrayAdapter(Bluetooth.this, android.R.layout.simple_list_item_1, devices);
         list.setAdapter(arrayAdapter);
@@ -105,7 +105,7 @@ public class Bluetooth extends AppCompatActivity {
                 for (BluetoothDevice bt : pairedDevices) {
                     bluetoothClass = bt.getBluetoothClass();
                     int tipoDeDispositivo = bluetoothClass.getDeviceClass();
-                    devices.add("Name: " + bt.getName() + "\n Class: " + tipoDeDispositivo + "\n MAC ADRESS: " + bt.getAddress());
+                    devices.add("Nombre: " + bt.getName() + "\n Clase: " + tipoDeDispositivo + "\n Dirección MAC: " + bt.getAddress());
 
 
                 }
@@ -156,8 +156,8 @@ public class Bluetooth extends AppCompatActivity {
     public void ShowDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
-        builder.setTitle("DEVICE");
-        builder.setMessage("You selected: " + infoBluetooth.getString("name", "No name found") + "\n Do you want to continue?");
+        builder.setTitle("DISPOSITIVO");
+        builder.setMessage("Seleccionaste: " + infoBluetooth.getString("name", "No name found") + "\n ¿Quiéres continuar?");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -165,7 +165,7 @@ public class Bluetooth extends AppCompatActivity {
                     Intent intent = new Intent(Bluetooth.this, PrincipalDashboard.class);
                     startActivity(intent);
                 }else{
-                    Toast.makeText(Bluetooth.this, "Not HELOLX", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Bluetooth.this, "No HELOLX", Toast.LENGTH_LONG).show();
                 }
             }
         })

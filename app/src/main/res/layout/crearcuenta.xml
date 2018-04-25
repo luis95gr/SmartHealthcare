@@ -28,7 +28,7 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Create Account"
+                android:text="Crear Cuenta"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@id/toolbar4"
@@ -43,7 +43,7 @@
                 app:layout_constraintTop_toBottomOf="@id/toolbar4"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="5dp"
-                android:text="Name"
+                android:text="Nombre"
                 android:textColor="#07474F"
                 android:textSize="16dp"
                 android:textStyle="bold"/>
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:ems="8"
                 android:inputType="textPersonName"
-                android:hint="First Name"
+                android:hint="Primer Nombre"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/etLname"
                 app:layout_constraintTop_toBottomOf="@id/txtNameM"
@@ -67,7 +67,7 @@
 
                 android:ems="8"
                 android:inputType="textPersonName"
-                android:hint="Last Name"
+                android:hint="Apellido"
                 app:layout_constraintHorizontal_bias="1"
                 app:layout_constraintLeft_toRightOf="@id/etFname"
                 app:layout_constraintRight_toRightOf="parent"
@@ -80,7 +80,7 @@
                 app:layout_constraintTop_toBottomOf="@id/etFname"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="5dp"
-                android:text="Email"
+                android:text="Correo electrónico"
                 android:textSize="16dp"
                 android:textStyle="bold"
                 android:textColor="#07474F"
@@ -94,7 +94,7 @@
                 android:layout_marginRight="12dp"
                 android:ems="10"
                 android:inputType="textEmailAddress"
-                android:hint="Email"
+                android:hint="Correo electrónico"
                 app:layout_constraintTop_toBottomOf="@id/txtEmailM"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"/>
@@ -105,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
-                android:hint="Repeat Email"
+                android:hint="Repite tu correo"
                 app:layout_constraintTop_toBottomOf="@id/etEmail"
                 android:ems="10"
                 android:inputType="textEmailAddress" />
@@ -117,7 +117,7 @@
                 app:layout_constraintTop_toBottomOf="@id/etRemail"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="5dp"
-                android:text="Password"
+                android:text="Contraseña"
                 android:textSize="16dp"
                 android:textColor="#07474F"
                 android:textStyle="bold"/>
@@ -133,7 +133,7 @@
                 app:layout_constraintTop_toBottomOf="@id/txtPass"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                android:hint="Password"
+                android:hint="Contraseña"
                 />
 
             <EditText
@@ -142,7 +142,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
-                android:hint="Repeat Password"
+                android:hint="Repite tu contraseña"
                 app:layout_constraintTop_toBottomOf="@id/etPass"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -156,7 +156,7 @@
                 app:layout_constraintTop_toBottomOf="@id/etRpass"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="5dp"
-                android:text="Phone"
+                android:text="Celular"
                 android:textSize="16dp"
                 android:textColor="#07474F"
                 android:textStyle="bold"/>
@@ -172,7 +172,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txtPhone"
-                android:hint="Phone"
+                android:hint="Número de celular"
 
                 />
 
@@ -181,7 +181,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="10"
-                android:text="Gender"
+                android:text="Género"
                 android:textSize="16dp"
                 android:textStyle="bold"
                 tools:layout_editor_absoluteY="4dp"
@@ -209,7 +209,7 @@
                     android:layout_width="20dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="10"
-                    android:text="Female"
+                    android:text="Mujer"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/rbMale"
                     app:layout_constraintTop_toBottomOf="@id/txtGender"
@@ -222,7 +222,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="10"
                     android:layout_marginRight="10dp"
-                    android:text="Male"
+                    android:text="Hombre"
                     app:layout_constraintLeft_toRightOf="@id/rbFemale"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txtGender" />
@@ -235,7 +235,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="10"
-                android:text="Weight"
+                android:text="Peso"
                 android:textColor="#07474F"
                 android:textSize="16dp"
                 android:textStyle="bold"
@@ -248,7 +248,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="phone"
-                android:hint="Weight in Kg"
+                android:hint="Peso en Kg"
                 app:layout_constraintTop_toBottomOf="@id/txtWeight"/>
 
             <TextView
@@ -257,7 +257,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="10"
-                android:text="Height"
+                android:text="Altura"
                 android:textColor="#07474F"
                 android:textSize="16dp"
                 android:textStyle="bold"
@@ -270,7 +270,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="phone"
-                android:hint="Heigh in cm"
+                android:hint="Altura en cm"
                 app:layout_constraintTop_toBottomOf="@id/txtHeight"/>
 
             <TextView
@@ -279,7 +279,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="10"
-                android:text="Birthday"
+                android:text="Fecha de nacimiento"
                 android:textColor="#07474F"
                 android:textSize="16dp"
                 android:textStyle="bold"
@@ -321,7 +321,7 @@
                 android:id="@+id/txtCountry"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Country"
+                android:text="País"
                 android:textSize="16dp"
                 android:textColor="#07474F"
                 android:textStyle="bold"
@@ -349,7 +349,7 @@
                 app:layout_constraintTop_toBottomOf="@id/spCountry"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="5dp"
-                android:text="Devices"
+                android:text="Dispositivos"
                 android:textColor="#07474F"
                 android:textSize="16dp"
                 android:textStyle="bold"/>
@@ -365,14 +365,14 @@
                 android:id="@+id/cbHead"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Headphones Y"
+                android:text="Audífonos Y"
                 app:layout_constraintTop_toBottomOf="@id/cbSmart"/>
 
             <CheckBox
                 android:id="@+id/cbBlood"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Blood Pressure Monitor"
+                android:text="Monitor de presión sanguínea"
                 app:layout_constraintTop_toBottomOf="@id/cbHead"/>
 
             <TextView
@@ -380,7 +380,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:text="Exercise"
+                android:text="Ejercicio"
                 android:textColor="#07474F"
                 android:textSize="16dp"
                 android:textStyle="bold"
@@ -391,7 +391,7 @@
                 android:id="@+id/txtDays"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="How many days a week do you exercise?"
+                android:text="¿Cuántos días a la semana te ejercitas?"
                 app:layout_constraintTop_toBottomOf="@id/txtExe"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="7dp"/>
@@ -410,7 +410,7 @@
                 android:id="@+id/txtHours"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="How many hours a day do you exercise?"
+                android:text="¿Cuántas horas al día te ejercitas?"
                 app:layout_constraintTop_toBottomOf="@id/spDaysEx"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="7dp"/>
@@ -429,7 +429,7 @@
                 android:id="@+id/txtExInt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Select your exercise intensity according to the table below"
+                android:text="Selecciona tu intensidad de ejercicio de acuerdo a la tabla a continuación"
                 app:layout_constraintTop_toBottomOf="@id/spHours"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="7dp"/>
@@ -459,7 +459,7 @@
                 android:id="@+id/txtTerms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Accept Terms and Conditions"
+                android:text="Aceptar términos y condiciones"
                 android:layout_marginTop="108dp"
                 android:layout_marginRight="60dp"
                 app:layout_constraintLeft_toRightOf="@id/cbTerms"
@@ -475,7 +475,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="80dp"
                 android:clickable="true"
-                android:text="Next"
+                android:text="Siguiente"
                 android:textSize="20dp"
                 android:textStyle="bold"
                 app:layout_constraintRight_toRightOf="parent"

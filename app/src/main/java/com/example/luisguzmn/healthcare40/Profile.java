@@ -115,7 +115,7 @@ public class Profile extends AppCompatActivity {
         //MENU
         //-----------------------------------------------
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbarMain);
-        toolbar.setTitle("Profile");
+        toolbar.setTitle("Perfil");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         GlobalVars g = (GlobalVars) getApplication();
@@ -198,7 +198,7 @@ public class Profile extends AppCompatActivity {
         text_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Profile.this, "Hola", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(Profile.this, "Hola", Toast.LENGTH_SHORT).show();
             }
         });
 

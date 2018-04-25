@@ -55,7 +55,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Heart Rate:"
+            android:text="Ritmo cardiaco:"
             android:gravity="left"
             android:textSize="18sp"
             android:textColor="@color/blue"
@@ -65,8 +65,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Steps:"
-            android:gravity="left"
+            android:text="Pasos: Esperando..."
+            android:gravity="center"
             android:textSize="18sp"
             android:textColor="@color/blue"
             />
@@ -134,12 +134,12 @@
 
             <Button
                 android:id="@+id/buttonMood"
-                android:layout_width="85dp"
+                android:layout_width="91dp"
                 android:layout_height="85dp"
                 android:layout_margin="10dp"
                 style="?android:attr/buttonBarButtonStyle"
                 android:background="@drawable/border_profile"
-                android:text="Mood"
+                android:text="Humor"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:onClick="measureMF"/>
@@ -152,7 +152,7 @@
                 style="?android:attr/buttonBarButtonStyle"
                 android:background="@drawable/border_profile"
                 android:clickable="true"
-                android:text="Fatigue"
+                android:text="Fatiga"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:onClick="measureMFatigue"/>
@@ -241,7 +241,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:text="WELCOME"
+        android:text="BIENVENIDO"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="50sp"
@@ -255,7 +255,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Waiting for Heart Rate..."
+        android:text="Esperando Ritmo Cardiaco..."
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="20sp"
@@ -299,7 +299,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:textColor="@color/blue"
-        android:text="Mood"
+        android:text="Humor"
         android:visibility="invisible"
         android:layout_marginTop="80dp"
         app:layout_constraintRight_toRightOf="parent"
@@ -312,7 +312,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:textColor="@color/blue"
-        android:text="Fatigue"
+        android:text="Fatiga"
         android:visibility="invisible"
         android:layout_marginTop="80dp"
         app:layout_constraintRight_toRightOf="parent"
@@ -326,7 +326,7 @@
         android:id="@+id/buttonSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="save"
+        android:text="guardar"
         android:background="@drawable/border_profile"
         android:visibility="invisible"
         android:enabled="false"
@@ -344,7 +344,7 @@
         android:background="@drawable/border_profile"
         android:visibility="invisible"
         android:enabled="false"
-        android:text="cancel"
+        android:text="cancelar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginBottom="10dp"
@@ -354,33 +354,22 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_fb"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        app:lottie_fileName="fbicon.json"
-        app:lottie_scale="0.05"
+        app:lottie_fileName="shareBlue.json"
+        android:background="@drawable/circle"
+        app:lottie_scale="0.15"
+        app:lottie_autoPlay="false"
+        android:visibility="invisible"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/progressBar"
-        android:layout_marginBottom="12sp"
-        app:lottie_loop="false"
+        android:layout_marginBottom="20sp"
+        app:lottie_loop="true"
         android:onClick="fbShare"
-        android:visibility="invisible"
+
         />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -403,7 +392,7 @@
             android:layout_height="35dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="MON"
+            android:text="LUN"
             android:textAlignment="center"
             android:textSize="15dp"
             android:textColor="#000000"
@@ -417,7 +406,7 @@
             android:layout_height="35dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="TUE"
+            android:text="MAR"
             android:textAlignment="center"
             android:textSize="15dp"
             android:textColor="#000000"
@@ -430,7 +419,7 @@
             android:layout_height="35dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="WED"
+            android:text="MIE"
             android:textAlignment="center"
             android:textSize="15dp"
             android:textColor="#000000"
@@ -443,7 +432,7 @@
             android:layout_height="35dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="THU"
+            android:text="JUE"
             android:textAlignment="center"
             android:textSize="15dp"
             android:textColor="#000000"
@@ -456,7 +445,7 @@
             android:layout_height="35dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="FRI"
+            android:text="VIE"
             android:textAlignment="center"
             android:textSize="15dp"
             android:textColor="#000000"
@@ -469,7 +458,7 @@
             android:layout_height="35dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="SAT"
+            android:text="SAB"
             android:textAlignment="center"
             android:textSize="15dp"
             android:textColor="#000000"
@@ -482,7 +471,7 @@
             android:layout_height="35dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="SUN"
+            android:text="DOM"
             android:textAlignment="center"
             android:textSize="15dp"
             android:textColor="#000000"

@@ -9,12 +9,12 @@
     <string name="title_activity_create_account">CreateAccount</string>
     <string name="title_activity_create">CreateAc</string>
 
-    <string name="name"><![CDATA[<b>Name</b><br><br>]]></string>
-    <string name="country"><![CDATA[<b>Country</b><br><br>]]></string>
-    <string name="gender"><![CDATA[<b>Gender</b><br><br>]]></string>
-    <string name="birthday"><![CDATA[<b>Birthday</b><br><br>]]></string>
-    <string name="height"><![CDATA[<b>Height</b><br><br>]]></string>
-    <string name="weight"><![CDATA[<b>Weight</b><br><br>]]></string>
+    <string name="name"><![CDATA[<b>Nombre</b><br><br>]]></string>
+    <string name="country"><![CDATA[<b>País</b><br><br>]]></string>
+    <string name="gender"><![CDATA[<b>Género</b><br><br>]]></string>
+    <string name="birthday"><![CDATA[<b>Nacimiento</b><br><br>]]></string>
+    <string name="height"><![CDATA[<b>Altura</b><br><br>]]></string>
+    <string name="weight"><![CDATA[<b>Peso</b><br><br>]]></string>
 
     <string name="facebook_app_id">593253451027552</string>
     <string name="facebook_login_protocol_scheme">fb593253451027552></string>
@@ -161,13 +161,13 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
 
-    <string name="drawer_item_main">Main</string>
-    <string name="drawer_item_profile">Profile</string>
-    <string name="drawer_item_records">Records</string>
-    <string name="drawer_item_statistics">Statistics</string>
-    <string name="drawer_item_healt">Healthcare Information</string>
-    <string name="drawer_item_settinds">Settings</string>
-    <string name="drawer_item_about">About us</string>
+    <string name="drawer_item_main">Principal</string>
+    <string name="drawer_item_profile">Perfil</string>
+    <string name="drawer_item_records">Registros</string>
+    <string name="drawer_item_statistics">Estadísticas</string>
+    <string name="drawer_item_healt">Información de salud</string>
+    <string name="drawer_item_settinds">Configuración</string>
+    <string name="drawer_item_about">Acerca de Nosotros</string>
 
     <string name="select_your_country">select your country</string>
     <string name="regist_country">Country</string>

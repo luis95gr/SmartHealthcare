@@ -1,5 +1,7 @@
 package com.example.luisguzmn.healthcare40;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,7 +10,9 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -39,6 +43,7 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -159,7 +164,7 @@ public class Statistics extends AppCompatActivity {
             public void onTap(Series series, DataPointInterface dataPoint) {
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Statistics.this);
                 //Toast.makeText(Statistics.this, "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_LONG).show();
-
+                //
                 Intent intent = new Intent(Statistics.this, PopUp.class);
                 startActivity(intent);
 
@@ -227,7 +232,7 @@ public class Statistics extends AppCompatActivity {
         //-----------------------------------------------
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbarMain);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Statistics");
+        toolbar.setTitle("Estadísticas");
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         GlobalVars g = (GlobalVars) getApplication();
         AccountHeader headerResult = new AccountHeaderBuilder()
@@ -266,6 +271,11 @@ public class Statistics extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         // do something with the clicked item :D
+                        if (position == 1) {
+                            Intent intent = new Intent(Statistics.this, MainScreen.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
                         if (position == 2) {
                             Intent intent = new Intent(Statistics.this, Profile.class);
                             startActivity(intent);

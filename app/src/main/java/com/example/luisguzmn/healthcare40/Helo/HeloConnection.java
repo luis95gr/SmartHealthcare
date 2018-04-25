@@ -116,10 +116,10 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(conn_status.getText().equals("Connected") || bond_status.getText().equals("Bonded")) {
+                if(conn_status.getText().equals("Conectado") || bond_status.getText().equals("Enlazado")) {
                     startActivity(new Intent(HeloConnection.this, PrincipalDashboard.class));
                 }else {
-                    Snackbar snackbar = Snackbar.make(findViewById(R.id.helo_connection),"Helo LX not connected",Snackbar.LENGTH_LONG);
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.helo_connection),"Helo LX no conectado",Snackbar.LENGTH_LONG);
                     snackbar.show();
                 }
             }
@@ -148,12 +148,12 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
         permissionlistener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
-                Toast.makeText(HeloConnection.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HeloConnection.this, "Permiso Concedido", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-                Toast.makeText(HeloConnection.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT)
+                Toast.makeText(HeloConnection.this, "Permiso Denegado\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT)
                         .show();
             }
 
@@ -168,11 +168,11 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
 
         //AUTOMATIC STATUSES
         if(spConnectionHelo.getBoolean("connected",false)){
-            conn_status.setText("Connected");
-            bond_status.setText("Bonded");
-            mac.setText(spConnectionHelo.getString("mac","Not Available"));
-            battery.setText(spConnectionHelo.getString("battery","Not Available"));
-            firmware_version.setText(spConnectionHelo.getString("firmware","Not Available"));
+            conn_status.setText("Conectado");
+            bond_status.setText("Enlazado");
+            mac.setText(spConnectionHelo.getString("mac","No disponible"));
+            battery.setText(spConnectionHelo.getString("battery","No disponible"));
+            firmware_version.setText(spConnectionHelo.getString("firmware","No disponible"));
         }
 
         //
@@ -184,9 +184,9 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
                 .setPermissionListener(permissionlistener)
                 .setRationaleTitle(R.string.rationale_title)
                 .setRationaleMessage(R.string.rationale_message)
-                .setDeniedTitle("Permission denied")
+                .setDeniedTitle("Permiso denegado")
                 .setDeniedMessage(
-                        "If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                        "Si rechaza el permiso, no puede usar este servicio\n\nPor favor active los permisos en [Setting] > [Permission]")
                 .setGotoSettingButtonText("bla bla")
                 .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION)
                 .check();
@@ -205,7 +205,7 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
 
     private void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Your Location seems to be disabled, Please enable Location")
+        builder.setMessage("Tu ubicación esta deshabilitada, por favor habilitala")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
@@ -215,7 +215,7 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
                         dialog.cancel();
-                        Toast.makeText(HeloConnection.this, "Connector sample need Location to turn on. Please enable Location.", Toast.LENGTH_SHORT)
+                        Toast.makeText(HeloConnection.this, "La muestra del conector necesita una ubicación para encenderse. Por favor habilite la ubicación.", Toast.LENGTH_SHORT)
                                 .show();
                     }
                 });
@@ -230,11 +230,11 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
         BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
         if (mBluetoothAdapter == null) {
             // Device does not support Bluetooth
-            Toast.makeText(this, "This device doesnot support bluetooth", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Este dispositivo no cuenta con bluetooth", Toast.LENGTH_LONG).show();
         } else {
             if (!mBluetoothAdapter.isEnabled()) {
                 // Bluetooth is not enable :)
-                Toast.makeText(this, "Bluetooth off", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Bluetooth apagado", Toast.LENGTH_LONG).show();
                 mBluetoothAdapter.enable();
             }
         }
@@ -271,7 +271,7 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
 
     @Override
     public void onPairedDeviceNotFound() {
-        Toast.makeText(this, "Paired device not found", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Dispositivo emparejado no encontrado", Toast.LENGTH_LONG).show();
     }
 
     public class MeasurementReceiver extends BroadcastReceiver {
@@ -298,7 +298,7 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            conn_status.setText("Disconnected");
+                            conn_status.setText("Desconectado");
                             mac.setText("");
                             battery.setText("");
                             SharedPreferences.Editor spConnectionHeloEditor = spConnectionHelo.edit();
@@ -310,7 +310,7 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            conn_status.setText("Connected");
+                            conn_status.setText("Conectado");
                             mac.setText(intent.getStringExtra(INTENT_KEY_MAC));
                             SharedPreferences.Editor spConnectionHeloEditor = spConnectionHelo.edit();
                             spConnectionHeloEditor.putString("mac",mac.getText().toString());
@@ -325,7 +325,7 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            bond_status.setText("Bonded");
+                            bond_status.setText("Enlazado");
 
                         }
                     });
@@ -333,7 +333,7 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            bond_status.setText("Unbonded");
+                            bond_status.setText("Desenlazado");
                         }
                     });
                 }else if (intent.getAction().equals(BROADCAST_ACTION_HELO_FIRMWARE)) {
@@ -393,8 +393,8 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
         Connector.getInstance().unbindDevice();
         progressBar.setVisibility(View.INVISIBLE);
         textScanning.setVisibility(View.INVISIBLE);
-        bond_status.setText("Unbonded");
-        conn_status.setText("Disconnected");
+        bond_status.setText("Desenlazado");
+        conn_status.setText("Desconectado");
         battery.setText("");
         firmware_version.setText("");
     }
@@ -406,7 +406,7 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
                 if(isGpsEnabled()) {
                     checkLocationPermission();
                 } else {
-                    Toast.makeText(HeloConnection.this, "Please turn on GPS", Toast.LENGTH_LONG).show();
+                    Toast.makeText(HeloConnection.this, "Por favor enciende GPS", Toast.LENGTH_LONG).show();
                 }
                 break;
         }

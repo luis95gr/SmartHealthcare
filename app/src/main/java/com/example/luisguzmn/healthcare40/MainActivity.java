@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                         e.putBoolean("connected",true);
                         e.apply();
                         //
-                        Toast.makeText(getApplicationContext(), "Welcome " + g.getName(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Bienvenido " + g.getName(), Toast.LENGTH_SHORT).show();
                         LottieAnimationView animationView = (LottieAnimationView)findViewById(R.id.animation_view);
                         //animationView.setMinAndMaxFrame(20,100);
                         animationView.setSpeed(0.5f);
@@ -146,11 +146,11 @@ public class MainActivity extends AppCompatActivity {
                             }
                         },3000);
                     } else {
-                        Toast.makeText(getApplicationContext(), "Incorrect user or password", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Contraseña o usuario incorrectos", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "User doesn't exist", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "El usuario no existe", Toast.LENGTH_LONG).show();
                 }
             }
         }, new Response.ErrorListener() {
