@@ -820,6 +820,7 @@ public class PrincipalDashboard extends AppCompatActivity {
                             //ENVIAR INFO A SHARED
                             stringFatigueSaved[contFatigue] = "Fatigue," + fatigue + "," + stringDateFatigueSaved+","+stringHourFatigueSaved;
                             //
+                            //
                         }
                         if (booleanEcgMeasure){
                             contEcg++;
