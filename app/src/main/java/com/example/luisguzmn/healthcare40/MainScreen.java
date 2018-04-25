@@ -353,8 +353,9 @@ public class MainScreen extends AppCompatActivity {
 
 
     public void uploadMultipart() {
+        SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
         //getting user email
-        String email = "c";
+        String email = sp.getString("email","no email");
         //getting the actual path of the image
         String path = getPath(filePath);
         //Uploading code
