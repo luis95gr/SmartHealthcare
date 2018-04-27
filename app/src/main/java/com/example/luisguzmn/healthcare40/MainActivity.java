@@ -74,8 +74,10 @@ public class MainActivity extends AppCompatActivity {
         txtCreateA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), CrearCuenta.class);
-                startActivity(i);
+
+                Intent i = new Intent(MainActivity.this, CrearCuenta.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityIfNeeded(i,0);
             }
         });
         btnLog.setOnClickListener(new View.OnClickListener() {
