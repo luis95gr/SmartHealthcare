@@ -1,62 +1,30 @@
 package com.example.luisguzmn.healthcare40;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.PopupMenu;
-import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
-import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.OnDataPointTapListener;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.jjoe64.graphview.series.Series;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-import java.net.URISyntaxException;
-import java.text.DateFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Set;
 
-public class Statistics extends AppCompatActivity {
+public class Statistics extends MenuToolbar{//MenuToolbar extends AppCompatActivity {
 
 
     //DAYS VARIABLES
@@ -70,7 +38,17 @@ public class Statistics extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.statistics);
-        menu();
+
+        //Set up Menu Drawer
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbarMain);
+//        MenuToolbar menu = new MenuToolbar(toolbar,"Main",this);
+        this.setToolbar(toolbar);
+        this.setContext(this);
+        this.setTitleToolbar("Estadístics");
+        this.loadToolbar();
+
+
+
         //CAST DAYS
         text_monday = (TextView) findViewById(R.id.text_monday);
         text_tuesday = (TextView) findViewById(R.id.text_tuesday);
@@ -227,74 +205,7 @@ public class Statistics extends AppCompatActivity {
 
 
 
-    private void menu() {
-        //MENU
-        //-----------------------------------------------
-        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbarMain);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle("Estadísticas");
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        GlobalVars g = (GlobalVars) getApplication();
-        AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .addProfiles(
-                        new ProfileDrawerItem().withName(g.getName()).
-                                withEmail(g.getEmail()).withIcon(getDrawable(R.drawable.profile)))
-                .withSelectionListEnabledForSingleProfile(false).withHeaderBackground(R.drawable.header)
-                .build();
-        //if you want to update the items at a later time it is recommended to keep it in a variable
-        final PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.drawer_item_main).withIcon(GoogleMaterial.Icon.gmd_accessibility);
-        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withIdentifier(2).withName(R.string.drawer_item_profile).withIcon(GoogleMaterial.Icon.gmd_account_balance);
-        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(3).withName(R.string.drawer_item_records).withIcon(GoogleMaterial.Icon.gmd_add_to_photos);
-        PrimaryDrawerItem item4 = new PrimaryDrawerItem().withIdentifier(4).withName(R.string.drawer_item_statistics).withIcon(GoogleMaterial.Icon.gmd_adb);
-        PrimaryDrawerItem item5 = new PrimaryDrawerItem().withIdentifier(5).withName(R.string.drawer_item_healt).withIcon(GoogleMaterial.Icon.gmd_attach_file);
-        PrimaryDrawerItem item6 = new PrimaryDrawerItem().withIdentifier(6).withName(R.string.drawer_item_settinds).withIcon(GoogleMaterial.Icon.gmd_bluetooth);
-        PrimaryDrawerItem item7 = new PrimaryDrawerItem().withIdentifier(7).withName(R.string.drawer_item_about).withIcon(GoogleMaterial.Icon.gmd_terrain);
 
-        new DrawerBuilder()
-                .withAccountHeader(headerResult)
-                .withActivity(this)
-                .withTranslucentStatusBar(false)
-                .withToolbar(toolbar).withActionBarDrawerToggle(true)
-                .withActionBarDrawerToggleAnimated(true)
-                .addDrawerItems(
-                        item1,
-                        item2,
-                        item3,
-                        item4,
-                        item5,
-                        new DividerDrawerItem(),
-                        item6,
-                        item7
-                )
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        // do something with the clicked item :D
-                        if (position == 1) {
-                            Intent intent = new Intent(Statistics.this, MainScreen.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
-                        }
-                        if (position == 2) {
-                            Intent intent = new Intent(Statistics.this, Profile.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
-                        }
-                        if (position == 4) {
-                            Intent intent = new Intent(Statistics.this, Statistics.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
-                        }
-
-                        return false;
-                    }
-                })
-                .build();
-
-        //-------------------------------------------------------------------------------------------
-        //MENU
-    }
 
     private void dias(){
         //DIAS
