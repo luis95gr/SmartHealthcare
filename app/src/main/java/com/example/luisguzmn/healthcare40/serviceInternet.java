@@ -211,7 +211,7 @@ public class serviceInternet extends Service {
         NetworkInfo networkInfo = null;
         networkInfo = cm.getActiveNetworkInfo();
 
-        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+        if (networkInfo != null && networkInfo.isConnected()) {
             return true;
         } else {
             return false;

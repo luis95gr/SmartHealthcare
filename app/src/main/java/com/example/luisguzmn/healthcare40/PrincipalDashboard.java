@@ -896,7 +896,7 @@ public class PrincipalDashboard extends AppCompatActivity {
         NetworkInfo networkInfo = null;
         networkInfo = cm.getActiveNetworkInfo();
 
-        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+        if (networkInfo != null && networkInfo.isConnected()) {
             return true;
         } else {
             return false;
@@ -947,7 +947,7 @@ public class PrincipalDashboard extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Guardado", Snackbar.LENGTH_SHORT);
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Guardado", Snackbar.LENGTH_LONG);
                 snackbar.show();
 
             }
