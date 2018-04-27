@@ -293,40 +293,50 @@ public class MainScreen extends AppCompatActivity {
         ///AQUI ES LA PARTE DEL BLUETOOTH DENTRO DEL ON CREATE
         //BLUETOOTH/////////
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        Set<BluetoothDevice> pairedDevices;
 
-        Set<BluetoothDevice> pairedDevices
-                = bluetoothAdapter.getBondedDevices();
+        if(bluetoothAdapter != null) { // check this condition DUE to emulator without BT
+            pairedDevices = bluetoothAdapter.getBondedDevices();
 
-        if (pairedDevices.size() > 0) {
-            //Toast.makeText(getApplicationContext(), pairedDevices.size() + " bLUETOOTH DEVICEs paired.", Toast.LENGTH_SHORT).show();
-            for (BluetoothDevice device : pairedDevices) {
+            if (pairedDevices.size() > 0) {
+                //Toast.makeText(getApplicationContext(), pairedDevices.size() + " bLUETOOTH DEVICEs paired.", Toast.LENGTH_SHORT).show();
+                for (BluetoothDevice device : pairedDevices) {
 
-                BluetoothClass bluetoothClass = device.getBluetoothClass();
-                int estado = device.getBondState();
+                    BluetoothClass bluetoothClass = device.getBluetoothClass();
+                    int estado = device.getBondState();
 
-                if (estado == BluetoothDevice.BOND_BONDED) {
-                    int tipoDeDispositivo = bluetoothClass.getDeviceClass();
-                    if (tipoDeDispositivo == 1028 || tipoDeDispositivo==7936) {
-                        headphones = headphones + 1;
-                        imageButtonSH.getBackground().setTint(Color.parseColor("#ADFF2F"));
+                    if (estado == BluetoothDevice.BOND_BONDED) {
+                        int tipoDeDispositivo = bluetoothClass.getDeviceClass();
+                        if (tipoDeDispositivo == 1028 || tipoDeDispositivo==7936) {
+                            headphones = headphones + 1;
+                            imageButtonSH.getBackground().setTint(Color.parseColor("#ADFF2F"));
+                        }
+
+                        if (tipoDeDispositivo == 268 || tipoDeDispositivo==7936) {
+                            imageButtonSW.getBackground().setTint(Color.parseColor("#ADFF2F"));
+                            smartwatch = smartwatch + 1;
+                        }
+                        if(tipoDeDispositivo == 1032){
+                            //imageButtonSS.getBackground().setTint(Color.parseColor("#ADFF2F"));
+                        }
+                    }else{
+                        imageButtonSH.getBackground().setTint(Color.parseColor("#b8ddcd"));
+                        imageButtonSW.getBackground().setTint(Color.parseColor("#b8ddcd"));
+                        imageButtonSS.getBackground().setTint(Color.parseColor("#b8ddcd"));
                     }
 
-                    if (tipoDeDispositivo == 268 || tipoDeDispositivo==7936) {
-                        imageButtonSW.getBackground().setTint(Color.parseColor("#ADFF2F"));
-                        smartwatch = smartwatch + 1;
-                    }
-                    if(tipoDeDispositivo == 1032){
-                        //imageButtonSS.getBackground().setTint(Color.parseColor("#ADFF2F"));
-                    }
-                }else{
-                    imageButtonSH.getBackground().setTint(Color.parseColor("#b8ddcd"));
-                    imageButtonSW.getBackground().setTint(Color.parseColor("#b8ddcd"));
-                    imageButtonSS.getBackground().setTint(Color.parseColor("#b8ddcd"));
+
                 }
-
-
             }
+
+            Toast.makeText(getApplicationContext(), "Show Paired Devices", Toast.LENGTH_SHORT).show();
         }
+        else
+            Toast.makeText(getApplicationContext(), "Bluetooth not found in Device", Toast.LENGTH_SHORT).show();
+
+
+
+
 
 
         //Toast.makeText(getApplicationContext(), smartwatch + " smartwatch paired.", Toast.LENGTH_SHORT).show();

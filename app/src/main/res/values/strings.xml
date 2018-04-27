@@ -174,5 +174,10 @@
     <string name="prefix">prefix</string>
     <string name="rationale_title">Need Permission</string>
     <string name="rationale_message">Connector sample app need permissions. Please enable it.</string>
+    <string name="error_network_timeout">Error network timeout</string>
+    <string name="error_auth_failure">Auth failure error</string>
+    <string name="error_server">Server error</string>
+    <string name="error_network">Network error</string>
+    <string name="error_parse">Parse error</string>
 
 </resources>

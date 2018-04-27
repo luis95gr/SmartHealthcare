@@ -16,24 +16,36 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.DataOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
 public class CrearCuenta extends AppCompatActivity {
 
+    private final String TAG = "CrearCuenta";
     //VARIABLES
     SharedPreferences spLogin;
     EditText etFname, etLname, etEmail, etRemail, etPass, etRpass, etPhone, etWeight, etHeight;
@@ -54,7 +66,7 @@ public class CrearCuenta extends AppCompatActivity {
         spLogin = PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor spLoginEditor = spLogin.edit();
 
-
+        Log.d(TAG,"Flag 1");
         txtNext = (TextView) findViewById(R.id.txtNext);
         etFname = (EditText) findViewById(R.id.etFname);
         etLname = (EditText) findViewById(R.id.etLname);
@@ -79,6 +91,7 @@ public class CrearCuenta extends AppCompatActivity {
         cbBlood = (CheckBox) findViewById(R.id.cbBlood);
 
 
+        Log.d(TAG,"Flag 2");
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.day, android.R.layout.simple_spinner_item);
@@ -111,6 +124,9 @@ public class CrearCuenta extends AppCompatActivity {
         spDaysEx.setAdapter(adapter5);
         spHours.setAdapter(adapter6);
         spExInt.setAdapter(adapter7);
+
+
+        Log.d(TAG,"Flag 3");
 
         txtNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,7 +183,9 @@ public class CrearCuenta extends AppCompatActivity {
                 spLoginEditor.putString("phone",Phone);
                 spLoginEditor.apply();
                 Intent intent = new Intent(CrearCuenta.this,MainActivity.class);
-                startActivity(intent);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityIfNeeded(intent, 0);
+                Log.d(TAG,"Flag 4");
             }
         });
     }
@@ -180,17 +198,70 @@ public class CrearCuenta extends AppCompatActivity {
 
                 //Toast.makeText(getApplicationContext(), "DONE!" , Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(CrearCuenta.this, MainActivity.class);
-                startActivity(intent);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityIfNeeded(intent,2);
+                Log.d(TAG,"Flag 5");
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Toast.makeText(getApplicationContext(),
+                            getApplicationContext().getString(R.string.error_network_timeout),
+                            Toast.LENGTH_LONG).show();
+                    Log.d(TAG, getApplicationContext().getString(R.string.error_network_timeout));
+                } else if (error instanceof AuthFailureError) {
+                    Toast.makeText(getApplicationContext(),
+                            getApplicationContext().getString(R.string.error_auth_failure),
+                            Toast.LENGTH_LONG).show();
+
+                    Log.d(TAG, getApplicationContext().getString(R.string.error_auth_failure));
+                    //TODO
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getApplicationContext(),
+                            getApplicationContext().getString(R.string.error_server),
+                            Toast.LENGTH_LONG).show();
+
+                    Log.d(TAG, getApplicationContext().getString(R.string.error_server));
+                    //TODO
+                } else if (error instanceof NetworkError) {
+                    Toast.makeText(getApplicationContext(),
+                            getApplicationContext().getString(R.string.error_network),
+                            Toast.LENGTH_LONG).show();
+
+                    Log.d(TAG, getApplicationContext().getString(R.string.error_network));
+                    //TODO
+                } else if (error instanceof ParseError) {
+                    Toast.makeText(getApplicationContext(),
+                            getApplicationContext().getString(R.string.error_parse),
+                            Toast.LENGTH_LONG).show();
+
+                    Log.d(TAG, getApplicationContext().getString(R.string.error_parse));
+                    //TODO
+                }
+
+                error.printStackTrace();
             }
         });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 3,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES*2,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
         queue.add(stringRequest);
     }
 
+    @Override
+    public void onBackPressed() {
+        Log.d(TAG,"Back pressed");
+        Intent intent = new Intent(CrearCuenta.this, MainActivity.class);
 
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivityIfNeeded(intent,2);
+
+        super.onBackPressed();
+
+    }
 }
 
 
