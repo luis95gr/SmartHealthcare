@@ -43,6 +43,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.StringTokenizer;
 import java.util.Timer;
+import java.util.TimerTask;
 
 
 import com.android.volley.Request;
@@ -247,8 +248,8 @@ public class PrincipalDashboard extends AppCompatActivity {
                     Connector.getInstance().measureHR();
                 }
             }
-            }, 0, 50000);
-        */
+            }, 0, 50000);*/
+
         //
         //ANIMATIONS
         textWelcome.setOnClickListener(new View.OnClickListener() {
@@ -356,7 +357,7 @@ public class PrincipalDashboard extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(heloMeasurementReceiver, intentFilter);
+        //registerReceiver(heloMeasurementReceiver, intentFilter);
     }
 
 
@@ -845,6 +846,12 @@ public class PrincipalDashboard extends AppCompatActivity {
                             //
 
                         }
+                        Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Saved", Snackbar.LENGTH_SHORT)
+                                .setAction("Guardado", null);
+                        View sbView = snackbar.getView();
+                        sbView.setBackgroundColor(Color.GREEN);
+                        snackbar.show();
+
                         //START SERVICE
                     }
                 });

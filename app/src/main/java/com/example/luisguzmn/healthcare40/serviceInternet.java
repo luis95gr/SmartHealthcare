@@ -132,9 +132,6 @@ public class serviceInternet extends Service {
         for (int m = 1; m <= contFatigue; m++) {
             stringFatigueSaved[m] = spMeasuresSaved.getString("stringFatigueSaved" + m, "0");
         }
-        Toast.makeText(serviceInternet.this, ""+contBr , Toast.LENGTH_LONG).show();
-        Toast.makeText(serviceInternet.this, stringBrSaved[1] , Toast.LENGTH_LONG).show();
-        Toast.makeText(serviceInternet.this, stringBrSaved[2] , Toast.LENGTH_LONG).show();
 
         //SPLIT CONTENT
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -228,6 +225,7 @@ public class serviceInternet extends Service {
                 //DATA SENT
                 contTotal++;
                 if (contTotal == contBp*2 + contBr + contMood + contFatigue){
+                    contTotal = 0;
                     stopSelf();
                 }
 
