@@ -46,5 +46,5 @@ dependencies {
     implementation 'gun0912.ted:tedpermission:2.0.3'
     implementation 'com.facebook.android:facebook-share:[4,32)'
     implementation 'net.gotev:uploadservice:2.1'
-    implementation 'net.gotev:uploadservice:2.1'
+    implementation 'com.github.codekidX:storage-chooser:2.0.3'
 }

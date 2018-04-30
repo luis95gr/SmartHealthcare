@@ -178,6 +178,11 @@ public class MainScreen extends AppCompatActivity {
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
+                        if (position == 3) {
+                            Intent intent = new Intent(MainScreen.this, Registros.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
                         if (position == 4){
                             Intent intent = new Intent(MainScreen.this, Statistics.class);
                             startActivity(intent);
