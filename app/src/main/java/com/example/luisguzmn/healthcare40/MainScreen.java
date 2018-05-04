@@ -215,6 +215,8 @@ public class MainScreen extends MenuToolbar{//MenuToolbar extends AppCompatActiv
         if(bluetoothAdapter != null) { // check this condition DUE to emulator without BT
             pairedDevices = bluetoothAdapter.getBondedDevices();
 
+
+
             if (pairedDevices.size() > 0) {
                 //Toast.makeText(getApplicationContext(), pairedDevices.size() + " bLUETOOTH DEVICEs paired.", Toast.LENGTH_SHORT).show();
                 for (BluetoothDevice device : pairedDevices) {

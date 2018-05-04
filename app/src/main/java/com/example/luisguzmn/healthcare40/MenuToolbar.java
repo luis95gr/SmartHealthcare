@@ -11,11 +11,11 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.luisguzmn.healthcare40.Cowtech54.CowActivity;
+import com.example.luisguzmn.healthcare40.Cowtech54.CowTabActivity;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -25,7 +25,6 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.squareup.picasso.Picasso;
@@ -101,6 +100,7 @@ public class MenuToolbar extends AppCompatActivity {
         PrimaryDrawerItem item5 = new PrimaryDrawerItem().withIdentifier(5).withName(R.string.drawer_item_healt).withIcon(GoogleMaterial.Icon.gmd_attach_file);
         PrimaryDrawerItem item6 = new PrimaryDrawerItem().withIdentifier(6).withName(R.string.drawer_item_settinds).withIcon(GoogleMaterial.Icon.gmd_settings);
         PrimaryDrawerItem item7 = new PrimaryDrawerItem().withIdentifier(7).withName(R.string.drawer_item_about).withIcon(GoogleMaterial.Icon.gmd_terrain);
+        PrimaryDrawerItem item8 = new PrimaryDrawerItem().withIdentifier(8).withName("Cowtech54").withIcon(R.mipmap.ic_cow_black_nbg);
 
         new DrawerBuilder()
                 .withAccountHeader(headerResult)
@@ -116,7 +116,8 @@ public class MenuToolbar extends AppCompatActivity {
                         item5,
                         new DividerDrawerItem(),
                         item6,
-                        item7
+                        item7,
+                        item8
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -143,6 +144,15 @@ public class MenuToolbar extends AppCompatActivity {
                             Intent intent = new Intent(context, SettingsActivity.class);
                             startActivity(intent);
                             Log.d("TAG" , "Settings opened");
+
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
+                        if(position == 8 + 1){
+                            Intent intent = new Intent(context, CowTabActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                            startActivityIfNeeded(intent, 0);
+
+                            Log.d("TAG" , "CowMain opened");
 
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }

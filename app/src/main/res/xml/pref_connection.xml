@@ -15,7 +15,8 @@
         android:icon="@drawable/pref_ic_gps"
         android:defaultValue="true"
         android:key="connection_gps"
-        android:title="GPS"/>
+        android:title="GPS"
+        android:summary="(Not actual GPS state)"/>
 
 
 

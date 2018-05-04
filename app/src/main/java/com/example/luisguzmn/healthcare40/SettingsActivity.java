@@ -1,9 +1,15 @@
 package com.example.luisguzmn.healthcare40;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.location.LocationManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -12,16 +18,23 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceScreen;
+import android.provider.Settings;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import android.widget.Toast;
+
+import com.facebook.share.Share;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -36,7 +49,44 @@ import java.util.List;
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
-    /**
+    private static final String TAG = SettingsActivity.class.getSimpleName();
+
+    //Read bluetooth status
+    BluetoothManager bluetoothManager;
+    BluetoothAdapter mBluetoothAdapter;
+    static boolean btIsEnabled;
+
+//    BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
+//    BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
+
+   /* private Preference.OnPreferenceChangeListener sCheckBox = new Preference.OnPreferenceChangeListener() {
+
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object value) {
+            if(Objects.equals(preference.getKey(), "connection_bluetooth")){
+
+                if (mBluetoothAdapter == null) {
+                    // Device does not support Bluetooth
+                    Log.d(TAG, "No Bluetooth" );
+                    //Toast.makeText(this, "Este dispositivo no cuenta con bluetooth", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    if((boolean)value){
+                            if(!mBluetoothAdapter.isEnabled())
+                                mBluetoothAdapter.enable();
+                            else
+                                mBluetoothAdapter.disable();
+                    }
+                }
+
+
+
+            }
+
+            return false;
+        }
+    };*/
+        /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
@@ -84,6 +134,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 // simple string representation.
                 preference.setSummary(stringValue);
             }
+
+
+
             return true;
         }
     };
@@ -118,12 +171,48 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         .getString(preference.getKey(), ""));
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("SettingsAct", "Settings opened");
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = prefs.edit();
+
+        //Read bluetooth status
+        bluetoothManager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
+        mBluetoothAdapter = bluetoothManager.getAdapter();
+
+        if(mBluetoothAdapter!=null) { //is BT already active
+            if (mBluetoothAdapter.isEnabled())
+                btIsEnabled = true;
+            else
+                btIsEnabled = false;
+        }else
+            btIsEnabled = false;
+
+        //Init defaultSharedPreferences
+        if(btIsEnabled)
+            editor.putBoolean("connection_bluetooth",true);
+        else
+            editor.putBoolean("connection_bluetooth",false);
+
+
+        /*LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+        assert lm != null; //verify not null
+        boolean gps_on = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if(gps_on)
+            editor.putBoolean("connection_gps",true);
+        else
+            editor.putBoolean("connection_gps",false);*/
+
+       /* Intent enableBtIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        startActivity(enableBtIntent);*/
+
+        prefs.registerOnSharedPreferenceChangeListener(spChanged);
         setupActionBar();
+
     }
 
     /**
@@ -274,13 +363,25 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * This fragment shows Connection preferences only. It is used when the
      * activity is showing a two-pane settings UI.
      */
+   // @SuppressLint("ValidFragment")
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class ConnectionPreferenceFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
+
+
+            /*
+            if(prefs.getBoolean("connection_bluetooth",false))
+                mBluetoothAdapter.enable();
+            else
+                mBluetoothAdapter.disable();*/
+
+
             addPreferencesFromResource(R.xml.pref_connection);
             setHasOptionsMenu(true);
+
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
@@ -299,7 +400,48 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
             return super.onOptionsItemSelected(item);
         }
+
     }
+
+
+    SharedPreferences.OnSharedPreferenceChangeListener spChanged = new
+            SharedPreferences.OnSharedPreferenceChangeListener() {
+                @Override
+                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+                                                      String key) {
+                    // your stuff here
+                    if(key.equals("connection_bluetooth")){
+                        boolean booleanBT;
+                        booleanBT = sharedPreferences.getBoolean("connection_bluetooth", true);
+
+
+                        BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
+                        BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
+
+                        if (mBluetoothAdapter == null) {
+                            // Device does not support Bluetooth
+                            Log.d(TAG, "No Bluetooth" );
+                            //Toast.makeText(this, "Este dispositivo no cuenta con bluetooth", Toast.LENGTH_LONG).show();
+                        } else {
+                            if(booleanBT)
+                                mBluetoothAdapter.enable();
+                            else
+                                mBluetoothAdapter.disable();
+                        }
+
+
+                    }
+                    if(key.equals("connection_gps")){
+
+                        //TODO: Actually show the actual state of the GPS
+                        final Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                    }
+
+                }
+            };
+
+
 
     /**
      * This fragment shows Connection preferences only. It is used when the
@@ -335,4 +477,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             return super.onOptionsItemSelected(item);
         }
     }
+
+
+
 }

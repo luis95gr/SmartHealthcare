@@ -59,6 +59,7 @@
             android:theme="@style/AppTheme.CustomTheme" />
 
         <service android:name=".serviceInternet" />
+        <service android:name=".Cowtech54.CowService" />
 
         <activity
             android:name=".Splash"
@@ -77,6 +78,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.luisguzmn.healthcare40.MainScreen" />
         </activity>
+        <activity android:name=".Cowtech54.CowActivity" />
+        <activity
+            android:name=".Cowtech54.CowTabActivity"
+            android:label="@string/title_activity_cow_tab"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 
 </manifest>

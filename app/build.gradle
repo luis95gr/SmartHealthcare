@@ -48,4 +48,8 @@ dependencies {
     implementation 'com.facebook.android:facebook-share:[4,32)'
     implementation 'net.gotev:uploadservice:2.1'
     implementation 'net.gotev:uploadservice:2.1'
+
+    implementation 'com.amazonaws:aws-android-sdk-ddb-mapper:2.6.+'
+    implementation('com.amazonaws:aws-android-sdk-mobile-client:2.6.+@aar') { transitive = true; }
+    implementation 'com.opencsv:opencsv:4.1'
 }
