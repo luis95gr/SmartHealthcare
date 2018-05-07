@@ -4,184 +4,295 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/statistics"
     tools:context=".Statistics">
 
-
-
-    <ScrollView
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <!-- MENU -->
-            <!--////////////////////////////////////-->
-            <android.support.v7.widget.Toolbar
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="35dp"
-                android:id="@+id/toolbarMain"
-                app:title="Statistics"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF">
-            </android.support.v7.widget.Toolbar>
-            <!-- MENU -->
-            <!--////////////////////////////////////-->
-
-    <com.jjoe64.graphview.GraphView
-        android:id="@+id/graphBP"
-        android:layout_width="match_parent"
-        android:layout_height="300dip"
-        app:layout_constraintTop_toBottomOf="@id/toolbarMain"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@+id/linearDias"
         />
-            <TextView
-                android:id="@+id/textView78"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/graphBP"
-                />
-        </android.support.constraint.ConstraintLayout>
-
-
-
-    </ScrollView>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     <!-- DIAS       -->
     <LinearLayout
-        android:id="@+id/linear"
+        android:id="@+id/linearDias"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:gravity="center"
         android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/text_monday"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="LUN"
-        android:textAlignment="center"
-        android:textSize="15dp"
-        android:textColor="#000000"
-        android:visibility="visible"
-        app:layout_constraintHorizontal_weight="1"
-        />
+        <TextView
+            android:id="@+id/text_monday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="LUN"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
 
-    <TextView
-        android:id="@+id/text_tuesday"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="MAR"
-        android:textAlignment="center"
-        android:textSize="15dp"
-        android:textColor="#000000"
-        android:visibility="visible"
-        app:layout_constraintHorizontal_weight="1"
-        />
-    <TextView
-        android:id="@+id/text_wednesday"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="MIE"
-        android:textAlignment="center"
-        android:textSize="15dp"
-        android:textColor="#000000"
-        android:visibility="visible"
-        app:layout_constraintHorizontal_weight="1"
-        />
-    <TextView
-        android:id="@+id/text_thursday"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="JUE"
-        android:textAlignment="center"
-        android:textSize="15dp"
-        android:textColor="#000000"
-        android:visibility="visible"
-        app:layout_constraintHorizontal_weight="1"
-        />
-    <TextView
-        android:id="@+id/text_friday"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="VIE"
-        android:textAlignment="center"
-        android:textSize="15dp"
-        android:textColor="#000000"
-        android:visibility="visible"
-        app:layout_constraintHorizontal_weight="1"
-        />
-    <TextView
-        android:id="@+id/text_saturday"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="SAB"
-        android:textAlignment="center"
-        android:textSize="15dp"
-        android:textColor="#000000"
-        android:visibility="visible"
-        app:layout_constraintHorizontal_weight="1"
-        />
-    <TextView
-        android:id="@+id/text_sunday"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="DOM"
-        android:textAlignment="center"
-        android:textSize="15dp"
-        android:textColor="#000000"
-        android:visibility="visible"
-        app:layout_constraintHorizontal_weight="1"
-        />
+        <TextView
+            android:id="@+id/text_tuesday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="MAR"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
+        <TextView
+            android:id="@+id/text_wednesday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="MIE"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
+        <TextView
+            android:id="@+id/text_thursday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="JUE"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
+        <TextView
+            android:id="@+id/text_friday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="VIE"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
+        <TextView
+            android:id="@+id/text_saturday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="SAB"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
+        <TextView
+            android:id="@+id/text_sunday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="DOM"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
+
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:id="@+id/linear"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        android:orientation="vertical">
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnBR"
+                    android:background="@drawable/round_border_statistics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BR"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginLeft="3dp"
+                    />
+                <Button
+                    android:id="@+id/btnHR"
+                    android:background="@drawable/round_border_statistics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginLeft="3dp"
+                    android:text="HR" />
+                <Button
+                    android:id="@+id/btnBPmax"
+                    android:background="@drawable/round_border_statistics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BPmax"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginLeft="3dp"
+
+                    />
+                <Button
+                    android:id="@+id/btnBPmin"
+                    android:background="@drawable/round_border_statistics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginLeft="3dp"
+                    android:text="BPmin" />
+                <Button
+                    android:id="@+id/btnMood"
+                    android:background="@drawable/round_border_statistics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mood"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginLeft="3dp"
+
+                    />
+                <Button
+                    android:id="@+id/btnFatigue"
+                    android:background="@drawable/round_border_statistics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginLeft="3dp"
+                    android:text="Fatigue" />
+            </LinearLayout>
+
+
+        </HorizontalScrollView>
+
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:layout_marginTop="10dp"
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linear2"
+        app:layout_constraintTop_toBottomOf="@id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/text_min"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="wrap_content"
+            android:text="MIN:"
+            android:layout_margin="5dp"
+            android:background="@drawable/border_profile"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@id/linear"
+            android:clickable="true"
+            />
+        <TextView
+            android:id="@+id/min_value"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_margin="5dp"
+            android:background="@drawable/border_profile"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@id/linear"
+            app:layout_constraintLeft_toRightOf="@id/text_min"
+            android:clickable="true"
+            />
+        <TextView
+            android:id="@+id/text_avg"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="wrap_content"
+            android:text="AVG:"
+            android:layout_margin="5dp"
+            android:background="@drawable/border_profile"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@id/linear"
+            app:layout_constraintLeft_toRightOf="@id/min_value"
+            android:clickable="true"
+            />
+        <TextView
+            android:id="@+id/avg_value"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_margin="5dp"
+            android:background="@drawable/border_profile"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@id/linear"
+            app:layout_constraintLeft_toRightOf="@id/text_avg"
+            android:clickable="true"
+            />
+        <TextView
+            android:id="@+id/text_max"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="wrap_content"
+            android:text="MAX:"
+            android:layout_margin="5dp"
+            android:background="@drawable/border_profile"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@id/linear"
+            app:layout_constraintLeft_toRightOf="@id/avg_value"
+            android:clickable="true"
+            />
+        <TextView
+            android:id="@+id/max_value"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_margin="5dp"
+            android:background="@drawable/border_profile"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@id/linear"
+            app:layout_constraintLeft_toRightOf="@id/text_max"
+            android:clickable="true"
+            />
+
+
+    </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/linear2"
+android:id="@+id/buttonShow"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
 
 </android.support.constraint.ConstraintLayout>

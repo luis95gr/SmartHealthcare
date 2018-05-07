@@ -1,16 +1,24 @@
 package com.example.luisguzmn.healthcare40;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.support.annotation.StringDef;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -19,6 +27,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -28,6 +42,8 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
+import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -38,6 +54,7 @@ import java.util.jar.Attributes;
 import static android.text.Html.fromHtml;
 
 public class Profile extends AppCompatActivity {
+
 
     //VARIABLES
     Button button_horas1;
@@ -50,6 +67,7 @@ public class Profile extends AppCompatActivity {
     Button button_nv3;
     Button button_nv2;
     Button button_nv1;
+    Button btnSend;
     String horas;
     int ejercicioInt;
     int ejercicioDias;
@@ -72,7 +90,6 @@ public class Profile extends AppCompatActivity {
     ImageButton imB_parado;
     ImageButton imB_caminando;
     ImageButton imB_corriendo;
-    //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +97,8 @@ public class Profile extends AppCompatActivity {
         setContentView(R.layout.profile);
 
         SharedPreferences sp = getSharedPreferences("login",MODE_PRIVATE);
+
+
 
         //CAST
         text_monday = (TextView) findViewById(R.id.text_monday);
@@ -112,28 +131,46 @@ public class Profile extends AppCompatActivity {
         button_horas1 = (Button) findViewById(R.id.button_horas1);
         button_horas2 = (Button) findViewById(R.id.button_horas2_3);
         button_horas4 = (Button) findViewById(R.id.button_horas4);
+        btnSend = (Button)findViewById(R.id.btnSend);
         //MENU
         //-----------------------------------------------
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbarMain);
-        toolbar.setTitle("Perfil");
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Perfil");
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         GlobalVars g = (GlobalVars) getApplication();
         AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
+                .withActivity(this).withCompactStyle(true)
                 .addProfiles(
-                        new ProfileDrawerItem().withName(g.getName()).
-                                withEmail(g.getEmail()).withIcon(getDrawable(R.drawable.profile)))
-                .withSelectionListEnabledForSingleProfile(false).withHeaderBackground(R.drawable.header)
+                        new ProfileDrawerItem().withName(sp.getString("name","no name")).
+                                withEmail(sp.getString("email","no email")).withIcon("http://meddata.sytes.net/newuser/profileImg/"
+                                +sp.getString("imagen", "No Image")))
+                .withSelectionListEnabledForSingleProfile(false).withHeaderBackground(R.drawable.header2)
                 .build();
-        //if you want to update the items at a later time it is recommended to keep it in a variable
-        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.drawer_item_main).withIcon(GoogleMaterial.Icon.gmd_accessibility);
-        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withIdentifier(2).withName(R.string.drawer_item_profile).withIcon(GoogleMaterial.Icon.gmd_account_balance);
-        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(3).withName(R.string.drawer_item_records).withIcon(GoogleMaterial.Icon.gmd_add_to_photos);
-        PrimaryDrawerItem item4 = new PrimaryDrawerItem().withIdentifier(4).withName(R.string.drawer_item_statistics).withIcon(GoogleMaterial.Icon.gmd_adb);
-        PrimaryDrawerItem item5 = new PrimaryDrawerItem().withIdentifier(5).withName(R.string.drawer_item_healt).withIcon(GoogleMaterial.Icon.gmd_attach_file);
-        PrimaryDrawerItem item6 = new PrimaryDrawerItem().withIdentifier(6).withName(R.string.drawer_item_settinds).withIcon(GoogleMaterial.Icon.gmd_bluetooth);
-        PrimaryDrawerItem item7 = new PrimaryDrawerItem().withIdentifier(7).withName(R.string.drawer_item_about).withIcon(GoogleMaterial.Icon.gmd_terrain);
+
+        //Image Menu
+        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
+            @Override
+            public void set(ImageView imageView, Uri uri, Drawable placeholder) {
+                SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
+
+                Picasso.with(imageView.getContext()).load("http://meddata.sytes.net/newuser/profileImg/"
+                        + sp.getString("imagen", "No Image"))
+                        .placeholder(placeholder).into(imageView);
+            }
+            @Override
+            public void cancel(ImageView imageView) {
+                Picasso.with(imageView.getContext()).cancelRequest(imageView);
+            }
+        });
+
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.drawer_item_main).withIcon(GoogleMaterial.Icon.gmd_home);
+        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withIdentifier(2).withName(R.string.drawer_item_profile).withIcon(GoogleMaterial.Icon.gmd_account_circle);
+        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(3).withName(R.string.drawer_item_records).withIcon(GoogleMaterial.Icon.gmd_assignment);
+        PrimaryDrawerItem item4 = new PrimaryDrawerItem().withIdentifier(4).withName(R.string.drawer_item_statistics).withIcon(GoogleMaterial.Icon.gmd_insert_chart);
+        PrimaryDrawerItem item5 = new PrimaryDrawerItem().withIdentifier(5).withName(R.string.drawer_item_healt).withIcon(GoogleMaterial.Icon.gmd_local_hospital);
+        PrimaryDrawerItem item6 = new PrimaryDrawerItem().withIdentifier(6).withName(R.string.drawer_item_settinds).withIcon(GoogleMaterial.Icon.gmd_settings);
+        PrimaryDrawerItem item7 = new PrimaryDrawerItem().withIdentifier(7).withName(R.string.drawer_item_about).withIcon(GoogleMaterial.Icon.gmd_more);
 
         new DrawerBuilder()
                 .withAccountHeader(headerResult)
@@ -193,6 +230,15 @@ public class Profile extends AppCompatActivity {
         text_weight.setText(Html.fromHtml(getApplicationContext().getResources().getString(R.string.weight) + sp.getInt("weight",0) + " kg" + "<br><br>"));
 
         //DATOS PERSONALES///////////////////////////////////////////////////////////////////////////////////////////////
+
+        //Actualizar Datos////////////////////////////////////////////////
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+           internet();
+
+            }
+        });
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         text_name.setOnClickListener(new View.OnClickListener() {
@@ -588,5 +634,39 @@ public class Profile extends AppCompatActivity {
         super.onPause();
         finish();
     }
+    private void VolleyPetition(String URL) {
+        Log.i("url", "" + URL);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                GlobalVars g = (GlobalVars) getApplication();
+                g.setDays_ex(ejercicioDias);
+                g.setHours_ex(horas);
+                g.setEx_int(ejercicioInt);
+                Toast.makeText(getApplicationContext(),"Hecho!",Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        queue.add(stringRequest);
+    }
+    private void internet() {
+        SharedPreferences sp = getSharedPreferences("login",MODE_PRIVATE);
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = null;
+        networkInfo = cm.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            VolleyPetition("http://meddata.sytes.net/phpfiles/update.php?email="+sp.getString("email","no email")+"&ex_int="+ejercicioInt+
+                    "&days_ex="+ejercicioDias+"&hours_ex="+horas);
+        } else {
+            Toast.makeText(getApplicationContext(),"Verifica tu conexión a Internet",Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
 
 }
