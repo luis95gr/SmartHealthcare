@@ -5,13 +5,23 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -45,6 +55,11 @@ public class PopUp extends AppCompatActivity {
     String stringDistance;
     TextView textInfo,textMessage,textStatus;
     double doubleMaxHr,doubleMinHr;
+    //
+    final String ip = "meddata.sytes.net";
+    int intSend;   // 1=steps, 2=hr,3=bp,4=br 5= nada;
+    String stringDiagSend,stringVarSend,stringValueSend;
+
 
 
     @Override
@@ -134,6 +149,8 @@ public class PopUp extends AppCompatActivity {
         stringHr = spPopup.getString("HR","0");
         stringSteps = spPopup.getString("Steps","0");
         int MFdecision = spPopup.getInt("Fat",3);
+        //
+        //
 
         //STEPS
         if (!stringSteps.equals("0") && stringHr.equals("0")){
@@ -154,7 +171,11 @@ public class PopUp extends AppCompatActivity {
             stringDistance = decimalFormat.format((doubleLength*doubleMeasureSteps)/100);
             textStatus.setText("Has recorrido: " + stringDistance+ " metros aprox.");
             textMessage.setText("Te faltan: " + (10000-(int)doubleMeasureSteps) + " pasos");
-
+            //
+            intSend = 1;
+            stringVarSend = "Steps";
+            stringValueSend = stringSteps;
+            stringDiagSend = stringDistance;
         }
 
         //HEART RATE
@@ -206,6 +227,11 @@ public class PopUp extends AppCompatActivity {
                 textMessage.setTextColor(Color.parseColor("#FFD700")); //YELLOW
                 textStatus.setText("LIGERA TAQUICARDIA");
             }
+            //
+            intSend = 2;
+            stringVarSend = "HR";
+            stringValueSend = stringHr;
+            stringDiagSend = textStatus.getText().toString();
         }
         //
 
@@ -348,7 +374,10 @@ public class PopUp extends AppCompatActivity {
                 textStatus.setText("HIPOTENSIÓN SISTÓLICA PELIGROSA");
             }
             //
-
+            intSend = 3;
+            stringVarSend = "BP";
+            stringValueSend = stringBpmax + "," + stringBpmin;
+            stringDiagSend = textStatus.getText().toString();
         }
         //BREATH RATE
         if(!stringBr.equals("0") && stringHr.equals("0") && stringHr.equals("0")) {
@@ -404,6 +433,10 @@ public class PopUp extends AppCompatActivity {
                 textStatus.setText("BRADIPNEA SEVERA");
             }
             //
+            intSend = 4;
+            stringVarSend = "BR";
+            stringValueSend = stringBr;
+            stringDiagSend = textStatus.getText().toString();
         }
         //MOOD
         if(!stringMood.equals("0") && MFdecision == 1 && stringHr.equals("0") && stringHr.equals("0")) {
@@ -470,7 +503,16 @@ public class PopUp extends AppCompatActivity {
                 return true;
 
             case R.id.sendData:
-                //ENVIAR ANALISIS : STATUS
+                //
+                Date date = Calendar.getInstance().getTime();
+                SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy.MM.dd");
+                SimpleDateFormat sdfHour = new SimpleDateFormat("h:mm:a");
+                String stringDate = sdfDate.format(date);
+                String stringHour = sdfHour.format(date);
+                //
+                VolleyPetition("http://"+ ip +"/dataVar/register.php?email=" + sp.getString("email","no email") + "&pass=" +
+                        sp.getString("password","no") + "&var=" + stringVarSend + "&value=" + stringValueSend+ "&date=" +
+                        stringDate + "&time=" + stringHour + "&diagnostic=" + stringDiagSend);
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -484,6 +526,26 @@ public class PopUp extends AppCompatActivity {
         spPopupEditor.putString("HR","0");
         spPopupEditor.putString("Steps","0");
         spPopupEditor.apply();
+    }
+
+    private void VolleyPetition(String URL) {
+        Log.i("url", "" + URL);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Guardado", Snackbar.LENGTH_LONG);
+                snackbar.show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error!" , Toast.LENGTH_LONG).show();
+
+            }
+        });
+        queue.add(stringRequest);
     }
 
 
