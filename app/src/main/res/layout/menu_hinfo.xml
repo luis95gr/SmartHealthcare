@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HealthcareInfo.MenuHinfo"
+    android:background="@color/green">
+
+
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:textSize="25sp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:text=""
+        android:background="@color/blue"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="30dp"
+        />
+
+
+    <TextView
+        android:id="@+id/textTitleInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:text="Información de la Salud"
+
+        android:textColor="@color/white"
+        app:layout_constraintRight_toRightOf="@id/textTitle"
+        app:layout_constraintLeft_toLeftOf="@id/textTitle"
+        app:layout_constraintTop_toTopOf="@id/textTitle"
+        app:layout_constraintBottom_toBottomOf="@id/textTitle"
+
+        />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/textTitleInfo"/>
+    <TextView
+        android:id="@+id/textSelecc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:text="Selecciona un botón"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/textTitleInfo"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="30dp"
+        />
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@id/textTitle"
+        android:layout_marginBottom="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonHr"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:text="Ritmo Cardiaco"
+                android:textColor="@color/white"
+                android:background="@drawable/round_border_menu"
+                android:onClick="Hr"
+                />
+            <Button
+                android:id="@+id/buttonBr"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:text="Respiración"
+                android:textColor="@color/white"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/round_border_menu"
+                android:onClick="Br"
+                />
+            <Button
+                android:id="@+id/buttonEcg"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:text="Electrocardgiograma"
+                android:textColor="@color/white"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/round_border_menu"
+                android:onClick="Ecg"
+                />
+            <Button
+                android:id="@+id/buttonPasos"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:text="Pasos"
+                android:textColor="@color/white"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/round_border_menu"
+                android:onClick="Steps"
+                />
+            <Button
+                android:id="@+id/buttonBp"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:text="Presión Sanguínea"
+                android:textColor="@color/white"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/round_border_menu"
+                android:onClick="Bp"
+                />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+
+        <!---           HEART RATE -->
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollHr"
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/textTitle"
+            android:layout_marginTop="25dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="10dp">
+
+                <!---    1° CARDVIEW SIGNAL        -->
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/white">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/textTitleHr"
+                            android:background="@color/md_blue_grey_100"
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:text="RITMO CARDIACO"
+                            android:textSize="17sp"
+                            android:gravity="center_vertical"
+                            android:textAlignment="center"
+                            android:textColor="@color/green"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                        <TextView
+                            android:id="@+id/textImageSignalHr"
+                            android:background="@color/md_blue_grey_100"
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:text="Imagen"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical"
+                            android:textAlignment="center"
+                            android:textColor="@color/md_red_800"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"/>
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/animationHeart"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:lottie_fileName="heart_info.json"
+                            app:lottie_autoPlay="true"
+                            app:lottie_loop="true"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/textTitleHr"
+                            app:lottie_scale="0.07"
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:textColor="@color/blue"
+                            android:textAlignment="gravity"
+                            android:text="El ritmo cardiaco es el número de veces que el corazón late por minuto. En estado de reposo, el corazón bombea menos sangre, ya que el gasto de oxígeno del cuerpo es poco, por lo que no necesita distribuir la sangre tan rápidamente. El rango de valores normal depende de varios factores: edad, género, estado de ánimo, estado físico y enfermedades. El rango estándar normal es de 60 a 100 latidos por minuto (lpm), los deportistas pueden modificar sus ritmo cardiaco en reposo hasta 40 lpm. La tecnología más utilizada hoy en día es luz led como indicador "
+                            app:layout_constraintTop_toBottomOf="@id/animationHeart"/>
+
+                    </android.support.constraint.ConstraintLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <!---    2° CARDVIEW DIAGNOSIS      -->
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/white"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="15dp">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/textTitleDiagHr"
+                            android:background="@color/md_blue_grey_100"
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:text="ENFERMEDADES"
+                            android:textSize="17sp"
+                            android:gravity="center_vertical"
+                            android:textAlignment="center"
+                            android:textColor="@color/green"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                        <TextView
+                            android:id="@+id/textImageDiagHr"
+                            android:background="@color/md_blue_grey_100"
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:text="Imagen"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical"
+                            android:textAlignment="center"
+                            android:textColor="@color/md_red_800"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"/>
+
+
+                        <TextView
+                            android:id="@+id/textInfoHr"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:textColor="@color/blue"
+                            android:textAlignment="gravity"
+                            android:text="Existen muchas condiciones y enfermedades que afectan el ritmo cardiaco: \n - Taquicardia: un ritmo cardiaco por encima del límite superior (100 lpm). \n - Bradicardia: un ritmo cardiaco por debajo del límite inferior (60 lpm). \n - Arritmias supraventriculares: ritmos anormales que se originan en las auriculas. \n - Arritmias ventriculares: arritmias que se originan en los ventrículos. \n - Bradiarritmias: ritmos lentos causados por una enfermedad en el sistema de conducción del corazón. \n La fatiga, estrés, diabetes, mareos, fumar, abuso de alcohol, drogas y medicamentos son algunas causas de estas condiciones.   "
+                            app:layout_constraintTop_toBottomOf="@id/textTitleDiagHr"/>
+
+                    </android.support.constraint.ConstraintLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+
+    <!---                 BREATH RATE                   -->
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollBr"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/textTitle"
+        android:layout_marginTop="25dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="10dp">
+
+            <!---    1° CARDVIEW SIGNAL        -->
+
+            <android.support.v7.widget.CardView
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/white">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textTitleBr"
+                        android:background="@color/md_blue_grey_100"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:text="FRECUENCIA RESPIRATORIA"
+                        android:textSize="17sp"
+                        android:gravity="center_vertical"
+                        android:textAlignment="center"
+                        android:textColor="@color/green"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/blue"
+                        android:textAlignment="gravity"
+                        android:text="La frecuencia respiratoria es la cantidad de respiraciones por minuto, usualmente medidas en condiciones de reposo. Los valores normales para adultos varían desde 12 hasta 20 respiraciones por minuto (bpm). Durante el ejercicio la frecuencia puede aumentar hasta 35-45 bpm y atletas puedes alcanzar valores de hasta 60-70 bpm."
+                        app:layout_constraintTop_toBottomOf="@id/textTitleBr"/>
+
+                </android.support.constraint.ConstraintLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <!---    2° CARDVIEW DIAGNOSIS      -->
+
+            <android.support.v7.widget.CardView
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/white"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="15dp">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textTitleDiagBr"
+                        android:background="@color/md_blue_grey_100"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:text="ENFERMEDADES"
+                        android:textSize="17sp"
+                        android:gravity="center_vertical"
+                        android:textAlignment="center"
+                        android:textColor="@color/green"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/textInfoBr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/blue"
+                        android:textAlignment="gravity"
+                        android:text="La frecuencia respiratoria fuera de rangos normales indica la salud del paciente. Frecuancias altas son causadas por enfermedades, estrés o baja condición física. Frecuencias fuera de rangos normales afecta al cuerpo de diferentes maneras, una frecuencia alta provoca liberar mayor cantidad de CO2 reduciendo el oxígeno en el cuerpo. Además, afecta a tu pulso cardiaco causando posible hipertensión o presión alta. Por otro lado, una respiración normal y tranquila mejora la oxigenación de las células. "
+                        app:layout_constraintTop_toBottomOf="@id/textTitleDiagBr"/>
+
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!---                 ECG                  -->
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollEcg"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/textTitle"
+        android:layout_marginTop="25dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="10dp">
+
+            <!---    1° CARDVIEW SIGNAL        -->
+
+            <android.support.v7.widget.CardView
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/white">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textTitleEcg"
+                        android:background="@color/md_blue_grey_100"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:text="ELECTROCARDIOGRAMA"
+                        android:textSize="17sp"
+                        android:gravity="center_vertical"
+                        android:textAlignment="center"
+                        android:textColor="@color/green"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/textImageSignalEcg"
+                        android:background="@color/md_blue_grey_100"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:text="Imagen"
+                        android:textSize="15sp"
+                        android:gravity="center_vertical"
+                        android:textAlignment="center"
+                        android:textColor="@color/md_red_800"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/blue"
+                        android:textAlignment="gravity"
+                        android:text="El electrocardiograma es el registro de la actividad eléctrica de cada latido del corazón. La forma más común y confiable de medición es mediante eléctrodos cutáneos en zonas específicas. La gráfica esta compuesta por varias ondas que representan distintas partes del proceso de funcionamiento del corazón: \n Onda P: es la primera onda y representa la activación auricular. \n Segmento QRS: estas tres ondas representan la activación ventricular. \n Onda T: representa la formación del impulso, es decir, la repolarización ventricular. \n Onda U: esta onda no esta siempre presente pero representa la oscilación de la repolarización de los ventrículos.  "
+                        app:layout_constraintTop_toBottomOf="@id/textTitleEcg"/>
+
+                </android.support.constraint.ConstraintLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <!---    2° CARDVIEW DIAGNOSIS      -->
+
+            <android.support.v7.widget.CardView
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/white"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="15dp">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textTitleDiagEcg"
+                        android:background="@color/md_blue_grey_100"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:text="ENFERMEDADES"
+                        android:textSize="17sp"
+                        android:gravity="center_vertical"
+                        android:textAlignment="center"
+                        android:textColor="@color/green"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/textInfoEcg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/blue"
+                        android:textAlignment="gravity"
+                        android:text="El electrocardiograma es una de las señales más importantes para el cuidado de la salud, ya que es afectado y controlado por distintos sistemas del cuerpo. Por lo tanto, es esencial para detectar enfermedades del corazón y útil para identificar anomalías en otros sistemas. Algunas de las enfermedades y condiciones detectables mediante el Ecg son: \n - Daños en el músculo cardiaco. \n - Hipokalemia (falta de potasio), hipoxemia (falta de oxígeno en la sangre), hipercalcemia (niveles altos de calcio), hipomagnesemia (falta de magnesio en la sangre). \n - Isquemia. \n - Enfermedades neurológicas. \n - Enfermedades pulmonares. "
+                        app:layout_constraintTop_toBottomOf="@id/textTitleDiagEcg"/>
+
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!---                 STEPS               -->
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollSteps"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/textTitle"
+        android:layout_marginTop="25dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="10dp">
+
+            <!---    1° CARDVIEW SIGNAL        -->
+
+            <android.support.v7.widget.CardView
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/white">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textTitleSteps"
+                        android:background="@color/md_blue_grey_100"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:text="PASOS"
+                        android:textSize="17sp"
+                        android:gravity="center_vertical"
+                        android:textAlignment="center"
+                        android:textColor="@color/green"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/blue"
+                        android:textAlignment="gravity"
+                        android:text="La acitividad física es sumamente necesaria para el bienestar humano, en adultos de 18 a 64 años es recomendado como mínimo 150 minutos semanales de actividad aeróbica de intensidad moderada, o bien, 75 minutos de intensidad vigorosa. La actividad física debe durar 10 min como mínimo y para incrementar los beneficios para la salud debe aumentarse a 300 min en intensidad moderada o 150 en intensidad vigorosa. "
+                        app:layout_constraintTop_toBottomOf="@id/textTitleSteps"/>
+
+                </android.support.constraint.ConstraintLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <!---    2° CARDVIEW DIAGNOSIS      -->
+
+            <android.support.v7.widget.CardView
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/white"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="15dp">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textTitleDiagSteps"
+                        android:background="@color/md_blue_grey_100"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:text="BENEFICIOS"
+                        android:textSize="17sp"
+                        android:gravity="center_vertical"
+                        android:textAlignment="center"
+                        android:textColor="@color/green"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/animationWalking"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:lottie_fileName="walking.json"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textTitleDiagSteps"
+                        app:lottie_scale="0.09"
+                        />
+
+                    <TextView
+                        android:id="@+id/textInfoSteps"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/blue"
+                        android:textAlignment="center"
+                        android:text="La Organización Mundial de la Salud recomienda dar 10,000 pasos al día como mínimo, ya que, al caminar, ponemos en movimiento de 200 a 650 músculos, es decir un 30% de los músculos corporales. Los principales beneficios de esta actividad son: combatir problemas de circulación, enfermedades del corazón, sobrepeso, osteoporosis, fortalecimiento de músculos de la cadera, muslos y piernas, regulación de presión sanguínea y reducción del estrés. "
+                        app:layout_constraintTop_toBottomOf="@id/animationWalking"/>
+
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!---                BP              -->
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollBp"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/textTitle"
+        android:layout_marginTop="25dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="10dp">
+
+            <!---    1° CARDVIEW SIGNAL        -->
+
+            <android.support.v7.widget.CardView
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/white">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textTitleBp"
+                        android:background="@color/md_blue_grey_100"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:text="PRESIÓN SANGUÍNEA"
+                        android:textSize="17sp"
+                        android:gravity="center_vertical"
+                        android:textAlignment="center"
+                        android:textColor="@color/green"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <AdapterViewFlipper
+                        android:id="@+id/adapterBp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/textTitleBp"
+                        android:layout_centerVertical="true"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent">
+                    </AdapterViewFlipper>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/blue"
+                        android:textAlignment="gravity"
+                        android:text="La presión sanguínea es la fuerza que se ejerce sobre las paredes de las arterias y venas. Esta se divide en dos valores: Sistólica y Diastólica. La presión Distólica es el primer valor que se arroja y representa la fuerza con la que el corazón expulsa la sangre. La presión Sistólica es el segundo valor y representa el instante en el que el corazón se llena de sangre."
+                        app:layout_constraintTop_toBottomOf="@id/adapterBp"/>
+
+                </android.support.constraint.ConstraintLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <!---    2° CARDVIEW DIAGNOSIS      -->
+
+            <android.support.v7.widget.CardView
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/white"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="15dp">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textTitleDiagBp"
+                        android:background="@color/md_blue_grey_100"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:text="ENFERMEDADES"
+                        android:textSize="17sp"
+                        android:gravity="center_vertical"
+                        android:textAlignment="center"
+                        android:textColor="@color/green"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+
+                    <TextView
+                        android:id="@+id/textInfoBp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/blue"
+                        android:textAlignment="gravity"
+                        android:text="Los valores normales de la presión sanguínea son 120/80 mmHg, estos varían muy poco con la edad aumentando en 1 mmHg cada 4 años a partir de los 24 años. Las condiciones más comunes relacionadas con la presión son hipertensión e hipotensión (valor por arriba y debajo de lo normal), estas condiciones se clasifican según que tan alejado esté la medición del valor normal y solo requiere que alguno de los dos valores este fuera de rango. Existen muchas causas, ya sean enfermedades o condiciones, algunas de ellas son: edad, estrés, fumar, genética, apnea del sueño, sobrepeso, poco ejercicio, consumo de alcohol, enfermedades del riñón y trastornos suprarrenales y tiroideos. "
+                        app:layout_constraintTop_toBottomOf="@id/textTitleDiagBp"/>
+
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+
+
+
+    <android.support.v7.widget.Toolbar
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/toolbarMain"
+        app:title=""
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#01FFFFFF">
+    </android.support.v7.widget.Toolbar>
+
+</android.support.constraint.ConstraintLayout>
+
+

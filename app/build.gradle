@@ -25,6 +25,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:support-v4:26.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
@@ -47,4 +48,5 @@ dependencies {
     implementation 'com.facebook.android:facebook-share:[4,32)'
     implementation 'net.gotev:uploadservice:2.1'
     implementation 'net.gotev:uploadservice:2.1'
+    implementation 'com.github.chrisbanes:PhotoView:2.1.3'
 }

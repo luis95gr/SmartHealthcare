@@ -1,8 +1,14 @@
 package com.example.luisguzmn.healthcare40;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
+import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothProfile;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.SharedPreferences;
+import android.graphics.YuvImage;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
@@ -44,6 +50,7 @@ import java.util.Date;
 import java.util.StringTokenizer;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
 
 import com.android.volley.Request;
@@ -52,6 +59,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.UploadNotificationConfig;
+
 
 public class PrincipalDashboard extends AppCompatActivity {
     public final String BROADCAST_ACTION_BP_MEASUREMENT = "com.worldgn.connector.BP_MEASUREMENT";
@@ -77,6 +88,20 @@ public class PrincipalDashboard extends AppCompatActivity {
     public final String INTENT_KEY_ECG_MEASUREMENT = "ECG_MEASUREMENT";
     public final String INTENT_KEY_ECG_VDO = "ECG_VDO";
     public final String INTENT_MEASUREMENT_WRITE_FAILURE = "MEASUREMENT_WRITE_FAILURE";
+    //
+    private static final int STATE_DISCONNECTED = 0;
+    private static final int STATE_CONNECTING = 1;
+    private static final int STATE_CONNECTED = 2;
+    private BluetoothManager mBluetoothManager;
+    private BluetoothAdapter mBluetoothAdapter;
+    private String mBluetoothDeviceAddress;
+    private BluetoothGatt mBluetoothGatt;
+    private int mConnectionState = STATE_DISCONNECTED;
+    public final static String ACTION_GATT_CONNECTED =
+            "com.example.luisguzmn.healthcare40.ACTION_GATT_CONNECTED";
+    public final static String ACTION_GATT_DISCONNECTED =
+            "com.example.luisguzmn.healthcare40.ACTION_GATT_DISCONNECTED";
+
 
 
     //VARIABLES
@@ -85,7 +110,7 @@ public class PrincipalDashboard extends AppCompatActivity {
     LottieAnimationView animationViewWelcome, animationViewEcg, animationFbIcon,animationInfo,animationHr;
     ProgressBar progressBar;
     TextView textWelcome, textWelcome2;
-    TextView textReloj;
+    TextView textReloj,textBluetooth;
     Button buttonBP, buttonECG, buttonBR, buttonMood, buttonFatigue, buttonSave, buttonCancel;
     PermissionListener permissionListener;
     IntentFilter intentFilter;
@@ -118,15 +143,16 @@ public class PrincipalDashboard extends AppCompatActivity {
     String stringDateBpSaved, stringDateBrSaved, stringDateMoodSaved, stringDateFatigueSaved,stringDateEcgSaved;
     String stringHourBpSaved, stringHourBrSaved, stringHourMoodSaved, stringHourFatigueSaved,stringHourEcgSaved;
     String stringDate;
-    String stringHour;
+    String stringHour,stringHourEcgDb;
     Date date;
-    SimpleDateFormat sdfHour;
+    SimpleDateFormat sdfHour,sdfHourDbEcg;
     SimpleDateFormat sdfDate;
     //SEND DATA
     SharedPreferences spLogin;
     String stringEmail;
     String stringPass;
     final String ip = "meddata.sytes.net";
+    String path,pathSend;
     //
     //FACEBOOK
     CallbackManager callbackManager;
@@ -169,6 +195,7 @@ public class PrincipalDashboard extends AppCompatActivity {
         textReloj = (TextView) findViewById(R.id.textReloj);
         textHR = (TextView) findViewById(R.id.textHR);
         textSteps = (TextView) findViewById(R.id.textSteps);
+        textBluetooth = (TextView)findViewById(R.id.textBluetooth);
         buttonBP = (Button) findViewById(R.id.buttonBP);
         buttonECG = (Button) findViewById(R.id.buttonECG);
         buttonBR = (Button) findViewById(R.id.buttonBR);
@@ -232,12 +259,13 @@ public class PrincipalDashboard extends AppCompatActivity {
         Connector.getInstance().startStepsHRDynamicMeasurement();
         booleanDynamic = true;
         //STEPS
-        /*timerSteps.scheduleAtFixedRate(new TimerTask() {
+       /* timerSteps.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    Connector.getInstance().getStepsData();
+
+                    //Connector.getInstance().getStepsData();
                 }
-            }, 0, 1500);
+            }, 0, 2000);
         //
         //HEART RATE
         booleanAnimations = true;
@@ -251,6 +279,7 @@ public class PrincipalDashboard extends AppCompatActivity {
             }, 0, 50000);*/
 
         //
+
         //ANIMATIONS
         textWelcome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -357,7 +386,7 @@ public class PrincipalDashboard extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //registerReceiver(heloMeasurementReceiver, intentFilter);
+        registerReceiver(heloMeasurementReceiver, intentFilter);
     }
 
 
@@ -695,8 +724,10 @@ public class PrincipalDashboard extends AppCompatActivity {
         date = Calendar.getInstance().getTime();
         sdfDate = new SimpleDateFormat("yyyy.MM.dd");
         sdfHour = new SimpleDateFormat("h:mm:a");
+        sdfHourDbEcg = new SimpleDateFormat("h-mm-a");
         stringDate = sdfDate.format(date);
         stringHour = sdfHour.format(date);
+        stringHourEcgDb = sdfHourDbEcg.format(date);
         checkConnection();
         //
         //BUTTONS
@@ -758,6 +789,10 @@ public class PrincipalDashboard extends AppCompatActivity {
         spPopupEditor.clear();
         spPopupEditor.apply();
         //
+        if(!booleanDynamic){
+            Connector.getInstance().startStepsHRDynamicMeasurement();
+            booleanDynamic = true;
+        }
     }
 
 
@@ -833,7 +868,9 @@ public class PrincipalDashboard extends AppCompatActivity {
                             //CREATE TXT FILE
                             try {
                                 File myDir = new File(Environment.getExternalStorageDirectory() + "/SmartHealthcareECG");
-                                myDir.mkdirs();
+                                if (!myDir.exists()) {
+                                    myDir.mkdirs();
+                                }
                                 File file = new File(myDir, stringHourEcgSaved + "-" + stringDateEcgSaved);
                                 FileOutputStream fos = new FileOutputStream(file);
                                 fos.write(ecgVdo.getBytes());
@@ -892,6 +929,42 @@ public class PrincipalDashboard extends AppCompatActivity {
             }
             if (booleanEcgMeasure) {
                 booleanEcgMeasure = false;
+                //CREATE FILE
+                try {
+                    path = Environment.getExternalStorageDirectory() + "/SmartHealthcareECG";
+                    Toast.makeText(this, path, Toast.LENGTH_LONG).show();
+                    File myDir = new File(path);
+                    myDir.mkdirs();
+                    File file = new File(myDir, stringHourEcgDb + "-" + stringDate);
+                    FileOutputStream fos = new FileOutputStream(file);
+                    fos.write(ecgVdo.getBytes());
+                    fos.close();
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Guardado", Snackbar.LENGTH_SHORT);
+                    snackbar.show();
+                    pathSend = path + "/" + stringHourEcgDb + "-" + stringDate;
+                    Toast.makeText(this, pathSend, Toast.LENGTH_SHORT).show();
+                } catch (java.io.IOException e){
+                    e.printStackTrace();
+                }
+                //UPLOAD FILE
+                try {
+                    String uploadId = UUID.randomUUID().toString();
+
+                            //Creating a multi part request
+                                               new MultipartUploadRequest(getApplicationContext(), uploadId,"http://meddata.sytes.net/dataVar/registerECG.php")
+                                                       .addFileToUpload(pathSend, "value") //Adding file
+                            .addParameter("email", stringEmail) //Adding text parameter to the request
+                                                       .addParameter("pass",stringPass)
+                                                       .addParameter("var","ecg")
+                                                       .addParameter("date",stringDate)
+                                                       .addParameter("time",stringHour)
+                            .setNotificationConfig(new UploadNotificationConfig())
+                            .setMaxRetries(2)
+                            .startUpload(); //Starting the upload
+
+                } catch (Exception exc) {
+                    Toast.makeText(getApplicationContext(), exc.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         } else {
             ShowDialog();
@@ -940,12 +1013,13 @@ public class PrincipalDashboard extends AppCompatActivity {
         }
 
         spMeasuresSavedEditor.apply();
-
+        //SERVICE
         if (contBp!=0 || contBr !=0 || contMood !=0 || contFatigue !=0) {
             contBp = contBr = contMood = contFatigue = 0;
             Intent intent = new Intent(PrincipalDashboard.this, serviceInternet.class);
             startService(intent);
         }
+
     }
 
     private void VolleyPetition(String URL) {
@@ -1091,10 +1165,27 @@ public class PrincipalDashboard extends AppCompatActivity {
         return ageYears;
     }
 
+    private BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {
+        @Override
+        public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
+            super.onConnectionStateChange(gatt, status, newState);
+            if (newState == BluetoothProfile.STATE_CONNECTED) {
+                status = 1;
+                textBluetooth.setText("Conectado");
+                return;
+            } else if (newState == STATE_DISCONNECTED) {
+                status = 0;
+                textBluetooth.setText("Desconectado");
+                return;
+            }
+        }
+    };
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //unregisterReceiver(heloMeasurementReceiver);
+        unregisterReceiver(heloMeasurementReceiver);
     }
 }
 

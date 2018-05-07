@@ -1,9 +1,14 @@
 package com.example.luisguzmn.healthcare40;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +28,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -36,7 +43,7 @@ import java.util.Timer;
 public class PopUp extends AppCompatActivity {
 
     //VARIABLES
-    SharedPreferences sp,spPopup;
+    SharedPreferences sp,spPopup,spSend;
     TextView textName,textGender,textWeight,textAge,textHeight;
     TextView textBRtitle,textBPtitle,textMoodTitle, textFatigueTitle,textHRtitle,textStepsTitle;
     int intWeight,intHeight;
@@ -44,6 +51,7 @@ public class PopUp extends AppCompatActivity {
     TextView textEAge,textEGender,textEWeight,textEHeight;
     //
     String stringBpmax, stringBpmin, stringBr, stringMood, stringFatigue,stringHr,stringSteps;
+    String stringDate,stringHour;
     int width;
     int height;
     //
@@ -61,7 +69,6 @@ public class PopUp extends AppCompatActivity {
     String stringDiagSend,stringVarSend,stringValueSend;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +82,7 @@ public class PopUp extends AppCompatActivity {
         //CAST
         sp = getSharedPreferences("login",MODE_PRIVATE);
         spPopup = PreferenceManager.getDefaultSharedPreferences(this);
+        spSend = PreferenceManager.getDefaultSharedPreferences(this);
         //
         textName = (TextView)findViewById(R.id.textName);
         textGender = (TextView)findViewById(R.id.textGender);
@@ -154,6 +162,11 @@ public class PopUp extends AppCompatActivity {
 
         //STEPS
         if (!stringSteps.equals("0") && stringHr.equals("0")){
+            textMeasureHr.setVisibility(View.INVISIBLE);
+            textMeasureFatigue.setVisibility(View.INVISIBLE);
+            textMeasureMood.setVisibility(View.INVISIBLE);
+            textMeasureBp.setVisibility(View.INVISIBLE);
+            textMeasureBr.setVisibility(View.INVISIBLE);
             getSupportActionBar().setTitle("Info Pasos");
             textStepsTitle.setVisibility(View.VISIBLE);
             textMeasureSteps.setVisibility(View.VISIBLE);
@@ -507,26 +520,15 @@ public class PopUp extends AppCompatActivity {
                 Date date = Calendar.getInstance().getTime();
                 SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy.MM.dd");
                 SimpleDateFormat sdfHour = new SimpleDateFormat("h:mm:a");
-                String stringDate = sdfDate.format(date);
-                String stringHour = sdfHour.format(date);
+                stringDate = sdfDate.format(date);
+                stringHour = sdfHour.format(date);
                 //
-                VolleyPetition("http://"+ ip +"/dataVar/register.php?email=" + sp.getString("email","no email") + "&pass=" +
-                        sp.getString("password","no") + "&var=" + stringVarSend + "&value=" + stringValueSend+ "&date=" +
-                        stringDate + "&time=" + stringHour + "&diagnostic=" + stringDiagSend);
+                checkConnection();
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
     //END MENU 3 DOTS
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        SharedPreferences.Editor spPopupEditor = spPopup.edit();
-        spPopupEditor.putString("HR","0");
-        spPopupEditor.putString("Steps","0");
-        spPopupEditor.apply();
-    }
 
     private void VolleyPetition(String URL) {
         Log.i("url", "" + URL);
@@ -534,7 +536,7 @@ public class PopUp extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Snackbar snackbar = Snackbar.make(findViewById(R.id.principal_dashboard), "Guardado", Snackbar.LENGTH_LONG);
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.popup), "Guardado", Snackbar.LENGTH_LONG);
                 snackbar.show();
 
             }
@@ -548,7 +550,50 @@ public class PopUp extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
+    protected boolean internet() {
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = null;
+        networkInfo = cm.getActiveNetworkInfo();
 
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public void checkConnection (){
+        if (internet()){
+            VolleyPetition("http://"+ ip +"/dataVar/register.php?email=" + sp.getString("email","no email") + "&pass=" +
+                    sp.getString("pass","no") + "&var=" + stringVarSend + "&value=" + stringValueSend+ "&date=" +
+                    stringDate + "&time=" + stringHour + "&diagnostic=" + stringDiagSend);
+        }else {
+            ShowDialog3();
+        }
 
+    }
+    public void ShowDialog3() {
+        final SharedPreferences.Editor spSendEditor = spSend.edit();
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setTitle("INTERNET NO DISPONIBLE");
+        builder.setMessage("ENCIENDE TU CONEXIÓN A INTERNET");
+        builder.setPositiveButton("REINTENTAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                checkConnection();
+            }
+        });
+        builder.create().show();
+        spSendEditor.apply();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences.Editor spPopupEditor = spPopup.edit();
+        spPopupEditor.putString("HR","0");
+        spPopupEditor.putString("Steps","0");
+        spPopupEditor.apply();
+        //STATUS
+    }
 
 }

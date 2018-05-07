@@ -40,6 +40,7 @@ public class serviceInternet extends Service {
     StringTokenizer tokenDataBr = null;
     StringTokenizer tokenDataMood = null;
     StringTokenizer tokenDataFatigue = null;
+
     //
     String[] stringTokenBpmax = new String[20];
     String[] stringTokenBpmin = new String[20];
@@ -55,8 +56,7 @@ public class serviceInternet extends Service {
     //
     String stringEmail;
     String stringPass;
-    SharedPreferences spMeasuresSaved;
-    SharedPreferences spTaskFinished;
+    SharedPreferences spMeasuresSaved,spSend;
     int contBp;
     int contBr;
     int contMood;
@@ -190,6 +190,8 @@ public class serviceInternet extends Service {
                         VolleyPetition("http://"+ ip +"/dataVar/register.php?email=" + stringEmail + "&pass=" + stringPass +
                                 "&var=" + stringTokenFatigue[1] + "&value=" + stringTokenFatigue[2] + "&date=" + stringTokenFatigue[3] + "&time=" + stringTokenFatigue[4]);
                     }
+
+                    //
                 }
             }
         },0,5000);
@@ -200,6 +202,7 @@ public class serviceInternet extends Service {
 
     @Override
     public void onDestroy() {
+        timer.cancel();
         notificationManager.notify(1,builderDone.build());
     }
 

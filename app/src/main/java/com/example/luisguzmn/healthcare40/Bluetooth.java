@@ -63,7 +63,6 @@ public class Bluetooth extends AppCompatActivity {
         //
 
         if (bluetoothAdapter == null) {
-
             Toast.makeText(this, "Bluetooth no disponible", Toast.LENGTH_LONG).show();
         }
         //BLUETOOTH START
@@ -121,7 +120,7 @@ public class Bluetooth extends AppCompatActivity {
         buttonHelo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(spLogin.getBoolean("success",false)==false) {
+                if(!spLogin.getBoolean("success",false)) {
                     Intent intent = new Intent(Bluetooth.this, crearCuentaHelo.class);
                     startActivity(intent);
                 }else {
