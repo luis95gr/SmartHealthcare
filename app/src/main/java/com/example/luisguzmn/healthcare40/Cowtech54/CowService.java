@@ -54,7 +54,17 @@ public class CowService extends Service {
     private SharedPreferences sharedPref;
     private SharedPreferences.Editor editor;
 
+
+    private String deviceMac;
+    private String deviceName;
+    private boolean deviceConnected = false;
+
+
     public CowService() {
+    }
+
+    public boolean isDeviceConnected() {
+        return deviceConnected;
     }
 
     public BtMessageFiles getFileCSV() {
@@ -63,6 +73,10 @@ public class CowService extends Service {
 
     public void setFileCSV(BtMessageFiles fileCSV) {
         this.fileCSV = fileCSV;
+    }
+
+    public void setDeviceMac(String deviceMac) {
+        this.deviceMac = deviceMac;
     }
 
     @Override
@@ -83,10 +97,14 @@ public class CowService extends Service {
         //Init filcsv
         initBtMessageFiles();
 
-        if(mBTAdapter.isEnabled()) {
-            //TODO: Create strings in SharedPreferences that are to update an
-            spawnConnectThread("98:D3:32:20:E2:08", "COW");
-        }
+        //Update the paired device textview
+        deviceMac = sharedPref.getString("cow_paired_mac", "Not synced");
+        deviceName = sharedPref.getString("cow_paired_name", "Not synced");
+
+        //Load device and connect
+        bluetoothConnectThread(deviceMac,  deviceName);
+//        bluetoothConnectThread("98:D3:32:20:E2:08",  "COW");
+
 
         mHandler = new Handler(){
             public void handleMessage(Message msg){
@@ -172,64 +190,64 @@ public class CowService extends Service {
         prefixTxt.setText(prefixStr);*/
     }
 
-    public void spawnConnectThread(final String address, final String name){
-        new Thread()
-        {
-            public void run() {
-                boolean fail = false;
+    public void bluetoothConnectThread(final String address, final String name){
+        if(mBTAdapter.isEnabled()) {
+            new Thread()
+            {
+                public void run() {
+                    boolean fail = false;
 
+                    BluetoothDevice device = mBTAdapter.getRemoteDevice(address);
 
-                BluetoothDevice device = mBTAdapter.getRemoteDevice(address);
+                    Log.d("BluetoothW", "Spawn threading");
 
-
-                Log.d("BluetoothW", "Spawn threading");
-
-                try {
-                    mBTSocket = createBluetoothSocket(device);
-
-                    Log.d("BluetoothW", "bt socket created");
-                } catch (IOException e) {
-                    fail = true;
-                    Toast.makeText(getBaseContext(), "Socket creation failed", Toast.LENGTH_SHORT).show();
-                }
-                // Establish the Bluetooth socket connection.
-                try {
-                    Log.d("BluetoothW", "bt socket TRYING TO connect!");
-                    mBTSocket.connect();
-                    //mBTSocket.connect();
-                    Log.d("BluetoothW", "bt socket connected!");
-                } catch (IOException e) {
                     try {
-                        fail = true;
-                        mBTSocket.close();
+                        mBTSocket = createBluetoothSocket(device);
 
-                        Log.d("BluetoothW", "bt socket TRYed, now Closed");
-                        mHandler.obtainMessage(CONNECTING_STATUS, -1, -1)
-                                .sendToTarget();
-                    } catch (IOException e2) {
-                        //insert code to deal with this
+                        Log.d("BluetoothW", "bt socket created");
+                    } catch (IOException e) {
+                        fail = true;
                         Toast.makeText(getBaseContext(), "Socket creation failed", Toast.LENGTH_SHORT).show();
                     }
-                }
-                if(!fail) {
-                    cConnectedThread = new ConnectedThread(mBTSocket);
-                    cConnectedThread.start();
+                    // Establish the Bluetooth socket connection.
+                    try {
+                        Log.d("BluetoothW", "bt socket TRYING TO connect!");
+                        mBTSocket.connect();
+                        //mBTSocket.connect();
+                        Log.d("BluetoothW", "bt socket deviceConnected!");
+                    } catch (IOException e) {
+                        try {
+                            fail = true;
+                            mBTSocket.close();
 
-                    //Send mode messages
-                    //modeSend("BT", true);
-
-                    try{
-                        Thread.sleep(2000); //Wait to send the 2nd message
-                    }catch(InterruptedException e){
-
+                            Log.d("BluetoothW", "bt socket TRYed, now Closed");
+                            mHandler.obtainMessage(CONNECTING_STATUS, -1, -1)
+                                    .sendToTarget();
+                        } catch (IOException e2) {
+                            //insert code to deal with this
+                            Toast.makeText(getBaseContext(), "Socket creation failed", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                    //modeSend("SD", true);
+                    if(!fail) {
+                        cConnectedThread = new ConnectedThread(mBTSocket);
+                        cConnectedThread.start();
 
-                    mHandler.obtainMessage(CONNECTING_STATUS, 1, -1, name)
-                            .sendToTarget();
+                        //Send mode messages
+                        //modeSend("BT", true);
+
+                        try{
+                            Thread.sleep(2000); //Wait to send the 2nd message
+                        }catch(InterruptedException e){
+
+                        }
+                        //modeSend("SD", true);
+
+                        mHandler.obtainMessage(CONNECTING_STATUS, 1, -1, name)
+                                .sendToTarget();
+                    }
                 }
-            }
-        }.start();
+            }.start();
+        }
     }
 
     private BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException {
@@ -267,6 +285,7 @@ public class CowService extends Service {
             byte[] buffer; // = new byte[1024];  // buffer store for the stream
             int bytes; // bytes returned from read()
             // Keep listening to the InputStream until an exception occurs
+            deviceConnected = true;
             while (true) {
                 try {
                     // Read from the InputStream
@@ -281,10 +300,11 @@ public class CowService extends Service {
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-
+                    deviceConnected = false;
                     break;
                 }
             }
+            deviceConnected = false;
         }
 
         //    Call this from the main activity to send data to the remote device
@@ -310,8 +330,10 @@ public class CowService extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "Cow Service Destroyed and STOPPED");
-        cConnectedThread.cancel();
+        if(cConnectedThread!=null) //If there is a Connected Thread initilized
+            cConnectedThread.cancel();
         mHandler.removeCallbacks(cConnectedThread); //Remove possible conflicts
+        //deviceConnected = false; //make sure it is false
     }
 
     /**

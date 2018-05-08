@@ -460,7 +460,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // updated to reflect the new value, per the Android Design
             // guidelines.
 
-            bindPreferenceSummaryToValue(findPreference("cow_paired"));
+            bindPreferenceSummaryToValue(findPreference("cow_paired_name"));
             bindPreferenceSummaryToValue(findPreference("cow_folder"));
             bindPreferenceSummaryToValue(findPreference("cow_file_prefix"));
             bindPreferenceSummaryToValue(findPreference("cow_period_files"));

@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.example.luisguzmn.healthcare40.Cowtech54.CowActivity;
 import com.example.luisguzmn.healthcare40.Cowtech54.CowTabActivity;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;

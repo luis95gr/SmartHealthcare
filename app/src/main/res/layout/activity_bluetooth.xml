@@ -15,7 +15,7 @@
         android:text="ON"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/list"
+        app:layout_constraintRight_toLeftOf="@id/btnPaired"
         />
 
     <Button
@@ -25,11 +25,11 @@
         android:text="OFF"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/list"
+        app:layout_constraintLeft_toRightOf="@id/btnPaired"
         />
 
     <Button
-        android:id="@+id/list"
+        android:id="@+id/btnPaired"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ACTUALIZAR DISPOSITIVOS"
@@ -38,6 +38,16 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         />
+    <Button
+        android:id="@+id/btnDiscover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DISCOVER"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnPaired"
+        />
+
 
     <ListView
         android:id="@+id/viewlist"
@@ -69,7 +79,7 @@
     android:text="HeloLX"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/list"
+    app:layout_constraintTop_toBottomOf="@id/btnPaired"
     />
     <Button
         android:id="@+id/btnJabra"
@@ -79,6 +89,16 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonHelo"
+        />
+
+    <Button
+        android:id="@+id/btnCow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="COW SP"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnJabra"
         />
 
 </android.support.constraint.ConstraintLayout>

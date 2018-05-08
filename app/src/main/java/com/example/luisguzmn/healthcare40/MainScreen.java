@@ -114,6 +114,7 @@ public class MainScreen extends MenuToolbar{//MenuToolbar extends AppCompatActiv
         //MENU
         //-----------------------------------------------
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbarMain);
+
 //        MenuToolbar menu = new MenuToolbar(toolbar,"Main",this);
         this.setToolbar(toolbar);
         this.setContext(this);

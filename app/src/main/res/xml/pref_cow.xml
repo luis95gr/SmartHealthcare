@@ -9,10 +9,12 @@
     android:title="General COW settings">
         <EditTextPreference
             android:icon="@drawable/pref_ic_paired"
-            android:key="cow_paired"
+            android:key="cow_paired_name"
             android:title="Paired COW device"
             android:defaultValue="COW unknown"
-            android:dialogTitle="EditText Dialog" />
+            android:dialogTitle="EditText Dialog"
+             /><!--
+        android:enabled="false"-->
         <EditTextPreference
             android:icon="@drawable/pref_ic_folder"
             android:key="cow_folder"

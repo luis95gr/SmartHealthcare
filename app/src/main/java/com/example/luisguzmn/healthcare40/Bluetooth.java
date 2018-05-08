@@ -3,21 +3,22 @@ package com.example.luisguzmn.healthcare40;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.preference.DialogPreference;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.luisguzmn.healthcare40.Helo.HeloConnection;
@@ -32,15 +33,22 @@ public class Bluetooth extends AppCompatActivity {
     //VARIABLES
     BluetoothClass bluetoothClass;
     public String textoPosicion;
-    Button b_on, b_off, b_disc, b_list;
+    Button b_on, b_off, b_disc, b_paired, b_discover;
     ListView list;
     BluetoothAdapter bluetoothAdapter;
     private static final int REQUEST_ENABLED = 0;
     private static final int REQUEST_DISCOVERABLE = 0;
     SharedPreferences infoBluetooth;
     SharedPreferences spLogin;
-    Button buttonHelo, btnJabra;
+    Button buttonHelo, btnJabra, btnCow;
+    private String name;
+    private String type;
+    private String macAdress;
+
+    ArrayAdapter<String> BTarrayAdapter;
     //
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +62,13 @@ public class Bluetooth extends AppCompatActivity {
         //CAST
         b_on = (Button) findViewById(R.id.on);
         b_off = (Button) findViewById(R.id.off);
-        b_list = (Button) findViewById(R.id.list);
+        b_paired = (Button) findViewById(R.id.btnPaired);
+        b_discover = (Button) findViewById(R.id.btnDiscover);
         list = (ListView) findViewById(R.id.viewlist);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         buttonHelo = (Button)findViewById(R.id.buttonHelo);
         btnJabra = (Button)findViewById(R.id.btnJabra);
+        btnCow = (Button)findViewById(R.id.btnCow);
 
         //
 
@@ -74,10 +84,10 @@ public class Bluetooth extends AppCompatActivity {
         for (BluetoothDevice bt : pairedDevices) {
             BluetoothClass bluetoothClass = bt.getBluetoothClass();
             int tipoDeDispositivo = bluetoothClass.getDeviceClass();
-            devices.add("Nombre: " + bt.getName() + "\n Class: " + tipoDeDispositivo + "\n DIRECCIÓN MAC: " + bt.getAddress());
+            devices.add("Nombre: " + bt.getName() + "\nClass: " + tipoDeDispositivo + "\nDIRECCIÓN MAC: " + bt.getAddress());
         }
-        ArrayAdapter arrayAdapter = new ArrayAdapter(Bluetooth.this, android.R.layout.simple_list_item_1, devices);
-        list.setAdapter(arrayAdapter);
+        BTarrayAdapter = new ArrayAdapter(Bluetooth.this, android.R.layout.simple_list_item_1, devices);
+        list.setAdapter(BTarrayAdapter);
         ///
         ////////////////////
         /////BUTTONS
@@ -95,22 +105,27 @@ public class Bluetooth extends AppCompatActivity {
             }
         });
 
-        b_list.setOnClickListener(new View.OnClickListener() {
+        b_paired.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
 
-                ArrayList<String> devices = new ArrayList<String>();
+               // ArrayList<String> devices = new ArrayList<String>();
+                BTarrayAdapter.clear();
 
                 for (BluetoothDevice bt : pairedDevices) {
                     bluetoothClass = bt.getBluetoothClass();
                     int tipoDeDispositivo = bluetoothClass.getDeviceClass();
-                    devices.add("Nombre: " + bt.getName() + "\n Clase: " + tipoDeDispositivo + "\n Dirección MAC: " + bt.getAddress());
-
+                  //  devices.add("Nombre: " + bt.getName() + "\n Clase: " + tipoDeDispositivo + "\n Dirección MAC: " + bt.getAddress());
+                    BTarrayAdapter.add("Nombre: " + bt.getName() + "\nClase: " + tipoDeDispositivo + "\nDirección MAC: " + bt.getAddress());
 
                 }
-                ArrayAdapter arrayAdapter = new ArrayAdapter(Bluetooth.this, android.R.layout.simple_list_item_1, devices);
-                list.setAdapter(arrayAdapter);
+            }
+        });
+        b_discover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                discover(view);
             }
         });
         btnJabra.setOnClickListener(new View.OnClickListener() {
@@ -129,16 +144,23 @@ public class Bluetooth extends AppCompatActivity {
                 }
             }
         });
-
+        btnCow.setOnClickListener(new View.OnClickListener() {
+          @Override
+              public void onClick(View view) {
+              editorBluetooth.putString("cow_paired_name",name);
+              editorBluetooth.putString("cow_paired_mac",macAdress);
+              editorBluetooth.apply();
+              }
+        });
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 String textoPosicion = String.valueOf(adapterView.getItemAtPosition(position));
                 String device[] = textoPosicion.split("\n", 5);
-                String name = device[0].substring(6);
-                String type = device[1].substring(7);
-                String macAdress = device[2].substring(12);
+                name = device[0].substring(8);
+                type = device[1].substring(7);
+                macAdress = device[2].substring(15);
                 editorBluetooth.putString("name", name);
                 editorBluetooth.putString("type", type);
                 editorBluetooth.putString("macAdress", macAdress);
@@ -147,11 +169,60 @@ public class Bluetooth extends AppCompatActivity {
             }
         });
 
-        String name = infoBluetooth.getString("name", "No name found");
-        String type = infoBluetooth.getString("type", "No type found");
-        String macAdress = infoBluetooth.getString("macAdress", "No MAC ADRESS found");
+        name = infoBluetooth.getString("name", "No name found");
+        type = infoBluetooth.getString("type", "No type found");
+        macAdress = infoBluetooth.getString("macAdress", "No MAC ADRESS found");
 
     }
+
+    private void discover(View view){
+
+
+        // Check if the device is already discovering
+        if(bluetoothAdapter.isDiscovering()){
+            bluetoothAdapter.cancelDiscovery();
+            Toast.makeText(getApplicationContext(),"Discovery stopped",Toast.LENGTH_SHORT).show();
+        }
+        else{
+            if(bluetoothAdapter.isEnabled()) {
+                BTarrayAdapter.clear(); // clear items
+                bluetoothAdapter.startDiscovery();
+                Toast.makeText(getApplicationContext(), "Discovery started", Toast.LENGTH_SHORT).show();
+
+                // Register for broadcasts when a device is discovered.
+                registerReceiver(blReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
+
+                Log.d("BT", "Dev found f2");
+//                popupDevices();
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Bluetooth not on", Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
+    }
+
+    private final BroadcastReceiver blReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            Log.d("BT", "Broadcast Receiver init");
+            if(BluetoothDevice.ACTION_FOUND.equals(action)){
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                // add the name to the list
+                Log.d("BT", "Dev found f1");
+
+                BluetoothClass bluetoothClass = device.getBluetoothClass();
+                int deviceType = bluetoothClass.getDeviceClass();
+
+                BTarrayAdapter.add("Nombre: " + device.getName() + "\nClase: " + deviceType + "\nDirección MAC: " + device.getAddress());
+                BTarrayAdapter.notifyDataSetChanged();
+
+            }
+        }
+    };
 
     public void ShowDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

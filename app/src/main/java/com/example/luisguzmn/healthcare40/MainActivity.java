@@ -1,5 +1,6 @@
 package com.example.luisguzmn.healthcare40;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -8,6 +9,8 @@ import android.content.pm.Signature;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -32,6 +35,8 @@ import org.json.JSONException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
@@ -56,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //PERMISSIONS
+        checkPermissions();
+
         //LOGIN AUTO
         sp = getSharedPreferences("login",MODE_PRIVATE);
         if(sp.contains("email") && sp.contains("pass")){
@@ -174,6 +183,54 @@ public class MainActivity extends AppCompatActivity {
         mieditor.putInt("acceso",acceso);
         mieditor.apply();
     }
+
+    //===========================================================================
+    //============================= PERMISSIONS  ====================================
+    public static final int MULTIPLE_PERMISSIONS = 10; // code you want.
+
+    String[] permissionsList = new String[]{
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION};
+
+
+    private  boolean checkPermissions() {
+        int result;
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        for (String p:permissionsList) {
+            result = ContextCompat.checkSelfPermission(this,p);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(p);
+            }
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),MULTIPLE_PERMISSIONS );
+            return false;
+        }
+        return true;
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissionsList[], int[] grantResults) {
+        switch (requestCode) {
+            case MULTIPLE_PERMISSIONS:{
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    // permissions granted.
+                } else {
+                    String permissions = "";
+                    for (String per : permissionsList) {
+                        permissions += "\n" + per;
+                    }
+                    // permissions list of don't granted permission
+                }
+                return;
+            }
+        }
+    }
+
+
     /*
     public void onResume (){
         super.onResume();

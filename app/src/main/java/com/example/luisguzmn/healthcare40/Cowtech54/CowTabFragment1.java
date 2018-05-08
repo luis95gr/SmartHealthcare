@@ -4,18 +4,25 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.luisguzmn.healthcare40.R;
+
+import org.w3c.dom.Text;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +47,11 @@ public class CowTabFragment1 extends Fragment implements View.OnClickListener{
     private Button sUnbindBtn;
     private Button sUpdateBtn;
 
+    private TextView sPairedDeviceTxt;
+
+    //Preferences
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -81,6 +93,10 @@ public class CowTabFragment1 extends Fragment implements View.OnClickListener{
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = prefs.edit();
+
+
 
 
     }
@@ -98,6 +114,7 @@ public class CowTabFragment1 extends Fragment implements View.OnClickListener{
         sUnbindBtn = (Button) view.findViewById(R.id.cowTab1UnbindBtn);
 
         sUpdateBtn = (Button) view.findViewById(R.id.cowTab1UpdateBtn);
+        sPairedDeviceTxt = (TextView) view.findViewById(R.id.pairedDeviceTxt);
 
         sStartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,8 +158,14 @@ public class CowTabFragment1 extends Fragment implements View.OnClickListener{
                 }
             }
         });
+
+        //Update the paired device textview
+        String pairedDeviceMac = prefs.getString("cow_paired_mac", "Not synced");
+        sPairedDeviceTxt.setText("Device: "+ pairedDeviceMac);
+
         return view;
     }
+
 
 
     protected ServiceConnection sServerConn = new ServiceConnection() {
@@ -151,6 +174,7 @@ public class CowTabFragment1 extends Fragment implements View.OnClickListener{
             // We've bound to LocalService, cast the IBinder and get LocalService instance
             CowService.CowBinder binder = (CowService.CowBinder) service;
             cowService = binder.getService();
+            //cowService.set
             sBound = true;
             Log.d(TAG, "onServiceConnected");
         }
@@ -185,6 +209,14 @@ public class CowTabFragment1 extends Fragment implements View.OnClickListener{
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Update the paired device textview
+        String pairedDeviceMac = prefs.getString("cow_paired_mac", "Not synced");
+        sPairedDeviceTxt.setText("Device: "+ pairedDeviceMac);
     }
 
     @Override
