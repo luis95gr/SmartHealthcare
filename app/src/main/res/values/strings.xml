@@ -33,6 +33,22 @@
         <item>7</item>
     </string-array>
 
+    <string-array name="stringVar">
+        <item>Selecciona Variable</item>
+        <item>BR</item>
+        <item>HR</item>
+        <item>BPmax</item>
+        <item>BPmin</item>
+        <item>Mood</item>
+        <item>Fatigue</item>
+    </string-array>
+
+    <string-array name="stringLabel">
+        <item>Selecciona Semana/Día</item>
+        <item>Semana</item>
+        <item>Día</item>
+    </string-array>
+
     <string-array name="hoursExe">
         <item>-</item>
         <item>1 or less</item>

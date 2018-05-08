@@ -1,27 +1,55 @@
 package com.example.luisguzmn.healthcare40;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.net.UrlQuerySanitizer;
+import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.luisguzmn.healthcare40.HealthcareInfo.MenuHinfo;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.LegendRenderer;
-import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.DataPointInterface;
-import com.jjoe64.graphview.series.OnDataPointTapListener;
-import com.jjoe64.graphview.series.PointsGraphSeries;
-import com.jjoe64.graphview.series.Series;
+import com.airbnb.lottie.LottieAnimationView;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -31,27 +59,51 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
+import com.mikepenz.materialdrawer.util.DrawerImageLoader;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class Statistics extends AppCompatActivity {
 
-
-    //DAYS VARIABLES
+    JSONArray jsonArray;
+    private String a;
+    ArrayList<String> mylist = new ArrayList<String>();
+    ArrayList<String> mylistDates = new ArrayList<String>();
+    float[] floatValues;
+    private LineChart mChart;
+    String var,date;
+    TextView minValue,maxValue,avgValue;
+    Button buttonS;
+    Button btnBR,btnHR,btnBPmax,btnBPmin,btnMood,btnFatigue;
     TextView text_monday,text_tuesday,text_wednesday,text_thursday,text_friday,text_saturday,text_sunday;
-    //
-    //VARIABLES
-    GraphView graphViewBP;
-    TextView textView;
-    //
+
+
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.statistics);
-        menu();
-        //CAST DAYS
+
+        SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
+
+        //Dias
         text_monday = (TextView) findViewById(R.id.text_monday);
         text_tuesday = (TextView) findViewById(R.id.text_tuesday);
         text_wednesday = (TextView) findViewById(R.id.text_wednesday);
@@ -59,169 +111,23 @@ public class Statistics extends AppCompatActivity {
         text_friday = (TextView) findViewById(R.id.text_friday);
         text_saturday = (TextView) findViewById(R.id.text_saturday);
         text_sunday = (TextView) findViewById(R.id.text_sunday);
-        //
-        dias();
-        //CAST
-        graphViewBP = (GraphView)findViewById(R.id.graphBP);
-        textView = (TextView)findViewById(R.id.textView78);
-        //
-        //
-        //BP GRAPH
-        Calendar calendar = Calendar.getInstance();
-        Date d1 = calendar.getTime();
-        calendar.add(Calendar.DATE, 1);
-        Date d2 = calendar.getTime();
-        calendar.add(Calendar.DATE, 1);
-        Date d3 = calendar.getTime();
-        calendar.add(Calendar.DATE, 1);
-        Date d4 = calendar.getTime();
-        calendar.add(Calendar.DATE, 1);
-        Date d5 = calendar.getTime();
-        calendar.add(Calendar.DATE, 1);
-        Date d6 = calendar.getTime();
-        calendar.add(Calendar.DATE, 1);
-        Date d7 = calendar.getTime();
-        calendar.add(Calendar.DATE, 1);
-        Date d8 = calendar.getTime();
 
-
-        Date todays = Calendar.getInstance().getTime();
-        SimpleDateFormat formatters = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
-        String currentDateTimeStrin = formatters.format(todays);
-
-        textView.setText(currentDateTimeStrin);
-
-
-        PointsGraphSeries<DataPoint> series = new PointsGraphSeries<>(new DataPoint[] {
-                new DataPoint(d1, 2),
-                new DataPoint(d2, 5),
-                new DataPoint(d3, 3),
-                new DataPoint(d4, 4),
-                new DataPoint(d5, 6),
-                new DataPoint(d6, 3),
-                new DataPoint(d7, 8),
-                new DataPoint(d8, 3),
-                new DataPoint(d3, 8),
-                new DataPoint(d3, 3),
-                new DataPoint(d8, 7),
-
-        });
-        series.setColor(Color.DKGRAY);
-        graphViewBP.addSeries(series);
-        //
-        PointsGraphSeries<DataPoint> series2 = new PointsGraphSeries<>(new DataPoint[] {
-                new DataPoint(d1, 8),
-                new DataPoint(d2, 9),
-                new DataPoint(d3, 10),
-                new DataPoint(d4, 4),
-                new DataPoint(d5, 6),
-                new DataPoint(d6, 3),
-                new DataPoint(d3, 8),
-                new DataPoint(d3, 3),
-                new DataPoint(d3, 8),
-                new DataPoint(d3, 3),
-                new DataPoint(d3, 7),
-
-        });
-
-
-        /*graphViewBP.getSecondScale().addSeries(series2);
-        graphViewBP.getSecondScale().setMinY(0);
-        graphViewBP.getSecondScale().setMaxY(10);*/
-
-        series.setTitle("BP Max");
-        series2.setTitle("BP Min");
-        graphViewBP.getLegendRenderer().setVisible(true);
-        graphViewBP.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
-        //
-
-        //PRUEBA
-        final SharedPreferences spMeasuresSaved = PreferenceManager.getDefaultSharedPreferences(this);
-
-        //
-        series.setOnDataPointTapListener(new OnDataPointTapListener() {
-            @Override
-            public void onTap(Series series, DataPointInterface dataPoint) {
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Statistics.this);
-                //Toast.makeText(Statistics.this, "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_LONG).show();
-                //
-                Intent intent = new Intent(Statistics.this, PopUp.class);
-                startActivity(intent);
-
-
-
-                /*for (int i=1; i<=3;i++){
-                    stringSet[i] = spMeasuresSaved.getString("stringSet"+i,"0");
-                    Toast.makeText(Statistics.this,  stringSet[i], Toast.LENGTH_SHORT).show();
-                }*/
-                //startActivity(new Intent(Statistics.this, PopUp.class));
-            }
-        });
-
-        // set date label formatter
-        graphViewBP.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
-        graphViewBP.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
-        graphViewBP.getViewport().setScrollable(true);
-       // set manual x bounds to have nice steps
-        graphViewBP.getViewport().setXAxisBoundsManual(true);
-        graphViewBP.getViewport().setMinX(d1.getTime());
-        graphViewBP.getViewport().setMaxX(d3.getTime());
-        // set manual y bounds to have nice steps
-        graphViewBP.getViewport().setYAxisBoundsManual(true);
-        graphViewBP.getViewport().setMinY(0);
-        graphViewBP.getViewport().setMaxY(10);
-        graphViewBP.getGridLabelRenderer().setHumanRounding(false);
-
-
-        //graphViewBP.getViewport().setScrollable(true); // enables horizontal scrolling
-        //graphViewBP.getViewport().setScrollableY(true); // enables vertical scrolling
-        //graphViewBP.getViewport().setScalable(true); // enables horizontal zooming and scrolling
-        //graphViewBP.getViewport().setScalableY(true); // enables vertical zooming and scrolling
-
-        //graphViewBP.getViewport().scrollToEnd();
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private void menu() {
         //MENU
         //-----------------------------------------------
-        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbarMain);
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Estadísticas");
+        getSupportActionBar().setTitle("Estadisticas");
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        GlobalVars g = (GlobalVars) getApplication();
         AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
+                .withActivity(this).withCompactStyle(true)
                 .addProfiles(
-                        new ProfileDrawerItem().withName(g.getName()).
-                                withEmail(g.getEmail()).withIcon(getDrawable(R.drawable.profile)))
-                .withSelectionListEnabledForSingleProfile(false).withHeaderBackground(R.drawable.header)
+                        new ProfileDrawerItem().withName(sp.getString("name","no name")).
+                                withEmail(sp.getString("email","no email")).withIcon("http://meddata.sytes.net/newuser/profileImg/"
+                                +sp.getString("imagen", "No Image")))
+                .withSelectionListEnabledForSingleProfile(false).withHeaderBackground(R.drawable.header2)
                 .build();
+
+
         //if you want to update the items at a later time it is recommended to keep it in a variable
         final PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.drawer_item_main).withIcon(GoogleMaterial.Icon.gmd_accessibility);
         PrimaryDrawerItem item2 = new PrimaryDrawerItem().withIdentifier(2).withName(R.string.drawer_item_profile).withIcon(GoogleMaterial.Icon.gmd_account_balance);
@@ -251,23 +157,18 @@ public class Statistics extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         // do something with the clicked item :D
-                        if (position == 1) {
-                            Intent intent = new Intent(Statistics.this, MainScreen.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
-                        }
                         if (position == 2) {
                             Intent intent = new Intent(Statistics.this, Profile.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
-                        if (position == 4) {
-                            Intent intent = new Intent(Statistics.this, Statistics.class);
+                        if (position == 3) {
+                            Intent intent = new Intent(Statistics.this, Registros.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
-                        if (position == 5){
-                            Intent intent = new Intent(Statistics.this, MenuHinfo.class);
+                        if (position == 4){
+                            Intent intent = new Intent(Statistics.this, Statistics.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
@@ -277,12 +178,11 @@ public class Statistics extends AppCompatActivity {
                 })
                 .build();
 
+
         //-------------------------------------------------------------------------------------------
         //MENU
-    }
 
-    private void dias(){
-        //DIAS
+//DIAS
         Date today = Calendar.getInstance().getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("EEEE");
         String currentDateTimeStrin = formatter.format(today);
@@ -323,54 +223,237 @@ public class Statistics extends AppCompatActivity {
             text_sunday.setBackgroundColor(Color.parseColor("#FFFFFF"));
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////
-    }
 
-    public void ShowDialog() {
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-        builder.setCancelable(false);
-        builder.setTitle("INTERNET CONNECTION");
-        builder.setMessage("Please turn on Internet Connection");
-        builder.setPositiveButton("RETRY", new DialogInterface.OnClickListener() {
+
+        mChart = (LineChart) findViewById(R.id.chart);
+        minValue = (TextView)findViewById(R.id.min_value);
+        maxValue = (TextView)findViewById(R.id.max_value);
+        avgValue = (TextView)findViewById(R.id.avg_value);
+        buttonS = (Button)findViewById(R.id.buttonShow);
+        Button btnBR,btnHR,btnBPmax,btnBPmin,btnMood,btnFatigue;
+
+        btnBR = (Button)findViewById(R.id.btnHR);
+        btnHR = (Button)findViewById(R.id.btnHR);
+        btnBPmax = (Button)findViewById(R.id.btnBPmax);
+        btnBPmin = (Button)findViewById(R.id.btnBPmin);
+        btnMood = (Button)findViewById(R.id.btnMood);
+
+        mChart.setTouchEnabled(true);
+        mChart.setDragEnabled(true);
+        mChart.setScaleEnabled(true);
+        mChart.setPinchZoom(false);
+        mChart.setNoDataText("Presiona para ver el grafico");
+        mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        mChart.setBorderWidth(1);
+        mChart.getXAxis().setLabelRotationAngle(90);
+        mChart.getXAxis().setTextSize(8f);
+
+        mChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                checkConnection();
+            public void onValueSelected(Entry e, Highlight h) {
+                float x = e.getX();
+                float y = e.getY();
+                Toast.makeText(getApplicationContext(),String.valueOf(y), Toast.LENGTH_SHORT).show();
             }
-        })
-                .setNegativeButton("SAVE ON DEVICE", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //START SERVICE
-                        //SAVE ON SHARED PREFERENCES
-                    }
-                });
-        builder.create().show();
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+        buttonS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setData();
+            }
+        });
+
+
+
+        //Spinners
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.stringVar, android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+      /*  dataVar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+
+                String pvar,pvar2;
+                if (position == 0) {
+                    pvar="";
+                    mChart.clear();
+                    minValue.setText("");
+                    maxValue.setText("");
+                    avgValue.setText("");
+                }if (position == 1) {
+                    pvar="BR";
+                    mylistDates = new ArrayList<String>();
+                    mChart.clear();
+                    mylist.clear();
+                    VolleyPetition("http://meddata.sytes.net/grafico/dataShow.php?email=emilio.perez@udem.edu&var="+pvar);
+                }if (position == 2) {
+                    pvar="HR";
+                    mylistDates = new ArrayList<String>();
+                    mChart.clear();
+                    mylist.clear();
+                    VolleyPetition("http://meddata.sytes.net/grafico/dataShow.php?email=emilio.perez@udem.edu&var="+pvar);
+                }
+                if (position == 3) {
+                    pvar="BPmax";
+                    mylistDates = new ArrayList<String>();
+                    mChart.clear();
+                    mylist.clear();
+                    VolleyPetition("http://meddata.sytes.net/grafico/dataShow.php?email=emilio.perez@udem.edu&var="+pvar);
+                }
+                if (position == 4) {
+                    pvar="BPmin";
+                    mylistDates = new ArrayList<String>();
+                    mylist.clear();
+                    VolleyPetition("http://meddata.sytes.net/grafico/dataShow.php?email=emilio.perez@udem.edu&var="+pvar);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+       */// });
+
     }
-    protected boolean internetCheck() {
+
+    private void internet() {
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = null;
         networkInfo = cm.getActiveNetworkInfo();
 
-        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
-            return true;
+        if (networkInfo != null && networkInfo.isConnected()) {
+            setData();
         } else {
-            return false;
         }
     }
+    public void VolleyPetition(String URL) {
+        Log.i("url", "" + URL);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    jsonArray = new JSONArray(response);
+                    String value,date;
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        a = jsonArray.getString(i);
+                        JSONObject jsonObj = new JSONObject(a);
+                        value = jsonObj.getString("value");
+                        date = jsonObj.getString("date");
+                        var = jsonObj.getString("var");
+                        mylist.add(value);
+                        mylistDates.add(date);
+                    }
+                    floatValues = new float[mylist.size()];
+                    for (int i = 0; i < mylist.size(); i++) {
+                        floatValues[i] = Float.parseFloat(mylist.get(i));
+                    }
 
-    public void checkConnection(){
-        if(internetCheck()){
-            //SEND DATA
-        }else {
-            ShowDialog();
+                    minValue.setText(String.valueOf(getMinValue(floatValues)));
+                    maxValue.setText(String.valueOf(getMaxValue(floatValues)));
+                    avgValue.setText(String.valueOf((getMaxValue(floatValues)+getMinValue(floatValues))/2));
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Anything you want
+            }
+        });
+        queue.add(stringRequest);
+    }
+
+
+
+
+    private void setData(){
+        ArrayList<Entry> yVals = new ArrayList<Entry>();
+
+        for (int i = 0; i < floatValues.length; i++) {
+            yVals.add(new Entry(i,floatValues[i]));
         }
+
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return mylistDates.get((int) value);
+            }
+        });
+
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.setLabelCount(6, true);
+        leftAxis.setAxisMinValue(getMinValue(floatValues)-1);
+        leftAxis.setAxisMaxValue(getMaxValue(floatValues)+1);
+        leftAxis.setGranularityEnabled(true);
+        leftAxis.setGranularity(0.001f);
+        YAxis rightAxis = mChart.getAxisRight();
+        rightAxis.setEnabled(false);
+        LineDataSet set1;
+// create a dataset and give it a type
+        set1 = new LineDataSet(yVals,var);
+        set1.setFillAlpha(500);
+        set1.setColor(Color.BLACK);
+        set1.setCircleColor(Color.BLACK);
+        set1.setLineWidth(2f);
+        set1.setDrawCircleHole(false);
+        set1.setCircleRadius(5f);
+        set1.setDrawValues(true);
+        set1.setValueTextSize(6f);
+        set1.setColor(Color.RED);
+        set1.setHighLightColor(Color.GRAY);
+        set1.setHighlightLineWidth(1.5f);
+        set1.setDrawFilled(false);
+
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+
+        dataSets = new ArrayList<>();
+
+        dataSets.add(set1);
+
+        LineData data = new LineData(dataSets);
+        mChart.setData(data);
+        mChart.getXAxis().setLabelCount(floatValues.length,true);
+
     }
 
-    protected boolean typeConnection(){
-        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = null;
-        networkInfo = cm.getActiveNetworkInfo();
-        if(networkInfo.getType()==ConnectivityManager.TYPE_WIFI) return true;
-        else return false;
+
+
+
+
+    // getting the maximum value
+    public static float getMaxValue(float[] array) {
+        float maxValue = array[0];
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] > maxValue) {
+                maxValue = array[i];
+            }
+        }
+        return maxValue;
     }
+
+    public static float getMinValue(float[] array) {
+        float minValue = array[0];
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] < minValue) {
+                minValue = array[i];
+            }
+        }
+        return minValue;
+    }
+
 
 }
