@@ -21,6 +21,7 @@ import com.example.luisguzmn.healthcare40.GlobalVars;
 import com.example.luisguzmn.healthcare40.MainScreen;
 import com.example.luisguzmn.healthcare40.Profile;
 import com.example.luisguzmn.healthcare40.R;
+import com.example.luisguzmn.healthcare40.Registros;
 import com.example.luisguzmn.healthcare40.Statistics;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -350,17 +351,16 @@ public class MenuHinfo extends AppCompatActivity {
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
+                        if (position == 3) {
+                            Intent intent = new Intent(MenuHinfo.this, Registros.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
                         if (position == 4) {
                             Intent intent = new Intent(MenuHinfo.this, Statistics.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
-                        if (position == 5){
-                            Intent intent = new Intent(MenuHinfo.this, MenuHinfo.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
-                        }
-
                         return false;
                     }
                 })

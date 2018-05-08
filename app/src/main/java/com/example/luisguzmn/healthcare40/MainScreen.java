@@ -116,7 +116,7 @@ public class MainScreen extends AppCompatActivity {
         dias();
         requestStoragePermission();
         //
-        SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
         //
         //CAST
         imageView = (ImageView) findViewById(R.id.image_profile);
@@ -474,6 +474,8 @@ public class MainScreen extends AppCompatActivity {
     //END MENU 3 DOTS
 
     private void menu(){
+        SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
+
         //MENU
         //-----------------------------------------------
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbarMain);
@@ -481,21 +483,39 @@ public class MainScreen extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         GlobalVars g = (GlobalVars) getApplication();
+
         AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
+                .withActivity(this).withCompactStyle(true)
                 .addProfiles(
-                        new ProfileDrawerItem().withName(g.getName()).
-                                withEmail(g.getEmail()).withIcon(getDrawable(R.drawable.profile)))
-                .withSelectionListEnabledForSingleProfile(false).withHeaderBackground(R.drawable.header)
+                        new ProfileDrawerItem().withName(sp.getString("name","no name")).
+                                withEmail(sp.getString("email","no email")).withIcon("http://meddata.sytes.net/newuser/profileImg/"
+                                +sp.getString("imagen", "No Image")))
+                .withSelectionListEnabledForSingleProfile(false).withHeaderBackground(R.drawable.header2)
                 .build();
-        //if you want to update the items at a later time it is recommended to keep it in a variable
-        final PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.drawer_item_main).withIcon(GoogleMaterial.Icon.gmd_accessibility);
-        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withIdentifier(2).withName(R.string.drawer_item_profile).withIcon(GoogleMaterial.Icon.gmd_account_balance);
-        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(3).withName(R.string.drawer_item_records).withIcon(GoogleMaterial.Icon.gmd_add_to_photos);
-        PrimaryDrawerItem item4 = new PrimaryDrawerItem().withIdentifier(4).withName(R.string.drawer_item_statistics).withIcon(GoogleMaterial.Icon.gmd_adb);
-        PrimaryDrawerItem item5 = new PrimaryDrawerItem().withIdentifier(5).withName(R.string.drawer_item_healt).withIcon(GoogleMaterial.Icon.gmd_attach_file);
-        PrimaryDrawerItem item6 = new PrimaryDrawerItem().withIdentifier(6).withName(R.string.drawer_item_settinds).withIcon(GoogleMaterial.Icon.gmd_bluetooth);
-        PrimaryDrawerItem item7 = new PrimaryDrawerItem().withIdentifier(7).withName(R.string.drawer_item_about).withIcon(GoogleMaterial.Icon.gmd_terrain);
+
+        //Image Menu
+        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
+            @Override
+            public void set(ImageView imageView, Uri uri, Drawable placeholder) {
+                SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
+
+                Picasso.with(imageView.getContext()).load("http://meddata.sytes.net/newuser/profileImg/"
+                        + sp.getString("imagen", "No Image"))
+                        .placeholder(placeholder).into(imageView);
+            }
+            @Override
+            public void cancel(ImageView imageView) {
+                Picasso.with(imageView.getContext()).cancelRequest(imageView);
+            }
+        });
+
+        final PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.drawer_item_main).withIcon(GoogleMaterial.Icon.gmd_home);
+        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withIdentifier(2).withName(R.string.drawer_item_profile).withIcon(GoogleMaterial.Icon.gmd_account_circle);
+        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(3).withName(R.string.drawer_item_records).withIcon(GoogleMaterial.Icon.gmd_assignment);
+        PrimaryDrawerItem item4 = new PrimaryDrawerItem().withIdentifier(4).withName(R.string.drawer_item_statistics).withIcon(GoogleMaterial.Icon.gmd_insert_chart);
+        PrimaryDrawerItem item5 = new PrimaryDrawerItem().withIdentifier(5).withName(R.string.drawer_item_healt).withIcon(GoogleMaterial.Icon.gmd_local_hospital);
+        PrimaryDrawerItem item6 = new PrimaryDrawerItem().withIdentifier(6).withName(R.string.drawer_item_settinds).withIcon(GoogleMaterial.Icon.gmd_settings);
+        PrimaryDrawerItem item7 = new PrimaryDrawerItem().withIdentifier(7).withName(R.string.drawer_item_about).withIcon(GoogleMaterial.Icon.gmd_more);
 
         new DrawerBuilder()
                 .withAccountHeader(headerResult)
@@ -522,6 +542,11 @@ public class MainScreen extends AppCompatActivity {
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
+                        if (position == 3) {
+                            Intent intent = new Intent(MainScreen.this, Registros.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
                         if (position == 4){
                             Intent intent = new Intent(MainScreen.this, Statistics.class);
                             startActivity(intent);
@@ -533,24 +558,11 @@ public class MainScreen extends AppCompatActivity {
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
 
+
                         return false;
                     }
                 })
                 .build();
-
-        //Image Menu
-        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
-            GlobalVars g = (GlobalVars) getApplication();
-            @Override
-            public void set(ImageView imageView, Uri uri, Drawable placeholder) {
-                Picasso.with(imageView.getContext()).load("http://meddata.sytes.net/newuser/profileImg/" + g.getImage())
-                        .placeholder(placeholder).into(imageView);
-            }
-            @Override
-            public void cancel(ImageView imageView) {
-                Picasso.with(imageView.getContext()).cancelRequest(imageView);
-            }
-        });
     }
     public void dias(){
         //

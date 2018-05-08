@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Healthcare4.0.iml" filepath="$PROJECT_DIR$/Healthcare4.0.iml" />
       <module fileurl="file://$PROJECT_DIR$/JabraSdk-1_0_0-A1000099-N1_0_12_0-release/JabraSdk-1_0_0-A1000099-N1_0_12_0-release.iml" filepath="$PROJECT_DIR$/JabraSdk-1_0_0-A1000099-N1_0_12_0-release/JabraSdk-1_0_0-A1000099-N1_0_12_0-release.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/SmartHealthcare.iml" filepath="$PROJECT_DIR$/.idea/SmartHealthcare.iml" />
       <module fileurl="file://$PROJECT_DIR$/android-connector-20180322/android-connector-20180322.iml" filepath="$PROJECT_DIR$/android-connector-20180322/android-connector-20180322.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

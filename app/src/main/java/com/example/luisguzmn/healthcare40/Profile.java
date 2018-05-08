@@ -33,6 +33,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.luisguzmn.healthcare40.HealthcareInfo.MenuHinfo;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -193,18 +194,23 @@ public class Profile extends AppCompatActivity {
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         // do something with the clicked item :D
 
-                        if (position == 2) {
-                            Intent intent = new Intent(Profile.this, Profile.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
-                        }
                         if (position == 1) {
                             Intent intent = new Intent(Profile.this, MainScreen.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
+                        if (position == 3){
+                            Intent intent = new Intent(Profile.this, Registros.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
                         if (position == 4){
                             Intent intent = new Intent(Profile.this, Statistics.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
+                        if (position == 5){
+                            Intent intent = new Intent(Profile.this, MenuHinfo.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }

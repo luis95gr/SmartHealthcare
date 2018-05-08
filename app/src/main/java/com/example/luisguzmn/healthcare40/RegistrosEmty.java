@@ -20,7 +20,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class RegistrosActivity extends AppCompatActivity {
+public class RegistrosEmty extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
