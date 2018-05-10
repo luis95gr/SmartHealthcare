@@ -344,4 +344,10 @@ public class crearCuentaHelo extends Activity {
             Log.i(TAG, "onNothingSelected : position = " + "onNothingSelected");
         }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
 }

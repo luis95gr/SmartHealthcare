@@ -27,6 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.luisguzmn.healthcare40.DrivingDashboard;
 import com.example.luisguzmn.healthcare40.PrincipalDashboard;
 import com.example.luisguzmn.healthcare40.R;
 import com.example.luisguzmn.healthcare40.crearCuentaHelo;
@@ -51,8 +52,8 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
 
     //VARIABLES
     TextView battery, conn_status, bond_status,firmware_version,mac,lastsynctime,textScanning;
-    Button scan, unpair,clear;
-    MeasurementReceiver heloMeasurementReceiver;
+    Button scan, unpair,principalDash,driveDash;
+    MeasurementReceiver heloMeasurementReceiver,heloMeasurementReceiver2;
     IntentFilter intentFilter;
     private AlertDialog alertDialog;
     private final String TAG = HeloConnection.class.getSimpleName();
@@ -90,7 +91,8 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         scan = (Button) findViewById(R.id.scan);
         unpair = (Button) findViewById(R.id.unpair);
-        clear =(Button)findViewById(R.id.cleardata);
+        principalDash =(Button)findViewById(R.id.principalDash);
+        driveDash = (Button)findViewById(R.id.driveDash);
         lastsynctime = (TextView)findViewById(R.id.lastsynctime);
         mac = (TextView)findViewById(R.id.mac);
         dynamic_measure_layout = (LinearLayout) findViewById(R.id.buttons);
@@ -99,6 +101,7 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
         bond_status = (TextView) findViewById(R.id.bond_status);
         firmware_version= (TextView) findViewById(R.id.firmware_version);
         heloMeasurementReceiver = new MeasurementReceiver();
+        heloMeasurementReceiver2 = new MeasurementReceiver();
         //
         intentFilter = new IntentFilter();
         intentFilter.addAction(BROADCAST_ACTION_APPVERSION_MEASUREMENT);
@@ -113,7 +116,7 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
         intentFilter.addAction(BROADCAST_ACTION_MEASUREMENT_WRITE_FAILURE);
         //
 
-        clear.setOnClickListener(new View.OnClickListener() {
+        principalDash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(conn_status.getText().equals("Conectado") || bond_status.getText().equals("Enlazado")) {
@@ -122,6 +125,18 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
                     Snackbar snackbar = Snackbar.make(findViewById(R.id.helo_connection),"Helo LX no conectado",Snackbar.LENGTH_LONG);
                     snackbar.show();
                 }
+            }
+        });
+
+        driveDash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //if(conn_status.getText().equals("Conectado") || bond_status.getText().equals("Enlazado")) {
+                    startActivity(new Intent(HeloConnection.this, DrivingDashboard.class));
+                //}else {
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.helo_connection),"Helo LX no conectado",Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                //}
             }
         });
 
@@ -245,8 +260,8 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
     protected void onResume() {
         super.onResume();
         registerReceiver(heloMeasurementReceiver, intentFilter);
+        registerReceiver(heloMeasurementReceiver2,intentFilter);
     }
-
 
     @Override
     public void onScanStarted() {

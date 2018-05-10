@@ -226,6 +226,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
+        android:textSize="15sp"
         android:textColor="@color/blue"
         app:layout_constraintBottom_toTopOf="@id/line1"
         app:layout_constraintLeft_toLeftOf="parent"

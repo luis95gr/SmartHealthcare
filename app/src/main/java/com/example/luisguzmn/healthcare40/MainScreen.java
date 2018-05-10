@@ -3,6 +3,7 @@ package com.example.luisguzmn.healthcare40;
 import android.Manifest;
 import android.animation.ValueAnimator;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
@@ -12,8 +13,11 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -22,10 +26,20 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
+import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.view.View;
 
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.luisguzmn.healthcare40.HealthcareInfo.MenuHinfo;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -59,9 +73,17 @@ import com.squareup.picasso.Picasso;
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
+import java.io.InterruptedIOException;
+import java.io.InvalidObjectException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
@@ -74,7 +96,6 @@ public class MainScreen extends AppCompatActivity {
     BluetoothAdapter bluetoothAdapter;
     ProgressBar progressbar;
     ProgressBarAnimation progressBarAnimation;
-    int intFromProgress,inToProgress,intFromBar,intToBar;
     TextView textNivel,textPercentage;
     //AGREGAR ESTAS VARIABALES
     int headphones = 0;
@@ -107,6 +128,30 @@ public class MainScreen extends AppCompatActivity {
     private Uri filePath;
     String mCurrentPhotoPath;
     //
+    //STATISTICS
+    TextView textMeasures,textFaltan;
+    DecimalFormat decimalFormat = new DecimalFormat("##");
+    JSONArray jsonArray;
+    float[] floatValuesBr,floatValuesBpmax,floatValuesBpmin,floatValuesHr,floatSteps;
+    ArrayList<String> brList,bpmaxList,bpminList,hrList,moodList,fatigueList,ecgList,stepsList;
+    String json;
+    SharedPreferences spDataNivel;
+    float maxBr,maxBpmax,maxBpmin,maxHr,maxSteps;
+    float minBr,minBpmax,minBpmin,minHr,minSteps;
+    float avgBr,avgBpmax,avgBpmin,avgHr,avgSteps;
+    float lastBr,lastBpmax,lastBpmin,lastHr,lastSteps;
+    float totalMeasures;
+    int nivel,top,bottom;
+    int fromPercentage,toPercentage;
+    float fromBar,toBar;
+    Animation animationBlink;
+    ImageView iconArrowRight,iconArrowLeft;
+    TextView textBpmaxAvg,textBpminAvg,textBrAvg,textHrAvg,textStepsAvg;
+    TextView textBpmaxLast,textBpminLast,textBrLast,textHrLast,textStepsLast;
+    CardView cardView;
+    Handler handler;
+    SharedPreferences sp;
+    //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +161,8 @@ public class MainScreen extends AppCompatActivity {
         dias();
         requestStoragePermission();
         //
-        SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
+        sp = getSharedPreferences("login", MODE_PRIVATE);
+        spDataNivel = PreferenceManager.getDefaultSharedPreferences(this);
         //
         //CAST
         imageView = (ImageView) findViewById(R.id.image_profile);
@@ -128,23 +174,177 @@ public class MainScreen extends AppCompatActivity {
         progressbar = (ProgressBar)findViewById(R.id.progressBar);
         textNivel = (TextView)findViewById(R.id.text_nivel);
         textPercentage = (TextView)findViewById(R.id.text_percentage);
-
-
+        brList = new ArrayList<String>();
+        bpmaxList = new ArrayList<String>();
+        bpminList = new ArrayList<String>();
+        hrList = new ArrayList<String>();
+        moodList = new ArrayList<String>();
+        fatigueList = new ArrayList<String>();
+        ecgList = new ArrayList<String>();
+        stepsList = new ArrayList<String>();
+        textMeasures = (TextView)findViewById(R.id.text_measures);
+        textFaltan = (TextView)findViewById(R.id.text_measures_faltan);
+        iconArrowRight = (ImageView)findViewById(R.id.iconArrowRight);
+        iconArrowLeft = (ImageView)findViewById(R.id.iconArrowLeft);
+        animationBlink = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+        iconArrowRight.startAnimation(animationBlink);
+        //
+        textBpmaxAvg = (TextView)findViewById(R.id.textBpmaxAvg);
+        textBpminAvg = (TextView)findViewById(R.id.textBpminAvg);
+        textBrAvg = (TextView)findViewById(R.id.textBrAvg);
+        textHrAvg = (TextView)findViewById(R.id.textHrAvg);
+        textStepsAvg = (TextView)findViewById(R.id.textStepsAvg);
+        textBpmaxLast = (TextView)findViewById(R.id.textBpmaxLast);
+        textBpminLast = (TextView)findViewById(R.id.textBpminLast);
+        textBrLast = (TextView)findViewById(R.id.textBrLast);
+        textHrLast = (TextView)findViewById(R.id.textHrLast);
+        textStepsLast = (TextView)findViewById(R.id.textStepsLast);
+        cardView = (CardView)findViewById(R.id.cardView);
+        handler = new Handler();
+        //
         //MAIN SCREEN
         Picasso.with(this).load("http://meddata.sytes.net/newuser/profileImg/" + sp.getString("imagen", "No Image"))
                 .resize(250, 250).centerCrop().into(imageView);
         textNameMain.setText(sp.getString("name", "No name"));
-        //RECOVER NIVEL
-        progressBarAnimation = new ProgressBarAnimation(progressbar,0,60);
-        progressBarAnimation.setDuration(1500);
-        progressbar.startAnimation(progressBarAnimation);
-        startCountAnimation(0,60);
+        //
+        if (internet()) {
+            VolleyPetitionBr("http://meddata.sytes.net/grafico/dataShow.php?email=" + sp.getString("email", "no") + "&var=" + "BR");
+            VolleyPetitionBpmax("http://meddata.sytes.net/grafico/dataShow.php?email=" + sp.getString("email", "no") + "&var=" + "BPmax");
+            VolleyPetitionBpmin("http://meddata.sytes.net/grafico/dataShow.php?email=" + sp.getString("email", "no") + "&var=" + "BPmin");
+            VolleyPetitionHr("http://meddata.sytes.net/grafico/dataShow.php?email=" + sp.getString("email", "no") + "&var=" + "HR");
+            VolleyPetitionMood("http://meddata.sytes.net/grafico/dataShow.php?email=" + sp.getString("email", "no") + "&var=" + "Mood");
+            VolleyPetitionFatigue("http://meddata.sytes.net/grafico/dataShow.php?email=" + sp.getString("email", "no") + "&var=" + "Fatigue");
+            VolleyPetitionEcg("http://meddata.sytes.net/grafico/dataShow.php?email=" + sp.getString("email", "no") + "&var=" + "ecg");
+            VolleyPetitionSteps("http://meddata.sytes.net/grafico/dataShow.php?email=" + sp.getString("email", "no") + "&var=" + "Steps");
+        }
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                    totalMeasures = spDataNivel.getFloat("sizeBr",0) + spDataNivel.getFloat("sizeBpmax",0) +
+                            spDataNivel.getFloat("sizeBpmin",0) + spDataNivel.getFloat("sizeHr",0) + spDataNivel.getFloat("sizeMood",0) +
+                            spDataNivel.getFloat("sizeFatigue",0) + spDataNivel.getFloat("sizeEcg",0) +
+                            spDataNivel.getFloat("sizeSteps",0);
+
+                    //CALCULATE LEVEL
+                    if (totalMeasures < 10){
+                        nivel = 1;
+                    }
+                    if (totalMeasures < 20 && totalMeasures >= 10) {
+                        nivel = 2;
+                    }
+                    if (totalMeasures < 30 && totalMeasures >= 20){
+                        nivel = 3;
+                    }
+                    if (totalMeasures < 40 && totalMeasures >= 30){
+                        nivel = 4;
+                    }
+                    if (totalMeasures < 50 && totalMeasures >= 40){
+                        nivel = 5;
+                    }
+                    if (totalMeasures < 60 && totalMeasures >= 50){
+                        nivel = 6;
+                    }
+                    if (totalMeasures < 70 && totalMeasures >= 60){
+                        nivel = 7;
+                    }
+                    if (totalMeasures < 80 && totalMeasures >= 70){
+                        nivel = 8;
+                    }
+                    if (totalMeasures < 90 && totalMeasures >= 80){
+                        nivel = 9;
+                    }
+                    if (totalMeasures < 100 && totalMeasures >= 90){
+                        nivel = 10;
+                    }
+                    //
+                    textNivel.setText("Nivel " + nivel);
+                    textMeasures.setText("Llevas: " + decimalFormat.format(totalMeasures));
+                    textFaltan.setText("Te faltan: " + decimalFormat.format(nivel*10-totalMeasures));
+                    //CALCULATE PERCENTAGE
+                    toPercentage = Integer.parseInt(decimalFormat.format((totalMeasures-(nivel-1)*10)*10));
+                    //ANIMATIONS
+                    progressBarAnimation = new ProgressBarAnimation(progressbar,0,toPercentage);
+                    progressBarAnimation.setDuration(1500);
+                    progressbar.startAnimation(progressBarAnimation);
+                    startCountAnimation(0,toPercentage);
+
+
+            }
+        }, 300);
+        //RECOVER SIGNALS FOR LEVEL AND STATISTICS
 
 
 
 
+        //
+        //CARDVIEW INFO
+        if (spDataNivel.getFloat("avgBpmax",0) != 0) {
+            textBpmaxAvg.setText(decimalFormat.format(spDataNivel.getFloat("avgBpmax", 0)));
+        }else textBpmaxAvg.setText("No hay datos");
+        if (spDataNivel.getFloat("avgBpmin",0) != 0) {
+            textBpminAvg.setText(decimalFormat.format(spDataNivel.getFloat("avgBpmin", 0)));
+        } else textBpminAvg.setText("No hay datos");
+        if (spDataNivel.getFloat("avgBr",0) != 0) {
+            textBrAvg.setText(decimalFormat.format(spDataNivel.getFloat("avgBr", 0)));
+        } else textBrAvg.setText("No hay datos");
+        if (spDataNivel.getFloat("avgHr",0) != 0) {
+            textHrAvg.setText(decimalFormat.format(spDataNivel.getFloat("avgHr", 0)));
+        } else textHrAvg.setText("No hay datos");
+        if (spDataNivel.getFloat("avgSteps",0) != 0) {
+            textStepsAvg.setText(decimalFormat.format(spDataNivel.getFloat("avgSteps", 0)));
+        } else textStepsAvg.setText("No hay datos");
+        //
+        if (spDataNivel.getFloat("lastBpmax",0) != 0) {
+            textBpmaxLast.setText(decimalFormat.format(spDataNivel.getFloat("lastBpmax", 0)));
+        } else textBpmaxLast.setText("No hay datos");
+        if (spDataNivel.getFloat("lastBpmin",0) != 0) {
+            textBpminLast.setText(decimalFormat.format(spDataNivel.getFloat("lastBpmin", 0)));
+        } else textBpminLast.setText("No hay datos");
+        if (spDataNivel.getFloat("lastBr",0) != 0) {
+            textBrLast.setText(decimalFormat.format(spDataNivel.getFloat("lastBr", 0)));
+        } else textBrLast.setText("No hay datos");
+        if (spDataNivel.getFloat("lastHr",0) != 0) {
+            textHrLast.setText(decimalFormat.format(spDataNivel.getFloat("lastHr", 0)));
+        } else textHrLast.setText("No hay datos");
+        if (spDataNivel.getFloat("lastSteps",0) != 0) {
+            textStepsLast.setText(decimalFormat.format(spDataNivel.getFloat("lastSteps", 0)));
+        } else textStepsLast.setText("No hay datos");
 
 
+        //INFO TRASLATION
+        iconArrowRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressbar.setVisibility(View.INVISIBLE);
+                textPercentage.setVisibility(View.INVISIBLE);
+                textNivel.setVisibility(View.INVISIBLE);
+                textMeasures.setVisibility(View.INVISIBLE);
+                textFaltan.setVisibility(View.INVISIBLE);
+                iconArrowRight.setVisibility(View.INVISIBLE);
+                iconArrowRight.clearAnimation();
+                iconArrowLeft.setVisibility(View.VISIBLE);
+                iconArrowLeft.startAnimation(animationBlink);
+                cardView.setVisibility(View.VISIBLE);
+            }
+        });
+        iconArrowLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressbar.setVisibility(View.VISIBLE);
+                textPercentage.setVisibility(View.VISIBLE);
+                textNivel.setVisibility(View.VISIBLE);
+                textMeasures.setVisibility(View.VISIBLE);
+                textFaltan.setVisibility(View.VISIBLE);
+                iconArrowRight.setVisibility(View.VISIBLE);
+                iconArrowLeft.setVisibility(View.INVISIBLE);
+                iconArrowLeft.clearAnimation();
+                iconArrowRight.startAnimation(animationBlink);
+                cardView.setVisibility(View.INVISIBLE);
+            }
+        });
+        //
 
 
 
@@ -155,19 +355,20 @@ public class MainScreen extends AppCompatActivity {
         imageButtonSW.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(MainScreen.this, "Tienes relojes emparejados", Toast.LENGTH_SHORT).show();
             }
         });
         imageButtonSH.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(MainScreen.this, "Tienes audífonos emparejados", Toast.LENGTH_SHORT).show();
 
             }
         });
         imageButtonSS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(MainScreen.this, "Sensores emparejados", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -217,12 +418,6 @@ public class MainScreen extends AppCompatActivity {
             }
         }
 
-
-        //Toast.makeText(getApplicationContext(), smartwatch + " smartwatch paired.", Toast.LENGTH_SHORT).show();
-
-        //Toast.makeText(getApplicationContext(), headphones + " headphones paired.", Toast.LENGTH_SHORT).show();
-
-
         // END BLUETOOTH
         //set image profile
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -232,6 +427,445 @@ public class MainScreen extends AppCompatActivity {
             }
         });
     }
+    ////////////////VOLLEYS///////////////////////////
+    /////BR
+    public void VolleyPetitionBr(String URL) {
+        final SharedPreferences.Editor spDataNivelEditor = spDataNivel.edit();
+        Log.i("url", "" + URL);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    jsonArray = new JSONArray(response);
+                    String value;
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        json = jsonArray.getString(i);
+                        JSONObject jsonObj = new JSONObject(json);
+                        value = jsonObj.getString("value");
+                        brList.add(value);
+                    }
+                    floatValuesBr = new float[brList.size()];
+                    for (int i = 0; i <  brList.size(); i++) {
+                        floatValuesBr[i] = Float.parseFloat(brList.get(i));
+                    }
+                    if (floatValuesBr.length != 0) {
+                        lastBr = floatValuesBr[floatValuesBr.length-1];
+                        //MAX VALUE
+                        maxBr = floatValuesBr[0];
+                        for (int i = 1; i < floatValuesBr.length; i++) {
+                            if (floatValuesBr[i] > maxBr) {
+                                maxBr = floatValuesBr[i];
+                            }
+                        }
+                        //MIN VALUE
+                        minBr = floatValuesBr[0];
+                        for (int i = 1; i < floatValuesBr.length; i++) {
+                            if (floatValuesBr[i] < minBr) {
+                                minBr = floatValuesBr[i];
+                            }
+                        }
+                        //AVG VALUE
+                        avgBr = floatValuesBr[0];
+                        for (int i = 1; i < floatValuesBr.length; i++) {
+                            avgBr = avgBr + floatValuesBr[i];
+                        }
+                        avgBr = avgBr / floatValuesBr.length;
+                        //
+                        spDataNivelEditor.putFloat("minBr", minBr);
+                        spDataNivelEditor.putFloat("maxBr", maxBr);
+                        spDataNivelEditor.putFloat("avgBr", avgBr);
+                        spDataNivelEditor.putFloat("sizeBr", floatValuesBr.length);
+                        spDataNivelEditor.putFloat("lastBr",lastBr);
+                        spDataNivelEditor.apply();
+                    }
+                    //Toast.makeText(MainScreen.this, ""+decimalFormat.format(avgBr), Toast.LENGTH_LONG).show();
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Anything you want
+            }
+        });
+        queue.add(stringRequest);
+    }
+
+    ///////////BPMAX
+    public void VolleyPetitionBpmax(String URL) {
+        final SharedPreferences.Editor spDataNivelEditor = spDataNivel.edit();
+        Log.i("url", "" + URL);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    jsonArray = new JSONArray(response);
+                    String value;
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        json = jsonArray.getString(i);
+                        JSONObject jsonObj = new JSONObject(json);
+                        value = jsonObj.getString("value");
+                        bpmaxList.add(value);
+                    }
+                    floatValuesBpmax = new float[bpmaxList.size()];
+                    for (int i = 0; i <  bpmaxList.size(); i++) {
+                        floatValuesBpmax[i] = Float.parseFloat(bpmaxList.get(i));
+                    }
+                    //MAX VALUE
+                    if (floatValuesBpmax.length !=0) {
+                        lastBpmax = floatValuesBpmax[floatValuesBpmax.length-1];
+                        //MAX VALUE
+                        maxBpmax = floatValuesBpmax[0];
+                        for (int i = 1; i < floatValuesBpmax.length; i++) {
+                            if (floatValuesBpmax[i] > maxBpmax) {
+                                maxBpmax = floatValuesBpmax[i];
+                            }
+                        }
+                        //MIN VALUE
+                        minBpmax = floatValuesBpmax[0];
+                        for (int i = 1; i < floatValuesBpmax.length; i++) {
+                            if (floatValuesBpmax[i] < minBpmax) {
+                                minBpmax = floatValuesBpmax[i];
+                            }
+                        }
+                        //AVG VALUE
+                        avgBpmax = floatValuesBpmax[0];
+                        for (int i = 1; i < floatValuesBpmax.length; i++) {
+                            avgBpmax = avgBpmax + floatValuesBpmax[i];
+                        }
+                        avgBpmax = avgBpmax / floatValuesBpmax.length;
+                        //
+                        spDataNivelEditor.putFloat("minBpmax", minBpmax);
+                        spDataNivelEditor.putFloat("maxBpmax", maxBpmax);
+                        spDataNivelEditor.putFloat("avgBpmax", avgBpmax);
+                        spDataNivelEditor.putFloat("sizeBpmax", floatValuesBpmax.length);
+                        spDataNivelEditor.putFloat("lastBpmax",lastBpmax);
+                        spDataNivelEditor.apply();
+                    }
+                    //Toast.makeText(MainScreen.this, ""+floatValuesBpmax.length, Toast.LENGTH_LONG).show();
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Anything you want
+            }
+        });
+        queue.add(stringRequest);
+    }
+
+    ///////BPMIN
+    public void VolleyPetitionBpmin(String URL) {
+        final SharedPreferences.Editor spDataNivelEditor = spDataNivel.edit();
+        Log.i("url", "" + URL);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    jsonArray = new JSONArray(response);
+                    String value;
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        json = jsonArray.getString(i);
+                        JSONObject jsonObj = new JSONObject(json);
+                        value = jsonObj.getString("value");
+                        bpminList.add(value);
+                    }
+                    floatValuesBpmin = new float[bpminList.size()];
+                    for (int i = 0; i <  bpminList.size(); i++) {
+                        floatValuesBpmin[i] = Float.parseFloat(bpminList.get(i));
+                    }
+                    if (floatValuesBpmin.length != 0) {
+                        lastBpmin = floatValuesBpmin[floatValuesBpmin.length-1];
+                        //MAX VALUE
+                        maxBpmin = floatValuesBpmin[0];
+                        for (int i = 1; i < floatValuesBpmin.length; i++) {
+                            if (floatValuesBpmin[i] > maxBpmin) {
+                                maxBpmin = floatValuesBpmin[i];
+                            }
+                        }
+                        //MIN VALUE
+                        minBpmin = floatValuesBpmin[0];
+                        for (int i = 1; i < floatValuesBpmin.length; i++) {
+                            if (floatValuesBpmin[i] < minBpmin) {
+                                minBpmin = floatValuesBpmin[i];
+                            }
+                        }
+                        //AVG VALUE
+                        avgBpmin = floatValuesBpmin[0];
+                        for (int i = 1; i < floatValuesBpmin.length; i++) {
+                            avgBpmin = avgBpmin + floatValuesBpmin[i];
+                        }
+                        avgBpmin = avgBpmin / floatValuesBpmin.length;
+                        //
+                        spDataNivelEditor.putFloat("minBpmin", minBpmin);
+                        spDataNivelEditor.putFloat("maxBpmin", maxBpmin);
+                        spDataNivelEditor.putFloat("avgBpmin", avgBpmin);
+                        spDataNivelEditor.putFloat("sizeBpmin", floatValuesBpmin.length);
+                        spDataNivelEditor.putFloat("lastBpmin",lastBpmin);
+                        spDataNivelEditor.apply();
+                    }
+                    //Toast.makeText(MainScreen.this, ""+floatValuesBpmin.length, Toast.LENGTH_LONG).show();
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Anything you want
+            }
+        });
+        queue.add(stringRequest);
+    }
+    ////////HR
+    public void VolleyPetitionHr(String URL) {
+        final SharedPreferences.Editor spDataNivelEditor = spDataNivel.edit();
+        Log.i("url", "" + URL);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    jsonArray = new JSONArray(response);
+                    String value;
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        json = jsonArray.getString(i);
+                        JSONObject jsonObj = new JSONObject(json);
+                        value = jsonObj.getString("value");
+                        hrList.add(value);
+                    }
+                    floatValuesHr = new float[hrList.size()];
+                    for (int i = 0; i <  hrList.size(); i++) {
+                        floatValuesHr[i] = Float.parseFloat(hrList.get(i));
+                    }
+                    if (floatValuesHr.length != 0) {
+                        lastHr = floatValuesHr[floatValuesHr.length-1];
+                        //MAX VALUE
+                        maxHr = floatValuesHr[0];
+                        for (int i = 1; i < floatValuesHr.length; i++) {
+                            if (floatValuesHr[i] > maxHr) {
+                                maxHr = floatValuesHr[i];
+                            }
+                        }
+                        //MIN VALUE
+                        minHr = floatValuesHr[0];
+                        for (int i = 1; i < floatValuesHr.length; i++) {
+                            if (floatValuesHr[i] < minHr) {
+                                minHr = floatValuesHr[i];
+                            }
+                        }
+                        //AVG VALUE
+                        avgHr = floatValuesHr[0];
+                        for (int i = 1; i < floatValuesHr.length; i++) {
+                            avgHr = avgHr + floatValuesHr[i];
+                        }
+                        avgHr = avgHr / floatValuesHr.length;
+                        //
+                        spDataNivelEditor.putFloat("minHr", minHr);
+                        spDataNivelEditor.putFloat("maxHr", maxHr);
+                        spDataNivelEditor.putFloat("avgHr", avgHr);
+                        spDataNivelEditor.putFloat("sizeHr", floatValuesHr.length);
+                        spDataNivelEditor.putFloat("lastHr",lastHr);
+                        spDataNivelEditor.apply();
+                    }
+                    //Toast.makeText(MainScreen.this, ""+floatValuesHr[0], Toast.LENGTH_LONG).show();
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Anything you want
+            }
+        });
+        queue.add(stringRequest);
+    }
+    ////////MOOD
+    public void VolleyPetitionMood(String URL) {
+        final SharedPreferences.Editor spDataNivelEditor = spDataNivel.edit();
+        Log.i("url", "" + URL);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    jsonArray = new JSONArray(response);
+                    String value;
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        json = jsonArray.getString(i);
+                        JSONObject jsonObj = new JSONObject(json);
+                        value = jsonObj.getString("value");
+                        moodList.add(value);
+                    }
+                    if (!moodList.isEmpty()) {
+                        spDataNivelEditor.putFloat("sizeMood", moodList.size());
+                        spDataNivelEditor.apply();
+                    }
+                    //Toast.makeText(MainScreen.this, ""+moodList.size(), Toast.LENGTH_LONG).show();
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Anything you want
+            }
+        });
+        queue.add(stringRequest);
+    }
+    //////////////FATIGUE
+    public void VolleyPetitionFatigue(String URL) {
+        final SharedPreferences.Editor spDataNivelEditor = spDataNivel.edit();
+        Log.i("url", "" + URL);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    jsonArray = new JSONArray(response);
+                    String value;
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        json = jsonArray.getString(i);
+                        JSONObject jsonObj = new JSONObject(json);
+                        value = jsonObj.getString("value");
+                        fatigueList.add(value);
+                    }
+                    if (!fatigueList.isEmpty()) {
+                        spDataNivelEditor.putFloat("sizeFatigue", fatigueList.size());
+                        spDataNivelEditor.apply();
+                    }
+                    //Toast.makeText(MainScreen.this, ""+fatigueList.size(), Toast.LENGTH_LONG).show();
+
+
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        queue.add(stringRequest);
+    }
+    /////////ECG
+    public void VolleyPetitionEcg(String URL) {
+        final SharedPreferences.Editor spDataNivelEditor = spDataNivel.edit();
+        Log.i("url", "" + URL);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    jsonArray = new JSONArray(response);
+                    String value;
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        json = jsonArray.getString(i);
+                        JSONObject jsonObj = new JSONObject(json);
+                        value = jsonObj.getString("value");
+                        ecgList.add(value);
+                    }
+                    if (!ecgList.isEmpty()) {
+                        spDataNivelEditor.putFloat("sizeEcg", ecgList.size());
+                        spDataNivelEditor.apply();
+                    }
+                    //Toast.makeText(MainScreen.this, ""+ecgList.size(), Toast.LENGTH_LONG).show();
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Anything you want
+            }
+        });
+        queue.add(stringRequest);
+    }
+    ////////STEPS
+    public void VolleyPetitionSteps(String URL) {
+        final SharedPreferences.Editor spDataNivelEditor = spDataNivel.edit();
+        Log.i("url", "" + URL);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    jsonArray = new JSONArray(response);
+                    String value;
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        json = jsonArray.getString(i);
+                        JSONObject jsonObj = new JSONObject(json);
+                        value = jsonObj.getString("value");
+                        stepsList.add(value);
+                    }
+                    floatSteps = new float[stepsList.size()];
+                    for (int i = 0; i <  stepsList.size(); i++) {
+                        floatSteps[i] = Float.parseFloat(stepsList.get(i));
+                    }
+                    if (floatSteps.length != 0) {
+                        lastSteps = floatSteps[floatSteps.length-1];
+                        //MAX VALUE
+                        maxSteps = floatSteps[0];
+                        for (int i = 1; i < floatSteps.length; i++) {
+                            if (floatSteps[i] > maxSteps) {
+                                maxSteps = floatSteps[i];
+                            }
+                        }
+                        //MIN VALUE
+                        minSteps = floatSteps[0];
+                        for (int i = 1; i < floatSteps.length; i++) {
+                            if (floatSteps[i] < minSteps) {
+                                minSteps = floatSteps[i];
+                            }
+                        }
+                        //AVG VALUE
+                        avgSteps = floatSteps[0];
+                        for (int i = 1; i < floatSteps.length; i++) {
+                            avgSteps = avgSteps + floatSteps[i];
+                        }
+                        avgSteps = avgSteps / floatSteps.length;
+                        //
+                        spDataNivelEditor.putFloat("minSteps", minSteps);
+                        spDataNivelEditor.putFloat("maxSteps", maxSteps);
+                        spDataNivelEditor.putFloat("avgSteps", avgSteps);
+                        spDataNivelEditor.putFloat("sizeSteps", floatSteps.length);
+                        spDataNivelEditor.putFloat("lastSteps",lastSteps);
+                        spDataNivelEditor.apply();
+                    }
+                    //Toast.makeText(MainScreen.this, ""+floatSteps[0], Toast.LENGTH_LONG).show();
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Anything you want
+            }
+        });
+        queue.add(stringRequest);
+    }
+
+    ////////////// END VOLLEYS/////////////////////////////////////
+
 
     private void startCountAnimation(int from, int to) {
         ValueAnimator animator = ValueAnimator.ofInt(from, to);
@@ -431,6 +1065,18 @@ public class MainScreen extends AppCompatActivity {
         }
     }
 
+    protected boolean internet() {
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = null;
+        networkInfo = cm.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
 
 
@@ -455,9 +1101,12 @@ public class MainScreen extends AppCompatActivity {
 
             case R.id.logout:
                 SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
+                final SharedPreferences.Editor spDataNivelEditor = spDataNivel.edit();
                 SharedPreferences.Editor e = sp.edit();
                 e.clear();
                 e.apply();
+                spDataNivelEditor.clear();
+                spDataNivelEditor.apply();
                 SharedPreferences spLogin = PreferenceManager.getDefaultSharedPreferences(this);
                 SharedPreferences.Editor spLoginEditor = spLogin.edit();
                 spLoginEditor.putBoolean("success",false);
@@ -475,7 +1124,6 @@ public class MainScreen extends AppCompatActivity {
 
     private void menu(){
         SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
-
         //MENU
         //-----------------------------------------------
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbarMain);

@@ -6,6 +6,9 @@ import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.preference.DialogPreference;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
@@ -16,13 +19,30 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.luisguzmn.healthcare40.HealthcareInfo.MenuHinfo;
 import com.example.luisguzmn.healthcare40.Helo.HeloConnection;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
+import com.mikepenz.materialdrawer.util.DrawerImageLoader;
+import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Set;
 
 import static java.lang.Integer.parseInt;
@@ -30,6 +50,7 @@ import static java.lang.Integer.parseInt;
 public class Bluetooth extends AppCompatActivity {
 
     //VARIABLES
+    TextView text_monday,text_tuesday,text_wednesday,text_thursday,text_friday,text_saturday,text_sunday;
     BluetoothClass bluetoothClass;
     public String textoPosicion;
     Button b_on, b_off, b_disc, b_list;
@@ -46,6 +67,8 @@ public class Bluetooth extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth);
+        menu();
+        dias();
         //SHARED PREFERENCES
         infoBluetooth = PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor editorBluetooth = infoBluetooth.edit();
@@ -58,8 +81,6 @@ public class Bluetooth extends AppCompatActivity {
         list = (ListView) findViewById(R.id.viewlist);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         buttonHelo = (Button)findViewById(R.id.buttonHelo);
-        btnJabra = (Button)findViewById(R.id.btnJabra);
-
         //
 
         if (bluetoothAdapter == null) {
@@ -110,11 +131,6 @@ public class Bluetooth extends AppCompatActivity {
                 }
                 ArrayAdapter arrayAdapter = new ArrayAdapter(Bluetooth.this, android.R.layout.simple_list_item_1, devices);
                 list.setAdapter(arrayAdapter);
-            }
-        });
-        btnJabra.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
             }
         });
         buttonHelo.setOnClickListener(new View.OnClickListener() {
@@ -181,5 +197,74 @@ public class Bluetooth extends AppCompatActivity {
     public void onPause(){
         super.onPause();
         finish();
+    }
+
+    private void menu(){
+        SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
+        //MENU
+        //-----------------------------------------------
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbarMain);
+        toolbar.setTitle("Selecciona tu dispositivo");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        GlobalVars g = (GlobalVars) getApplication();
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+    public void dias(){
+        //
+        text_monday = (TextView) findViewById(R.id.text_monday);
+        text_tuesday = (TextView) findViewById(R.id.text_tuesday);
+        text_wednesday = (TextView) findViewById(R.id.text_wednesday);
+        text_thursday = (TextView) findViewById(R.id.text_thursday);
+        text_friday = (TextView) findViewById(R.id.text_friday);
+        text_saturday = (TextView) findViewById(R.id.text_saturday);
+        text_sunday = (TextView) findViewById(R.id.text_sunday);
+        //
+        //DIAS
+        Date today = Calendar.getInstance().getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("EEEE");
+        String currentDateTimeStrin = formatter.format(today);
+
+        if (currentDateTimeStrin.equalsIgnoreCase("Monday") || currentDateTimeStrin.equalsIgnoreCase("Lunes")) {
+            text_monday.setBackgroundColor(Color.parseColor("#b8ddcd"));
+        } else {
+            text_monday.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        if (currentDateTimeStrin.equalsIgnoreCase("Tuesday") || currentDateTimeStrin.equalsIgnoreCase("Martes")) {
+            text_tuesday.setBackgroundColor(Color.parseColor("#b8ddcd"));
+        } else {
+            text_tuesday.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        if (currentDateTimeStrin.equalsIgnoreCase("Wednesday") || currentDateTimeStrin.equalsIgnoreCase("Miércoles")) {
+            text_wednesday.setBackgroundColor(Color.parseColor("#b8ddcd"));
+        } else {
+            text_wednesday.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        if (currentDateTimeStrin.equalsIgnoreCase("Thursday") || currentDateTimeStrin.equalsIgnoreCase("Jueves")) {
+            text_thursday.setBackgroundColor(Color.parseColor("#b8ddcd"));
+        } else {
+            text_thursday.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        if (currentDateTimeStrin.equalsIgnoreCase("Friday") || currentDateTimeStrin.equalsIgnoreCase("Viernes")) {
+            text_friday.setBackgroundColor(Color.parseColor("#b8ddcd"));
+        } else {
+            text_friday.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        if (currentDateTimeStrin.equalsIgnoreCase("Saturday") || currentDateTimeStrin.equalsIgnoreCase("Sábado")) {
+            text_saturday.setBackgroundColor(Color.parseColor("#b8ddcd"));
+        } else {
+            text_saturday.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        if (currentDateTimeStrin.equalsIgnoreCase("Sunday") || currentDateTimeStrin.equalsIgnoreCase("Domingo")) {
+            text_sunday.setBackgroundColor(Color.parseColor("#b8ddcd"));
+        } else {
+            text_sunday.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        //////////////////////////////////////////////////////////////////////////////////////////////////
     }
 }

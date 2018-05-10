@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DrivingDashboard">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#087683"
+        app:layout_constraintTop_toBottomOf="@+id/linearDias"
+        />
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dashboard Conducción"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:layout_constraintLeft_toLeftOf="@id/toolbar"
+        app:layout_constraintRight_toRightOf="@id/toolbar"
+        app:layout_constraintTop_toTopOf="@id/toolbar" />
+
+    <TextView
+        android:id="@+id/textInstructions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Selecciona las variables que quieras monitorear."
+        android:textColor="@color/blue"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_marginTop="7dp"
+        android:layout_height="1dip"
+        android:background="@color/green"
+        app:layout_constraintTop_toBottomOf="@id/textInstructions"/>
+
+    <TextView
+        android:id="@+id/textVarDef"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Variables por defecto"
+        android:textColor="@color/blue"
+        android:textSize="17sp"
+        android:textAlignment="center"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@id/line1" />
+
+    <View
+        android:id="@+id/line2"
+        android:layout_width="match_parent"
+        android:layout_marginTop="7dp"
+        android:layout_height="1dip"
+        android:background="@color/green"
+        app:layout_constraintTop_toBottomOf="@id/textVarDef"/>
+
+
+        <LinearLayout
+            android:id="@+id/linearS1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/line2"
+            >
+
+            <Switch
+                android:id="@+id/switchFatigue"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:text="Fatiga"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:checked="true"
+                />
+
+            <Switch
+                android:id="@+id/switchHr"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:text="Ritmo cardiaco"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:checked="true"
+                />
+
+            <Switch
+                android:id="@+id/switchMood"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:text="Humor"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:checked="true"
+                />
+        </LinearLayout>
+
+    <View
+        android:id="@+id/line3"
+        android:layout_width="match_parent"
+        android:layout_marginTop="7dp"
+        android:layout_height="1dip"
+        android:background="@color/green"
+        app:layout_constraintTop_toBottomOf="@id/linearS1"/>
+
+    <TextView
+        android:id="@+id/textVarNoDef"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Variables a escoger"
+        android:textColor="@color/blue"
+        android:textSize="17sp"
+        android:textAlignment="center"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@id/line3" />
+
+    <View
+        android:id="@+id/line4"
+        android:layout_width="match_parent"
+        android:layout_marginTop="7dp"
+        android:layout_height="1dip"
+        android:background="@color/green"
+        app:layout_constraintTop_toBottomOf="@id/textVarNoDef"/>
+
+    <LinearLayout
+        android:id="@+id/linearS2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/line4"
+        >
+
+        <Switch
+            android:id="@+id/switchBp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Presión sanguínea"
+            android:textSize="17sp"
+            android:textAlignment="center"
+            />
+        <Switch
+            android:id="@+id/switchBr"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Frec. Respiratoria"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/line5"
+        android:layout_width="match_parent"
+        android:layout_marginTop="7dp"
+        android:layout_height="1dip"
+        android:background="@color/green"
+        app:layout_constraintTop_toBottomOf="@id/linearS2"/>
+
+    <TextView
+        android:id="@+id/textEj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text=""
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/linearStart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <Button
+            android:id="@+id/on"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="INICIAR"
+            android:textSize="18sp"
+            android:background="@color/md_green_A100"
+            android:textColor="@color/md_grey_800"
+            android:onClick="start"
+            />
+        <Button
+            android:id="@+id/off"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="TERMINAR"
+            android:textSize="18sp"
+            android:textColor="@color/md_grey_800"
+            android:background="@color/md_red_A100"
+            android:onClick="stop"
+            />
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- DIAS       -->
+    <LinearLayout
+        android:id="@+id/linearDias"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/text_monday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="LUN"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
+
+        <TextView
+            android:id="@+id/text_tuesday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="MAR"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
+        <TextView
+            android:id="@+id/text_wednesday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="MIE"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
+        <TextView
+            android:id="@+id/text_thursday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="JUE"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
+        <TextView
+            android:id="@+id/text_friday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="VIE"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
+        <TextView
+            android:id="@+id/text_saturday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="SAB"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
+        <TextView
+            android:id="@+id/text_sunday"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="DOM"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="1"
+            />
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

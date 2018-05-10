@@ -72,8 +72,8 @@
         <activity android:name=".HealthcareInfo.MenuHinfo" />
         <activity android:name=".RegistrosEmty" />
         <activity android:name=".Registros" />
-        <activity android:name=".Configuracion" />
-        <activity android:name=".configuracion"></activity>
+        <activity android:name=".configuracion" />
+        <activity android:name=".DrivingDashboard"></activity>
     </application>
 
 </manifest>

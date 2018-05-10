@@ -86,8 +86,7 @@
         android:text="20%"
         android:textSize="30sp"
         android:textColor="@color/blue"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/text_nivel"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         />
@@ -97,9 +96,56 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nivel 1"
+        android:textStyle="bold"
         android:textColor="@color/green"
-        app:layout_constraintTop_toBottomOf="@id/text_percentage"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/text_measures"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Llevas: 30"
+        android:textColor="@color/green"
+        app:layout_constraintTop_toBottomOf="@id/text_nivel"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/text_measures_faltan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Te faltan: 4"
+        android:textColor="@color/green"
+        app:layout_constraintTop_toBottomOf="@id/text_measures"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/iconArrowRight"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@mipmap/ic_keyboard_arrow_right_black_48dp"
+        android:gravity="center_horizontal"
+        android:padding="5dip"
+        app:layout_constraintLeft_toRightOf="@id/progressBar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <ImageView
+        android:id="@+id/iconArrowLeft"
+        android:visibility="invisible"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@mipmap/ic_keyboard_arrow_left_black_48dp"
+        android:gravity="center_horizontal"
+        android:padding="5dip"
+        app:layout_constraintBottom_toTopOf="@id/cardView"
         app:layout_constraintLeft_toLeftOf="parent"
         />
 
@@ -135,6 +181,225 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:visibility="invisible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+        <!--            TABLA                -->
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:text="Información Rápida"
+            android:textAlignment="center"
+            android:textColor="@color/blue"
+            android:background="@color/md_grey_300"
+            />
+
+            <!--            COLUMNAS              -->
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="0dp"
+             android:layout_weight="4"
+             android:orientation="horizontal"
+             android:divider="?android:dividerVertical"
+             android:showDividers="middle">
+
+             <!--            COLUMNA1          -->
+             <LinearLayout
+                 android:layout_width="0dp"
+                 android:layout_weight="1"
+                 android:layout_height="match_parent"
+                 android:orientation="vertical">
+
+                 <TextView
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"
+                     android:text="Variable"
+                     android:textAlignment="center"
+                     android:textColor="@color/green"/>
+
+                 <TextView
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"
+                     android:text="Presión Sistólica"
+                     android:textAlignment="center"
+                     android:textColor="@color/black"/>
+                 <TextView
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"
+                     android:text="Presión Diastólica"
+                     android:textAlignment="center"
+                     android:textColor="@color/black"/>
+                 <TextView
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"
+                     android:text="Frec. Respiratoria"
+                     android:textAlignment="center"
+                     android:textColor="@color/black"/>
+                 <TextView
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"
+                     android:text="Ritmo cardiaco"
+                     android:textAlignment="center"
+                     android:textColor="@color/black"/>
+                 <TextView
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"
+                     android:text="Pasos"
+                     android:textAlignment="center"
+                     android:textColor="@color/black"/>
+             </LinearLayout>
+
+             <!--            COLUMNA2          -->
+             <LinearLayout
+                 android:layout_width="0dp"
+                 android:layout_weight="1"
+                 android:layout_height="match_parent"
+                 android:orientation="vertical">
+
+                 <TextView
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"
+                     android:text="Promedio"
+                     android:textAlignment="center"
+                     android:textColor="@color/green"/>
+
+                 <TextView
+                     android:id="@+id/textBpmaxAvg"
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"
+                     android:text="BPMAX"
+                     android:textAlignment="center"
+                     android:textColor="@color/black"/>
+
+                 <TextView
+                     android:id="@+id/textBpminAvg"
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"
+                     android:text="BPMIN"
+                     android:textAlignment="center"
+                     android:textColor="@color/black"/>
+
+                 <TextView
+                     android:id="@+id/textBrAvg"
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"
+                     android:text="BR"
+                     android:textAlignment="center"
+                     android:textColor="@color/black"/>
+
+                 <TextView
+                     android:id="@+id/textHrAvg"
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"
+                     android:text="HR"
+                     android:textAlignment="center"
+                     android:textColor="@color/black"/>
+
+                 <TextView
+                     android:id="@+id/textStepsAvg"
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"
+                     android:text="PASOS"
+                     android:textAlignment="center"
+                     android:textColor="@color/black"/>
+
+             </LinearLayout>
+
+             <!--            COLUMNA3          -->
+             <LinearLayout
+                 android:layout_width="0dp"
+                 android:layout_weight="1"
+                 android:layout_height="match_parent"
+                 android:orientation="vertical">
+
+                 <TextView
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"
+                     android:text="Última medición"
+                     android:textAlignment="center"
+                     android:textColor="@color/green"/>
+
+                 <TextView
+                     android:id="@+id/textBpmaxLast"
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"
+                     android:text="BPMAX"
+                     android:textAlignment="center"
+                     android:textColor="@color/black"/>
+
+                 <TextView
+                     android:id="@+id/textBpminLast"
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"
+                     android:text="BPMAX"
+                     android:textAlignment="center"
+                     android:textColor="@color/black"/>
+
+                 <TextView
+                     android:id="@+id/textBrLast"
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"
+                     android:text="BPMAX"
+                     android:textAlignment="center"
+                     android:textColor="@color/black"/>
+
+                 <TextView
+                     android:id="@+id/textHrLast"
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"
+                     android:text="BPMAX"
+                     android:textAlignment="center"
+                     android:textColor="@color/black"/>
+
+                 <TextView
+                     android:id="@+id/textStepsLast"
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"
+                     android:text="BPMAX"
+                     android:textAlignment="center"
+                     android:textColor="@color/black"/>
+             </LinearLayout>
+
+         </LinearLayout>
+
+        </android.support.v7.widget.LinearLayoutCompat>
+    </android.support.v7.widget.CardView>
+
 
     <!-- DIAS       -->
     <LinearLayout
