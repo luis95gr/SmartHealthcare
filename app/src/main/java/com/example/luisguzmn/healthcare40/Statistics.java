@@ -95,7 +95,6 @@ public class Statistics extends AppCompatActivity {
 
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -429,9 +428,6 @@ public class Statistics extends AppCompatActivity {
         mChart.getXAxis().setLabelCount(floatValues.length,true);
 
     }
-
-
-
 
 
     // getting the maximum value

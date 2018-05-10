@@ -10,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.annotation.StringDef;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -68,7 +69,6 @@ public class Profile extends AppCompatActivity {
     Button button_nv3;
     Button button_nv2;
     Button button_nv1;
-    Button btnSend;
     String horas;
     int ejercicioInt;
     int ejercicioDias;
@@ -98,7 +98,10 @@ public class Profile extends AppCompatActivity {
         setContentView(R.layout.profile);
 
         SharedPreferences sp = getSharedPreferences("login",MODE_PRIVATE);
+        SharedPreferences.Editor e = sp.edit();
 
+
+        final FloatingActionButton btnSend = (FloatingActionButton) findViewById(R.id.btnSend);
 
 
         //CAST
@@ -132,7 +135,6 @@ public class Profile extends AppCompatActivity {
         button_horas1 = (Button) findViewById(R.id.button_horas1);
         button_horas2 = (Button) findViewById(R.id.button_horas2_3);
         button_horas4 = (Button) findViewById(R.id.button_horas4);
-        btnSend = (Button)findViewById(R.id.btnSend);
         //MENU
         //-----------------------------------------------
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbarMain);
@@ -242,6 +244,7 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
            internet();
+           btnSend.setVisibility(View.INVISIBLE);
 
             }
         });
@@ -296,6 +299,7 @@ public class Profile extends AppCompatActivity {
                 imB_parado.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
                 imB_caminando.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
                 imB_corriendo.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+                btnSend.setVisibility(View.VISIBLE);
             }
         });
 
@@ -308,6 +312,8 @@ public class Profile extends AppCompatActivity {
                 imB_parado.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
                 imB_caminando.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
                 imB_corriendo.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+                btnSend.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -320,6 +326,8 @@ public class Profile extends AppCompatActivity {
                 imB_acos.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
                 imB_caminando.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
                 imB_corriendo.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+                btnSend.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -332,6 +340,8 @@ public class Profile extends AppCompatActivity {
                 imB_acos.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
                 imB_parado.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
                 imB_corriendo.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+                btnSend.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -344,6 +354,8 @@ public class Profile extends AppCompatActivity {
                 imB_acos.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
                 imB_caminando.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
                 imB_parado.setBackground(getApplicationContext().getDrawable(R.drawable.border_imagen));
+                btnSend.setVisibility(View.VISIBLE);
+
             }
         });
         //INTENSIDAD DE EJERCICIO ////////////////////////////////////////////////////////////////////////////////////////
@@ -361,6 +373,7 @@ public class Profile extends AppCompatActivity {
             button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
             button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
             button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+
         }
         if (ejercicioDias == 2) {
             button_nv1.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
@@ -430,6 +443,8 @@ public class Profile extends AppCompatActivity {
                 button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
                 button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
                 button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                btnSend.setVisibility(View.VISIBLE);
+
             }
         });
         button_nv2.setOnClickListener(new View.OnClickListener() {
@@ -443,6 +458,8 @@ public class Profile extends AppCompatActivity {
                 button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
                 button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
                 button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                btnSend.setVisibility(View.VISIBLE);
+
             }
         });
         button_nv3.setOnClickListener(new View.OnClickListener() {
@@ -456,6 +473,8 @@ public class Profile extends AppCompatActivity {
                 button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
                 button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
                 button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                btnSend.setVisibility(View.VISIBLE);
+
             }
         });
         button_nv4.setOnClickListener(new View.OnClickListener() {
@@ -469,6 +488,8 @@ public class Profile extends AppCompatActivity {
                 button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
                 button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
                 button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                btnSend.setVisibility(View.VISIBLE);
+
             }
         });
         button_nv5.setOnClickListener(new View.OnClickListener() {
@@ -482,6 +503,8 @@ public class Profile extends AppCompatActivity {
                 button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
                 button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
                 button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                btnSend.setVisibility(View.VISIBLE);
+
             }
         });
         button_nv6.setOnClickListener(new View.OnClickListener() {
@@ -495,6 +518,8 @@ public class Profile extends AppCompatActivity {
                 button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
                 button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
                 button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile_deseleccionado));
+                btnSend.setVisibility(View.VISIBLE);
+
             }
         });
         button_nv7.setOnClickListener(new View.OnClickListener() {
@@ -508,6 +533,7 @@ public class Profile extends AppCompatActivity {
                 button_nv5.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
                 button_nv6.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
                 button_nv7.setBackground(getApplicationContext().getDrawable(R.drawable.border_profile));
+                btnSend.setVisibility(View.VISIBLE);
 
             }
         });
@@ -541,6 +567,8 @@ public class Profile extends AppCompatActivity {
                 button_horas2.setBackground(getApplicationContext().getDrawable(R.drawable.round_border2_deseleccionado));
                 button_horas4.setBackground(getApplicationContext().getDrawable(R.drawable.round_border2_deseleccionado));
                 horas = "1 or less";
+                btnSend.setVisibility(View.VISIBLE);
+
             }
         });
         button_horas2.setOnClickListener(new View.OnClickListener() {
@@ -550,6 +578,8 @@ public class Profile extends AppCompatActivity {
                 button_horas1.setBackground(getApplicationContext().getDrawable(R.drawable.round_border2_deseleccionado));
                 button_horas4.setBackground(getApplicationContext().getDrawable(R.drawable.round_border2_deseleccionado));
                 horas = "2-3 or less";
+                btnSend.setVisibility(View.VISIBLE);
+
             }
         });
         button_horas4.setOnClickListener(new View.OnClickListener() {
@@ -559,6 +589,8 @@ public class Profile extends AppCompatActivity {
                 button_horas1.setBackground(getApplicationContext().getDrawable(R.drawable.round_border2_deseleccionado));
                 button_horas2.setBackground(getApplicationContext().getDrawable(R.drawable.round_border2_deseleccionado));
                 horas = "4 or more";
+                btnSend.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -661,6 +693,7 @@ public class Profile extends AppCompatActivity {
     }
     private void internet() {
         SharedPreferences sp = getSharedPreferences("login",MODE_PRIVATE);
+        SharedPreferences.Editor e = sp.edit();
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = null;
         networkInfo = cm.getActiveNetworkInfo();
@@ -668,6 +701,11 @@ public class Profile extends AppCompatActivity {
         if (networkInfo != null && networkInfo.isConnected()) {
             VolleyPetition("http://meddata.sytes.net/phpfiles/update.php?email="+sp.getString("email","no email")+"&ex_int="+ejercicioInt+
                     "&days_ex="+ejercicioDias+"&hours_ex="+horas);
+            e.putInt("DaysEx",ejercicioDias);
+            e.putString("hoursEx",horas);
+            e.putInt("exInt",ejercicioInt);
+            e.apply();
+
         } else {
             Toast.makeText(getApplicationContext(),"Verifica tu conexión a Internet",Toast.LENGTH_SHORT).show();
 

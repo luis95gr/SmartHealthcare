@@ -69,10 +69,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HealthcareInfo.MenuHinfo"></activity>
-        <activity android:name=".RegistrosEmty"></activity>
-        <activity android:name=".Registros"></activity>
-
+        <activity android:name=".HealthcareInfo.MenuHinfo" />
+        <activity android:name=".RegistrosEmty" />
+        <activity android:name=".Registros" />
+        <activity android:name=".Configuracion" />
+        <activity android:name=".configuracion"></activity>
     </application>
 
 </manifest>
