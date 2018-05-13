@@ -444,40 +444,42 @@ public class MainScreen extends AppCompatActivity {
                         JSONObject jsonObj = new JSONObject(json);
                         value = jsonObj.getString("value");
                         brList.add(value);
-                    }
-                    floatValuesBr = new float[brList.size()];
-                    for (int i = 0; i <  brList.size(); i++) {
-                        floatValuesBr[i] = Float.parseFloat(brList.get(i));
-                    }
-                    if (floatValuesBr.length != 0) {
-                        lastBr = floatValuesBr[floatValuesBr.length-1];
-                        //MAX VALUE
-                        maxBr = floatValuesBr[0];
-                        for (int i = 1; i < floatValuesBr.length; i++) {
-                            if (floatValuesBr[i] > maxBr) {
-                                maxBr = floatValuesBr[i];
+                    }if(brList.get(0).equals("null")){}
+                    else {
+                        floatValuesBr = new float[brList.size()];
+                        for (int i = 0; i < brList.size(); i++) {
+                            floatValuesBr[i] = Float.parseFloat(brList.get(i));
+                        }
+                        if (floatValuesBr.length != 0) {
+                            lastBr = floatValuesBr[floatValuesBr.length - 1];
+                            //MAX VALUE
+                            maxBr = floatValuesBr[0];
+                            for (int i = 1; i < floatValuesBr.length; i++) {
+                                if (floatValuesBr[i] > maxBr) {
+                                    maxBr = floatValuesBr[i];
+                                }
                             }
-                        }
-                        //MIN VALUE
-                        minBr = floatValuesBr[0];
-                        for (int i = 1; i < floatValuesBr.length; i++) {
-                            if (floatValuesBr[i] < minBr) {
-                                minBr = floatValuesBr[i];
+                            //MIN VALUE
+                            minBr = floatValuesBr[0];
+                            for (int i = 1; i < floatValuesBr.length; i++) {
+                                if (floatValuesBr[i] < minBr) {
+                                    minBr = floatValuesBr[i];
+                                }
                             }
+                            //AVG VALUE
+                            avgBr = floatValuesBr[0];
+                            for (int i = 1; i < floatValuesBr.length; i++) {
+                                avgBr = avgBr + floatValuesBr[i];
+                            }
+                            avgBr = avgBr / floatValuesBr.length;
+                            //
+                            spDataNivelEditor.putFloat("minBr", minBr);
+                            spDataNivelEditor.putFloat("maxBr", maxBr);
+                            spDataNivelEditor.putFloat("avgBr", avgBr);
+                            spDataNivelEditor.putFloat("sizeBr", floatValuesBr.length);
+                            spDataNivelEditor.putFloat("lastBr", lastBr);
+                            spDataNivelEditor.apply();
                         }
-                        //AVG VALUE
-                        avgBr = floatValuesBr[0];
-                        for (int i = 1; i < floatValuesBr.length; i++) {
-                            avgBr = avgBr + floatValuesBr[i];
-                        }
-                        avgBr = avgBr / floatValuesBr.length;
-                        //
-                        spDataNivelEditor.putFloat("minBr", minBr);
-                        spDataNivelEditor.putFloat("maxBr", maxBr);
-                        spDataNivelEditor.putFloat("avgBr", avgBr);
-                        spDataNivelEditor.putFloat("sizeBr", floatValuesBr.length);
-                        spDataNivelEditor.putFloat("lastBr",lastBr);
-                        spDataNivelEditor.apply();
                     }
                     //Toast.makeText(MainScreen.this, ""+decimalFormat.format(avgBr), Toast.LENGTH_LONG).show();
                 }
@@ -510,41 +512,43 @@ public class MainScreen extends AppCompatActivity {
                         JSONObject jsonObj = new JSONObject(json);
                         value = jsonObj.getString("value");
                         bpmaxList.add(value);
-                    }
-                    floatValuesBpmax = new float[bpmaxList.size()];
-                    for (int i = 0; i <  bpmaxList.size(); i++) {
-                        floatValuesBpmax[i] = Float.parseFloat(bpmaxList.get(i));
-                    }
-                    //MAX VALUE
-                    if (floatValuesBpmax.length !=0) {
-                        lastBpmax = floatValuesBpmax[floatValuesBpmax.length-1];
+                    }if(bpmaxList.get(0).equals("null")){}
+                    else {
+                        floatValuesBpmax = new float[bpmaxList.size()];
+                        for (int i = 0; i < bpmaxList.size(); i++) {
+                            floatValuesBpmax[i] = Float.parseFloat(bpmaxList.get(i));
+                        }
                         //MAX VALUE
-                        maxBpmax = floatValuesBpmax[0];
-                        for (int i = 1; i < floatValuesBpmax.length; i++) {
-                            if (floatValuesBpmax[i] > maxBpmax) {
-                                maxBpmax = floatValuesBpmax[i];
+                        if (floatValuesBpmax.length != 0) {
+                            lastBpmax = floatValuesBpmax[floatValuesBpmax.length - 1];
+                            //MAX VALUE
+                            maxBpmax = floatValuesBpmax[0];
+                            for (int i = 1; i < floatValuesBpmax.length; i++) {
+                                if (floatValuesBpmax[i] > maxBpmax) {
+                                    maxBpmax = floatValuesBpmax[i];
+                                }
                             }
-                        }
-                        //MIN VALUE
-                        minBpmax = floatValuesBpmax[0];
-                        for (int i = 1; i < floatValuesBpmax.length; i++) {
-                            if (floatValuesBpmax[i] < minBpmax) {
-                                minBpmax = floatValuesBpmax[i];
+                            //MIN VALUE
+                            minBpmax = floatValuesBpmax[0];
+                            for (int i = 1; i < floatValuesBpmax.length; i++) {
+                                if (floatValuesBpmax[i] < minBpmax) {
+                                    minBpmax = floatValuesBpmax[i];
+                                }
                             }
+                            //AVG VALUE
+                            avgBpmax = floatValuesBpmax[0];
+                            for (int i = 1; i < floatValuesBpmax.length; i++) {
+                                avgBpmax = avgBpmax + floatValuesBpmax[i];
+                            }
+                            avgBpmax = avgBpmax / floatValuesBpmax.length;
+                            //
+                            spDataNivelEditor.putFloat("minBpmax", minBpmax);
+                            spDataNivelEditor.putFloat("maxBpmax", maxBpmax);
+                            spDataNivelEditor.putFloat("avgBpmax", avgBpmax);
+                            spDataNivelEditor.putFloat("sizeBpmax", floatValuesBpmax.length);
+                            spDataNivelEditor.putFloat("lastBpmax", lastBpmax);
+                            spDataNivelEditor.apply();
                         }
-                        //AVG VALUE
-                        avgBpmax = floatValuesBpmax[0];
-                        for (int i = 1; i < floatValuesBpmax.length; i++) {
-                            avgBpmax = avgBpmax + floatValuesBpmax[i];
-                        }
-                        avgBpmax = avgBpmax / floatValuesBpmax.length;
-                        //
-                        spDataNivelEditor.putFloat("minBpmax", minBpmax);
-                        spDataNivelEditor.putFloat("maxBpmax", maxBpmax);
-                        spDataNivelEditor.putFloat("avgBpmax", avgBpmax);
-                        spDataNivelEditor.putFloat("sizeBpmax", floatValuesBpmax.length);
-                        spDataNivelEditor.putFloat("lastBpmax",lastBpmax);
-                        spDataNivelEditor.apply();
                     }
                     //Toast.makeText(MainScreen.this, ""+floatValuesBpmax.length, Toast.LENGTH_LONG).show();
                 }
@@ -577,40 +581,42 @@ public class MainScreen extends AppCompatActivity {
                         JSONObject jsonObj = new JSONObject(json);
                         value = jsonObj.getString("value");
                         bpminList.add(value);
-                    }
-                    floatValuesBpmin = new float[bpminList.size()];
-                    for (int i = 0; i <  bpminList.size(); i++) {
-                        floatValuesBpmin[i] = Float.parseFloat(bpminList.get(i));
-                    }
-                    if (floatValuesBpmin.length != 0) {
-                        lastBpmin = floatValuesBpmin[floatValuesBpmin.length-1];
-                        //MAX VALUE
-                        maxBpmin = floatValuesBpmin[0];
-                        for (int i = 1; i < floatValuesBpmin.length; i++) {
-                            if (floatValuesBpmin[i] > maxBpmin) {
-                                maxBpmin = floatValuesBpmin[i];
+                    }if(bpminList.get(0).equals("null")){}
+                    else {
+                        floatValuesBpmin = new float[bpminList.size()];
+                        for (int i = 0; i < bpminList.size(); i++) {
+                            floatValuesBpmin[i] = Float.parseFloat(bpminList.get(i));
+                        }
+                        if (floatValuesBpmin.length != 0) {
+                            lastBpmin = floatValuesBpmin[floatValuesBpmin.length - 1];
+                            //MAX VALUE
+                            maxBpmin = floatValuesBpmin[0];
+                            for (int i = 1; i < floatValuesBpmin.length; i++) {
+                                if (floatValuesBpmin[i] > maxBpmin) {
+                                    maxBpmin = floatValuesBpmin[i];
+                                }
                             }
-                        }
-                        //MIN VALUE
-                        minBpmin = floatValuesBpmin[0];
-                        for (int i = 1; i < floatValuesBpmin.length; i++) {
-                            if (floatValuesBpmin[i] < minBpmin) {
-                                minBpmin = floatValuesBpmin[i];
+                            //MIN VALUE
+                            minBpmin = floatValuesBpmin[0];
+                            for (int i = 1; i < floatValuesBpmin.length; i++) {
+                                if (floatValuesBpmin[i] < minBpmin) {
+                                    minBpmin = floatValuesBpmin[i];
+                                }
                             }
+                            //AVG VALUE
+                            avgBpmin = floatValuesBpmin[0];
+                            for (int i = 1; i < floatValuesBpmin.length; i++) {
+                                avgBpmin = avgBpmin + floatValuesBpmin[i];
+                            }
+                            avgBpmin = avgBpmin / floatValuesBpmin.length;
+                            //
+                            spDataNivelEditor.putFloat("minBpmin", minBpmin);
+                            spDataNivelEditor.putFloat("maxBpmin", maxBpmin);
+                            spDataNivelEditor.putFloat("avgBpmin", avgBpmin);
+                            spDataNivelEditor.putFloat("sizeBpmin", floatValuesBpmin.length);
+                            spDataNivelEditor.putFloat("lastBpmin", lastBpmin);
+                            spDataNivelEditor.apply();
                         }
-                        //AVG VALUE
-                        avgBpmin = floatValuesBpmin[0];
-                        for (int i = 1; i < floatValuesBpmin.length; i++) {
-                            avgBpmin = avgBpmin + floatValuesBpmin[i];
-                        }
-                        avgBpmin = avgBpmin / floatValuesBpmin.length;
-                        //
-                        spDataNivelEditor.putFloat("minBpmin", minBpmin);
-                        spDataNivelEditor.putFloat("maxBpmin", maxBpmin);
-                        spDataNivelEditor.putFloat("avgBpmin", avgBpmin);
-                        spDataNivelEditor.putFloat("sizeBpmin", floatValuesBpmin.length);
-                        spDataNivelEditor.putFloat("lastBpmin",lastBpmin);
-                        spDataNivelEditor.apply();
                     }
                     //Toast.makeText(MainScreen.this, ""+floatValuesBpmin.length, Toast.LENGTH_LONG).show();
                 }
@@ -642,40 +648,42 @@ public class MainScreen extends AppCompatActivity {
                         JSONObject jsonObj = new JSONObject(json);
                         value = jsonObj.getString("value");
                         hrList.add(value);
-                    }
-                    floatValuesHr = new float[hrList.size()];
-                    for (int i = 0; i <  hrList.size(); i++) {
-                        floatValuesHr[i] = Float.parseFloat(hrList.get(i));
-                    }
-                    if (floatValuesHr.length != 0) {
-                        lastHr = floatValuesHr[floatValuesHr.length-1];
-                        //MAX VALUE
-                        maxHr = floatValuesHr[0];
-                        for (int i = 1; i < floatValuesHr.length; i++) {
-                            if (floatValuesHr[i] > maxHr) {
-                                maxHr = floatValuesHr[i];
+                    }if(hrList.get(0).equals("null")){}
+                    else {
+                        floatValuesHr = new float[hrList.size()];
+                        for (int i = 0; i < hrList.size(); i++) {
+                            floatValuesHr[i] = Float.parseFloat(hrList.get(i));
+                        }
+                        if (floatValuesHr.length != 0) {
+                            lastHr = floatValuesHr[floatValuesHr.length - 1];
+                            //MAX VALUE
+                            maxHr = floatValuesHr[0];
+                            for (int i = 1; i < floatValuesHr.length; i++) {
+                                if (floatValuesHr[i] > maxHr) {
+                                    maxHr = floatValuesHr[i];
+                                }
                             }
-                        }
-                        //MIN VALUE
-                        minHr = floatValuesHr[0];
-                        for (int i = 1; i < floatValuesHr.length; i++) {
-                            if (floatValuesHr[i] < minHr) {
-                                minHr = floatValuesHr[i];
+                            //MIN VALUE
+                            minHr = floatValuesHr[0];
+                            for (int i = 1; i < floatValuesHr.length; i++) {
+                                if (floatValuesHr[i] < minHr) {
+                                    minHr = floatValuesHr[i];
+                                }
                             }
+                            //AVG VALUE
+                            avgHr = floatValuesHr[0];
+                            for (int i = 1; i < floatValuesHr.length; i++) {
+                                avgHr = avgHr + floatValuesHr[i];
+                            }
+                            avgHr = avgHr / floatValuesHr.length;
+                            //
+                            spDataNivelEditor.putFloat("minHr", minHr);
+                            spDataNivelEditor.putFloat("maxHr", maxHr);
+                            spDataNivelEditor.putFloat("avgHr", avgHr);
+                            spDataNivelEditor.putFloat("sizeHr", floatValuesHr.length);
+                            spDataNivelEditor.putFloat("lastHr", lastHr);
+                            spDataNivelEditor.apply();
                         }
-                        //AVG VALUE
-                        avgHr = floatValuesHr[0];
-                        for (int i = 1; i < floatValuesHr.length; i++) {
-                            avgHr = avgHr + floatValuesHr[i];
-                        }
-                        avgHr = avgHr / floatValuesHr.length;
-                        //
-                        spDataNivelEditor.putFloat("minHr", minHr);
-                        spDataNivelEditor.putFloat("maxHr", maxHr);
-                        spDataNivelEditor.putFloat("avgHr", avgHr);
-                        spDataNivelEditor.putFloat("sizeHr", floatValuesHr.length);
-                        spDataNivelEditor.putFloat("lastHr",lastHr);
-                        spDataNivelEditor.apply();
                     }
                     //Toast.makeText(MainScreen.this, ""+floatValuesHr[0], Toast.LENGTH_LONG).show();
                 }
@@ -814,13 +822,14 @@ public class MainScreen extends AppCompatActivity {
                         JSONObject jsonObj = new JSONObject(json);
                         value = jsonObj.getString("value");
                         stepsList.add(value);
-                    }
+                    }if(stepsList.get(0).equals("null")){}
+                    else{
                     floatSteps = new float[stepsList.size()];
                     for (int i = 0; i <  stepsList.size(); i++) {
                         floatSteps[i] = Float.parseFloat(stepsList.get(i));
                     }
                     if (floatSteps.length != 0) {
-                        lastSteps = floatSteps[floatSteps.length-1];
+                        lastSteps = floatSteps[floatSteps.length - 1];
                         //MAX VALUE
                         maxSteps = floatSteps[0];
                         for (int i = 1; i < floatSteps.length; i++) {
@@ -846,8 +855,9 @@ public class MainScreen extends AppCompatActivity {
                         spDataNivelEditor.putFloat("maxSteps", maxSteps);
                         spDataNivelEditor.putFloat("avgSteps", avgSteps);
                         spDataNivelEditor.putFloat("sizeSteps", floatSteps.length);
-                        spDataNivelEditor.putFloat("lastSteps",lastSteps);
+                        spDataNivelEditor.putFloat("lastSteps", lastSteps);
                         spDataNivelEditor.apply();
+                    }
                     }
                     //Toast.makeText(MainScreen.this, ""+floatSteps[0], Toast.LENGTH_LONG).show();
                 }

@@ -28,7 +28,18 @@
         <item name="android:textColor">#ffffff</item>
         <item name="android:textSize">16sp</item>
     </style>
-
+    <style name="PrimaryFlatButton" parent="Theme.AppCompat.Light">
+        <item name="android:buttonStyle">
+            @style/Widget.AppCompat.Button.Borderless.Colored
+        </item>
+        <item name="colorAccent">#FFAB40</item>
+    </style>
+    <style name="PrimaryFlatButtonView" parent="Theme.AppCompat.Light">
+        <item name="android:buttonStyle">
+            @style/Widget.AppCompat.Button.Borderless.Colored
+        </item>
+        <item name="colorAccent">#80ff80</item>
+    </style>
     <style name="Registration.personinfo" parent="Registration" />
     <style name="Registration.text" parent="Registration">
         <item name="android:layout_width">wrap_content</item>

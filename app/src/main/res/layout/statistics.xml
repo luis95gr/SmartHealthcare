@@ -10,7 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="#10FFFFFF"
         app:layout_constraintTop_toBottomOf="@+id/linearDias"
         />
 
@@ -138,11 +138,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="BR"
+                    android:backgroundTint="#A4A4A4"
                     android:layout_marginRight="3dp"
                     android:layout_marginLeft="3dp"
                     />
                 <Button
                     android:id="@+id/btnHR"
+                    android:backgroundTint="#A4A4A4"
                     android:background="@drawable/round_border_statistics"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -153,6 +155,7 @@
                     android:id="@+id/btnBPmax"
                     android:background="@drawable/round_border_statistics"
                     android:layout_width="wrap_content"
+                    android:backgroundTint="#A4A4A4"
                     android:layout_height="wrap_content"
                     android:text="BPmax"
                     android:layout_marginRight="3dp"
@@ -164,14 +167,17 @@
                     android:background="@drawable/round_border_statistics"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="#A4A4A4"
                     android:layout_marginRight="3dp"
                     android:layout_marginLeft="3dp"
                     android:text="BPmin" />
+
                 <Button
                     android:id="@+id/btnMood"
                     android:background="@drawable/round_border_statistics"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="#A4A4A4"
                     android:text="Mood"
                     android:layout_marginRight="3dp"
                     android:layout_marginLeft="3dp"
@@ -181,6 +187,7 @@
                     android:id="@+id/btnFatigue"
                     android:background="@drawable/round_border_statistics"
                     android:layout_width="wrap_content"
+                    android:backgroundTint="#A4A4A4"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="3dp"
                     android:layout_marginLeft="3dp"
@@ -190,12 +197,27 @@
 
         </HorizontalScrollView>
 
+<android.support.constraint.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-        <com.github.mikephil.charting.charts.LineChart
-            android:layout_marginTop="10dp"
-            android:id="@+id/chart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:layout_marginTop="30dp"
+        android:id="@+id/linechart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+    <com.github.mikephil.charting.charts.PieChart
+        android:layout_marginTop="30dp"
+        android:id="@+id/piechart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+</android.support.constraint.ConstraintLayout>
+
 
 
     </LinearLayout>
@@ -203,40 +225,29 @@
         android:id="@+id/linear2"
         app:layout_constraintTop_toBottomOf="@id/linear"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:gravity="bottom"
+        android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/text_min"
-            android:layout_width="0dp"
-            android:layout_weight="5"
-            android:layout_height="wrap_content"
-            android:text="MIN:"
-            android:layout_margin="5dp"
-            android:background="@drawable/border_profile"
-            android:textAlignment="center"
-            app:layout_constraintTop_toBottomOf="@id/linear"
-            android:clickable="true"
-            />
         <TextView
             android:id="@+id/min_value"
             android:layout_width="0dp"
             android:layout_weight="5"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="MIN: ---"
             android:layout_margin="5dp"
             android:background="@drawable/border_profile"
             android:textAlignment="center"
             app:layout_constraintTop_toBottomOf="@id/linear"
-            app:layout_constraintLeft_toRightOf="@id/text_min"
             android:clickable="true"
             />
+
         <TextView
-            android:id="@+id/text_avg"
+            android:id="@+id/avg_value"
             android:layout_width="0dp"
             android:layout_weight="5"
             android:layout_height="wrap_content"
-            android:text="AVG:"
+            android:text="AVG: ---"
             android:layout_margin="5dp"
             android:background="@drawable/border_profile"
             android:textAlignment="center"
@@ -244,25 +255,13 @@
             app:layout_constraintLeft_toRightOf="@id/min_value"
             android:clickable="true"
             />
+
         <TextView
-            android:id="@+id/avg_value"
+            android:id="@+id/max_value"
             android:layout_width="0dp"
             android:layout_weight="5"
             android:layout_height="wrap_content"
-            android:text=""
-            android:layout_margin="5dp"
-            android:background="@drawable/border_profile"
-            android:textAlignment="center"
-            app:layout_constraintTop_toBottomOf="@id/linear"
-            app:layout_constraintLeft_toRightOf="@id/text_avg"
-            android:clickable="true"
-            />
-        <TextView
-            android:id="@+id/text_max"
-            android:layout_width="0dp"
-            android:layout_weight="5"
-            android:layout_height="wrap_content"
-            android:text="MAX:"
+            android:text="MAX: ---"
             android:layout_margin="5dp"
             android:background="@drawable/border_profile"
             android:textAlignment="center"
@@ -270,29 +269,9 @@
             app:layout_constraintLeft_toRightOf="@id/avg_value"
             android:clickable="true"
             />
-        <TextView
-            android:id="@+id/max_value"
-            android:layout_width="0dp"
-            android:layout_weight="5"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:layout_margin="5dp"
-            android:background="@drawable/border_profile"
-            android:textAlignment="center"
-            app:layout_constraintTop_toBottomOf="@id/linear"
-            app:layout_constraintLeft_toRightOf="@id/text_max"
-            android:clickable="true"
-            />
 
 
     </LinearLayout>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/linear2"
-android:id="@+id/buttonShow"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
 
 
 </android.support.constraint.ConstraintLayout>

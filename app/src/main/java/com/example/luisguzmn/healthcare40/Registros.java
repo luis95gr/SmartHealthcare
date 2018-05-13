@@ -1,16 +1,23 @@
 package com.example.luisguzmn.healthcare40;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -40,19 +47,25 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import de.codecrafters.tableview.toolkit.SimpleTableDataAdapter;
+
 //
 public class Registros extends AppCompatActivity {
     TextView text_monday,text_tuesday,text_wednesday,text_thursday,text_friday,text_saturday,text_sunday;
-    TextView txtBR,txtHR,txtBP,txtECG,txtFatiga,txtMood;
+    Button txtBR,txtHR,txtBP,txtECG,txtFatiga,txtMood,txtBRSend,btnHRS,btnBPS,btnECGS,btnFS,btnMS;
     JSONArray jsonArray;
     private String a;
     ArrayList<String> mylist = new ArrayList<String>();
     ArrayList<String> mylistDates = new ArrayList<String>();
     ArrayList<String> mylistTime = new ArrayList<String>();
+    ArrayList<String> mylistVar = new ArrayList<String>();
+    ArrayList<String> share = new ArrayList<String>();
+
+    String email;
 
     float[] floatValues;
     String var,date,time;
-
+    final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +74,7 @@ public class Registros extends AppCompatActivity {
 
         SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
 
+        email = sp.getString("email", "no email");
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,12 +89,19 @@ public class Registros extends AppCompatActivity {
         text_saturday = (TextView) findViewById(R.id.text_saturday);
         text_sunday = (TextView) findViewById(R.id.text_sunday);
 
-        txtBR = (TextView)findViewById(R.id.txtBR);
-        txtHR = (TextView)findViewById(R.id.txtHR);
-        txtBP = (TextView)findViewById(R.id.txtBP);
-        txtECG = (TextView)findViewById(R.id.txtECG);
-        txtFatiga = (TextView)findViewById(R.id.txtFatiga);
-        txtMood = (TextView)findViewById(R.id.txtMood);
+
+        txtBRSend = (Button)findViewById(R.id.txtBRSend);
+        txtBR = (Button) findViewById(R.id.txtBR);
+        txtHR = (Button)findViewById(R.id.txtHR);
+        txtBP = (Button)findViewById(R.id.txtBP);
+        txtECG = (Button)findViewById(R.id.txtECG);
+        txtFatiga = (Button)findViewById(R.id.txtFatiga);
+        txtMood = (Button)findViewById(R.id.txtMood);
+        btnHRS = (Button)findViewById(R.id.txtSHR);
+        btnBPS = (Button)findViewById(R.id.btnBPS);
+        btnECGS = (Button)findViewById(R.id.btnECGS);
+        btnFS = (Button)findViewById(R.id.txtFS);
+        btnMS = (Button)findViewById(R.id.txtSMood);
 
 
         GlobalVars g = (GlobalVars) getApplication();
@@ -208,6 +229,7 @@ public class Registros extends AppCompatActivity {
 txtBR.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
+
         String variable="BR";
         Intent intent = new Intent(getApplicationContext(),RegistrosEmty.class);
         intent.putExtra("key",variable);
@@ -264,7 +286,332 @@ txtBR.setOnClickListener(new View.OnClickListener() {
             }
         });
 
+        txtBRSend.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                mylist = new ArrayList<String>();
+                mylistDates = new ArrayList<String>();
+                mylistTime = new ArrayList<String>();
+                mylistVar = new ArrayList<String>();
+                share = new ArrayList<String>();
+                String variable = "BR";
+                VolleyPetition("http://meddata.sytes.net/grafico/dataShow.php?email="+email+"&var="+variable);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Intent shareContent = new Intent(android.content.Intent.ACTION_SEND);
+                        shareContent.setType("text/plain");
+                        shareContent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+                        //
+                        //CLIPBOARD
+                        String text="Datos Usuario: "+ email+" | SmartHealth App";
+                        for(int i=0;i<share.size();i++){
+                            text = text +share.get(i);
+
+                        }
+
+                        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                        ClipData myclip = ClipData.newPlainText("info",text);
+                        clipboard.setPrimaryClip(myclip);
+                        Toast.makeText(Registros.this,"Información guardada en portapapeles",
+                                Toast.LENGTH_LONG).show();
+                        //
+                        shareContent.putExtra(Intent.EXTRA_SUBJECT,  "http://meddata.sytes.net/");
+                        shareContent.putExtra(Intent.EXTRA_TEXT, text);
+
+                        startActivity(Intent.createChooser(shareContent, "Share"));
+
+                    }
+                }, 1000);
+
+
+
+
+
+            }
+        });
+
+        btnHRS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mylist = new ArrayList<String>();
+                mylistDates = new ArrayList<String>();
+                mylistTime = new ArrayList<String>();
+                mylistVar = new ArrayList<String>();
+                share = new ArrayList<String>();
+                String variable = "HR";
+                VolleyPetition("http://meddata.sytes.net/grafico/dataShow.php?email="+email+"&var="+variable);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Intent shareContent = new Intent(android.content.Intent.ACTION_SEND);
+                        shareContent.setType("text/plain");
+                        shareContent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+                        //
+                        //CLIPBOARD
+                        String text="Datos Usuario: "+ email+" | SmartHealth App";
+                        for(int i=0;i<share.size();i++){
+                            text = text +share.get(i);
+
+                        }
+
+                        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                        ClipData myclip = ClipData.newPlainText("info",text);
+                        clipboard.setPrimaryClip(myclip);
+                        Toast.makeText(Registros.this,"Información guardada en portapapeles",
+                                Toast.LENGTH_LONG).show();
+                        //
+                        shareContent.putExtra(Intent.EXTRA_SUBJECT,  "http://meddata.sytes.net/");
+                        shareContent.putExtra(Intent.EXTRA_TEXT, text);
+
+                        startActivity(Intent.createChooser(shareContent, "Share"));
+
+                    }
+                }, 1000);
+
+
+
+
+
+            }
+        });
+
+        btnBPS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mylist = new ArrayList<String>();
+                mylistDates = new ArrayList<String>();
+                mylistTime = new ArrayList<String>();
+                mylistVar = new ArrayList<String>();
+                share = new ArrayList<String>();
+                String variable = "BP";
+                VolleyPetition("http://meddata.sytes.net/grafico/dataShow.php?email="+email+"&var="+variable);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Intent shareContent = new Intent(android.content.Intent.ACTION_SEND);
+                        shareContent.setType("text/plain");
+                        shareContent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+                        //
+                        //CLIPBOARD
+                        String text="Datos Usuario: "+ email+" | SmartHealth App";
+                        for(int i=0;i<share.size();i++){
+                            text = text +share.get(i);
+
+                        }
+
+                        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                        ClipData myclip = ClipData.newPlainText("info",text);
+                        clipboard.setPrimaryClip(myclip);
+                        Toast.makeText(Registros.this,"Información guardada en portapapeles",
+                                Toast.LENGTH_LONG).show();
+                        //
+                        shareContent.putExtra(Intent.EXTRA_SUBJECT,  "http://meddata.sytes.net/");
+                        shareContent.putExtra(Intent.EXTRA_TEXT, text);
+
+                        startActivity(Intent.createChooser(shareContent, "Share"));
+
+                    }
+                }, 1000);
+
+
+
+
+
+            }
+        });
+
+        btnECGS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mylist = new ArrayList<String>();
+                mylistDates = new ArrayList<String>();
+                mylistTime = new ArrayList<String>();
+                mylistVar = new ArrayList<String>();
+                share = new ArrayList<String>();
+                String variable = "ECG";
+                VolleyPetition("http://meddata.sytes.net/grafico/dataShow.php?email="+email+"&var="+variable);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Intent shareContent = new Intent(android.content.Intent.ACTION_SEND);
+                        shareContent.setType("text/plain");
+                        shareContent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+                        //
+                        //CLIPBOARD
+                        String text="Datos Usuario: "+ email+" | SmartHealth App";
+                        for(int i=0;i<share.size();i++){
+                            text = text +share.get(i);
+
+                        }
+
+                        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                        ClipData myclip = ClipData.newPlainText("info",text);
+                        clipboard.setPrimaryClip(myclip);
+                        Toast.makeText(Registros.this,"Información guardada en portapapeles",
+                                Toast.LENGTH_LONG).show();
+                        //
+                        shareContent.putExtra(Intent.EXTRA_SUBJECT,  "http://meddata.sytes.net/");
+                        shareContent.putExtra(Intent.EXTRA_TEXT, text);
+
+                        startActivity(Intent.createChooser(shareContent, "Share"));
+
+                    }
+                }, 1000);
+
+
+
+
+
+            }
+        });
+
+        btnFS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mylist = new ArrayList<String>();
+                mylistDates = new ArrayList<String>();
+                mylistTime = new ArrayList<String>();
+                mylistVar = new ArrayList<String>();
+                share = new ArrayList<String>();
+                String variable = "fatigue";
+                VolleyPetition("http://meddata.sytes.net/grafico/dataShow.php?email="+email+"&var="+variable);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Intent shareContent = new Intent(android.content.Intent.ACTION_SEND);
+                        shareContent.setType("text/plain");
+                        shareContent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+                        //
+                        //CLIPBOARD
+                        String text="Datos Usuario: "+ email+" | SmartHealth App";
+                        for(int i=0;i<share.size();i++){
+                            text = text +share.get(i);
+
+                        }
+
+
+                        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                        ClipData myclip = ClipData.newPlainText("info",text);
+                        clipboard.setPrimaryClip(myclip);
+                        Toast.makeText(Registros.this,"Información guardada en portapapeles",
+                                Toast.LENGTH_LONG).show();
+                        //
+                        shareContent.putExtra(Intent.EXTRA_SUBJECT,  "http://meddata.sytes.net/");
+                        shareContent.putExtra(Intent.EXTRA_TEXT, text);
+
+                        startActivity(Intent.createChooser(shareContent, "Share"));
+
+                    }
+                }, 1000);
+
+
+
+
+
+            }
+        });
+
+        btnMS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mylist = new ArrayList<String>();
+                mylistDates = new ArrayList<String>();
+                mylistTime = new ArrayList<String>();
+                mylistVar = new ArrayList<String>();
+                share = new ArrayList<String>();
+                String variable = "mood";
+                VolleyPetition("http://meddata.sytes.net/grafico/dataShow.php?email="+email+"&var="+variable);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Intent shareContent = new Intent(android.content.Intent.ACTION_SEND);
+                        shareContent.setType("text/plain");
+                        shareContent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+                        //
+                        //CLIPBOARD
+                        String text="Usuario: "+ email+" | SmartHealth App";
+                        for(int i=0;i<share.size();i++){
+                            text = text +share.get(i);
+
+                        }
+
+                        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                        ClipData myclip = ClipData.newPlainText("info",text);
+                        clipboard.setPrimaryClip(myclip);
+                        Toast.makeText(Registros.this,"Información guardada en portapapeles",
+                                Toast.LENGTH_LONG).show();
+                        //
+                        shareContent.putExtra(Intent.EXTRA_SUBJECT,  "http://meddata.sytes.net/");
+                        shareContent.putExtra(Intent.EXTRA_TEXT, text);
+
+                        startActivity(Intent.createChooser(shareContent, "Share"));
+
+                    }
+                }, 1000);
+
+
+
+
+
+            }
+        });
+
+    }
+    public void VolleyPetition(String URL) {
+        Log.i("url", "" + URL);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    jsonArray = new JSONArray(response);
+                    String value, date;
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        a = jsonArray.getString(i);
+                        JSONObject jsonObj = new JSONObject(a);
+                        value = jsonObj.getString("value");
+                        date = jsonObj.getString("date");
+                        time = jsonObj.getString("time");
+                        var = jsonObj.getString("var");
+                        mylist.add(value);
+                        mylistDates.add(date);
+                        mylistTime.add(time);
+                        mylistVar.add(var);
+                    }
+                    if(var.equals("null")|var.equals("Mood") | var.equals("ecg") | var.equals("Fatigue")) {
+
+                    }else {
+                        floatValues = new float[mylist.size()];
+                        for (int i = 0; i < mylist.size(); i++) {
+                            floatValues[i] = Float.parseFloat(mylist.get(i));
+                        }
+                    }
+                    for(int i = 0; i<mylist.size();i++) {
+                        share.add("\n--------------"+"\nVariable: "+mylistVar.get(i).toString()+"\nValor: "+mylist.get(i).toString()+"\nFecha: "+
+                        mylistDates.get(i).toString()+"\nHora: "+mylistTime.get(i).toString()+"\n--------------");
+
+                    }
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+
+            }
+        });
+        queue.add(stringRequest);
     }
 
 

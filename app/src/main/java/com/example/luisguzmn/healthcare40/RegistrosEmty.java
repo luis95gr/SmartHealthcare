@@ -29,6 +29,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -61,9 +62,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.codecrafters.tableview.TableView;
+import de.codecrafters.tableview.listeners.OnScrollListener;
+import de.codecrafters.tableview.listeners.TableDataClickListener;
 import de.codecrafters.tableview.model.TableColumnWeightModel;
 import de.codecrafters.tableview.toolkit.SimpleTableDataAdapter;
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
+
 
 public class RegistrosEmty extends AppCompatActivity {
 
@@ -76,6 +80,8 @@ public class RegistrosEmty extends AppCompatActivity {
     ArrayList<String> mylist = new ArrayList<String>();
     ArrayList<String> mylistDates = new ArrayList<String>();
     ArrayList<String> mylistTime = new ArrayList<String>();
+    ArrayList<String> mylistVar = new ArrayList<String>();
+
     float[] floatValues;
     String var,date,time,email,variable;
     TableView<String[]> tableView;
@@ -95,7 +101,7 @@ public class RegistrosEmty extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registros2);
-menu();
+        menu();
         dias();
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -107,12 +113,28 @@ menu();
 
         email = sp.getString("email", "no email");
 
+
+
         tableView = (TableView) findViewById(R.id.tableView);
         tableView.setColumnCount(4);
 
+        tableView.addDataClickListener(new TableDataClickListener<String[]>() {
+            @Override
+            public void onDataClicked(int rowIndex, String[] clickedData) {
+                    Toast.makeText(getApplicationContext(),"Var: "+clickedData[0]
+                            +"\nValor: "+clickedData[1]+"\nFecha: "+clickedData[2]+"\nHora: "+clickedData[3],
+                            Toast.LENGTH_LONG).show();
+            }
+        });
+
         TableColumnWeightModel columnModel = new TableColumnWeightModel(4);
         columnModel.setColumnWeight(1, 1);
-        columnModel.setColumnWeight(2, 2);
+        columnModel.setColumnWeight(2, 1);
+        columnModel.setColumnWeight(3, 1);
+        columnModel.setColumnWeight(4, 1);
+
+
+
         tableView.setColumnModel(columnModel);
 
         tableView.setHeaderAdapter(new SimpleTableHeaderAdapter(this, TABLE_HEADERS));
@@ -148,16 +170,21 @@ menu();
                             mylist.add(value);
                             mylistDates.add(date);
                             mylistTime.add(time);
+                            mylistVar.add(var);
                         }
-                        floatValues = new float[mylist.size()];
-                        for (int i = 0; i < mylist.size(); i++) {
-                            floatValues[i] = Float.parseFloat(mylist.get(i));
+                        if(variable.equals("Mood") | variable.equals("ecg") | variable.equals("fatigue")) {
+
+                        }else {
+                            floatValues = new float[mylist.size()];
+                            for (int i = 0; i < mylist.size(); i++) {
+                                floatValues[i] = Float.parseFloat(mylist.get(i));
+                            }
                         }
 
                         String[][] DATA_TO_SHOW = new String[mylist.size()][4];
 
                         for (int i = 0; i < mylist.size(); i++) {
-                            DATA_TO_SHOW[i][0] = var;
+                            DATA_TO_SHOW[i][0] = mylistVar.get(i).toString();
                             DATA_TO_SHOW[i][1] = mylist.get(i).toString();
                             DATA_TO_SHOW[i][2] = mylistDates.get(i).toString();
                             DATA_TO_SHOW[i][3] = mylistTime.get(i).toString();
@@ -241,6 +268,7 @@ menu();
         onBackPressed();
         return true;
     }
+
     private void menu(){
         SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
         //MENU
@@ -251,5 +279,7 @@ menu();
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
+
 
 }
