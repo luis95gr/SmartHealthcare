@@ -579,6 +579,7 @@ public class Statistics extends AppCompatActivity {
         pieData.setValueFormatter(new PercentFormatter());
         pChart.setData(pieData);
         pChart.highlightValues(null);
+        //
         pChart.invalidate();
     }
     private void PsetDataMood() {
