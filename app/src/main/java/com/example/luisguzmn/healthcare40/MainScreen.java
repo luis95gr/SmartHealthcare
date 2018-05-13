@@ -143,7 +143,6 @@ public class MainScreen extends AppCompatActivity {
     float totalMeasures;
     int nivel,top,bottom;
     int fromPercentage,toPercentage;
-    float fromBar,toBar;
     Animation animationBlink;
     ImageView iconArrowRight,iconArrowLeft;
     TextView textBpmaxAvg,textBpminAvg,textBrAvg,textHrAvg,textStepsAvg;
@@ -258,6 +257,21 @@ public class MainScreen extends AppCompatActivity {
                     if (totalMeasures < 100 && totalMeasures >= 90){
                         nivel = 10;
                     }
+                    if (totalMeasures < 110 && totalMeasures >= 100){
+                        nivel = 11;
+                    }
+                    if (totalMeasures < 120 && totalMeasures >= 110){
+                        nivel = 12;
+                    }
+                    if (totalMeasures < 130 && totalMeasures >= 120){
+                        nivel = 13;
+                    }
+                    if (totalMeasures < 140 && totalMeasures >= 130){
+                        nivel = 14;
+                    }
+                    if (totalMeasures < 150 && totalMeasures >= 140){
+                        nivel = 15;
+                    }
                     //
                     textNivel.setText("Nivel " + nivel);
                     textMeasures.setText("Llevas: " + decimalFormat.format(totalMeasures));
@@ -272,7 +286,7 @@ public class MainScreen extends AppCompatActivity {
 
 
             }
-        }, 300);
+        }, 1000);
         //RECOVER SIGNALS FOR LEVEL AND STATISTICS
 
 
@@ -1088,8 +1102,6 @@ public class MainScreen extends AppCompatActivity {
     }
 
 
-
-
     //ELIMINAR BACK PRESS
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -1217,6 +1229,11 @@ public class MainScreen extends AppCompatActivity {
                         }
                         if (position == 7){
                             Intent intent = new Intent(MainScreen.this, configuracion.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
+                        if (position == 8){
+                            Intent intent = new Intent(MainScreen.this, AboutUs.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
