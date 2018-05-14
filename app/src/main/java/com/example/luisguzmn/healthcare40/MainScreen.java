@@ -122,6 +122,7 @@ public class MainScreen extends AppCompatActivity {
     private int PICK_IMAGE_REQUEST = 0;
     //storage permission code
     private static final int STORAGE_PERMISSION_CODE = 123;
+    private static final int MY_CAMERA_REQUEST_CODE = 124;
     //Bitmap to get image from gallery
     private Bitmap bitmap;
     //Uri to store the image uri
@@ -992,24 +993,28 @@ public class MainScreen extends AppCompatActivity {
                 .setNegativeButton("TOMAR FOTO", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        // Ensure that there's a camera activity to handle the intent
-                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                            // Create the File where the photo should go
-                            File photoFile = null;
-                            try {
-                                photoFile = createImageFile();
-                            } catch (IOException ex) {
-                                // Error occurred while creating the File
+                        if (ContextCompat.checkSelfPermission(MainScreen.this,Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
+                            ActivityCompat.requestPermissions(MainScreen.this, new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
+                        } else {
+                            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            // Ensure that there's a camera activity to handle the intent
+                            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                                // Create the File where the photo should go
+                                File photoFile = null;
+                                try {
+                                    photoFile = createImageFile();
+                                } catch (IOException ex) {
+                                    // Error occurred while creating the File
 
-                            }
-                            // Continue only if the File was successfully created
-                            if (photoFile != null) {
-                                Uri photoURI = FileProvider.getUriForFile(MainScreen.this,
-                                        "com.example.android.fileprovider",
-                                        photoFile);
-                                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                                startActivityForResult(takePictureIntent, 1);
+                                }
+                                // Continue only if the File was successfully created
+                                if (photoFile != null) {
+                                    Uri photoURI = FileProvider.getUriForFile(MainScreen.this,
+                                            "com.example.android.fileprovider",
+                                            photoFile);
+                                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                                    startActivityForResult(takePictureIntent, 1);
+                                }
                             }
                         }
 
@@ -1108,6 +1113,13 @@ public class MainScreen extends AppCompatActivity {
             } else {
                 //Displaying another toast if permission is not granted
                 Toast.makeText(this, "Oops you just denied the permission", Toast.LENGTH_LONG).show();
+            }
+        }
+        if (requestCode == MY_CAMERA_REQUEST_CODE){
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permiso concedido", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "No se puede tomar foto sin permiso", Toast.LENGTH_LONG).show();
             }
         }
     }
