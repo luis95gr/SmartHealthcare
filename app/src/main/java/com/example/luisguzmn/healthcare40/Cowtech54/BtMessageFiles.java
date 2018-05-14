@@ -98,6 +98,10 @@ public class BtMessageFiles {
         return prefix;
     }
 
+    public void stopFiles(){
+        timer.cancel();
+    }
+
     public String getDateString() {
         long tsLong;
         tsLong = System.currentTimeMillis();

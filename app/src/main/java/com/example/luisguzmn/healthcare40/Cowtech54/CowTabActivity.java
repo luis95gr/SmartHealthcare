@@ -176,7 +176,7 @@ public class CowTabActivity extends MenuToolbar implements
             Fragment fragment = new Fragment();
             switch (position) {
                 case 0:
-                    fragment = CowTabFragment1.newInstance("a", "b");
+                    fragment = CowTabFragment1.newInstance();
                     return fragment;
                 case 1:
                     CowTabFragment2 tab2 = new CowTabFragment2();

@@ -3,7 +3,7 @@
     <string name="title_activity_create__account">Create_Account</string>
     <string name="tab_text_1">Connection</string>
     <string name="tab_text_2">Live</string>
-    <string name="tab_text_3">Options</string>
+    <string name="tab_text_3">Routes</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_create_account">CreateAccount</string>

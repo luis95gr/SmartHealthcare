@@ -29,6 +29,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.luisguzmn.healthcare40.Cowtech54.CowTabActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,6 +72,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this,MainScreen.class));
             finish();   //finish current activity
         }
+        //bypass login
+        //TODO: Remove this bypass
+        startActivity(new Intent(MainActivity.this,CowTabActivity.class));
+        finish();   //finish current activity
 
         //END LOGIN AUTO
         LottieAnimationView animationView = (LottieAnimationView)findViewById(R.id.animation_view);

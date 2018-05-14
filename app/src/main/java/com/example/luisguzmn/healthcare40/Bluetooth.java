@@ -147,6 +147,8 @@ public class Bluetooth extends AppCompatActivity {
         btnCow.setOnClickListener(new View.OnClickListener() {
           @Override
               public void onClick(View view) {
+              Toast.makeText(getApplicationContext(), "COW mac updated:" + macAdress, Toast.LENGTH_LONG).show();
+
               editorBluetooth.putString("cow_paired_name",name);
               editorBluetooth.putString("cow_paired_mac",macAdress);
               editorBluetooth.apply();

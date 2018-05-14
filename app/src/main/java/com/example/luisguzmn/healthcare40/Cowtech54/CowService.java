@@ -4,7 +4,10 @@ import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.Handler;
@@ -17,6 +20,8 @@ import android.widget.Toast;
 
 import com.example.luisguzmn.healthcare40.R;
 
+import org.reactivestreams.Subscriber;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,8 +30,21 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
-public class CowService extends Service {
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+
+public class CowService extends Service{
     private final String TAG = CowService.class.getSimpleName();
+    //Strings to register to create intent filter for registering the recivers
+    private static final String ACTION_STRING_SERVICE = "ToService";
+    private static final String ACTION_STRING_ACTIVITY = "ToActivity";
+
+    private static final String DISCONNECTED = "Disconnected";
+    private static final String CONNECTED = "Connected";
+
+    //CREATE Broadcast Receiver
+    //
 
     // Binder given to clients
     private final IBinder cBinder = new CowBinder();
@@ -54,11 +72,19 @@ public class CowService extends Service {
     private SharedPreferences sharedPref;
     private SharedPreferences.Editor editor;
 
-
+    //Device
     private String deviceMac;
     private String deviceName;
     private boolean deviceConnected = false;
+    private String deviceConnectedStr = DISCONNECTED;
 
+    //Service Errors
+    private String error;
+
+    //Observers
+    private ObservableEmitter<String[]> stringObserver;
+    private Observable<String[]> stringObservable;
+    private String[] myEmitter = new String[10];
 
     public CowService() {
     }
@@ -77,6 +103,10 @@ public class CowService extends Service {
 
     public void setDeviceMac(String deviceMac) {
         this.deviceMac = deviceMac;
+    }
+
+    public String getError() {
+        return error;
     }
 
     @Override
@@ -105,6 +135,12 @@ public class CowService extends Service {
         bluetoothConnectThread(deviceMac,  deviceName);
 //        bluetoothConnectThread("98:D3:32:20:E2:08",  "COW");
 
+        //Intent filter for BlueTooth status receiver
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
+        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        this.registerReceiver(mReceiver, filter);
 
         mHandler = new Handler(){
             public void handleMessage(Message msg){
@@ -116,36 +152,44 @@ public class CowService extends Service {
                         e.printStackTrace();
                     }
 
-                    //readMessage = readMessage.replaceAll("�","");
-                    //Delete first line if it does not begin with '['
-                    /*char[] firstChar = {'c'}; //new char[1];
-                    readMessage.getChars(0,1,firstChar,0);
-                    if(firstChar[0]!='['){
-                        recIDsText.setText(Character.toString(firstChar[0]));
-                        readMessage = readMessage.replaceFirst(".*\n","");
-
-                    }*/
-
                     //TODO string. substring( string.length()+1)   if equals ] then it is ok
                     btMessageManager.addNewMessage(readMessage);
 
-//                    lostIDsText.setText(String.valueOf(btMessageManager.getLostIDs()));
-//                    recIDsText.setText(String.valueOf(btMessageManager.getRecIDs()));
-                    //recIDsText.setText(Character.toString(firstChar[0]));
-
-                    //mReadBuffer.setText(btMessageManager.getMessagePurged());
                     //Using Copy to avoid conflict while saving in file
                     if(fileCSV!=null)
                         fileCSV.writeInFile(btMessageManager.getMessagePurgedCopy());
                     //mReadBuffer.setText(readMessage);
+
+                    //Send to tue UI activity through Observer
+                    if(stringObserver!=null){
+                        String fileStr = "";
+                        if(fileCSV!=null)
+                            fileStr = fileCSV.getFilePathStr();
+                        String lat = btMessageManager.MatIDs.get(200).getByte5().getLast().toString();
+                        String lon = btMessageManager.MatIDs.get(200).getByte6().getLast().toString();
+                        String sat = btMessageManager.MatIDs.get(200).getByte1().getLast().toString();
+                        myEmitter[0] = deviceConnectedStr;
+                        myEmitter[1] = fileStr;
+                        myEmitter[2] = lat;
+                        myEmitter[3] = lon;
+                        myEmitter[4] = sat;
+
+                        stringObserver.onNext(myEmitter);
+                    }
                 }
 
                 if(msg.what == CONNECTING_STATUS){
                     if(msg.arg1 == 1)
                         Log.d(TAG,"Connected to device: " + (String)(msg.obj));
                         // mBluetoothStatus.setText("Connected to Device: " + (String)(msg.obj));
-                    else
-                        Log.d(TAG,"Connection Fialed");
+                    else {
+                        Log.d(TAG, "Connection Fialed");
+                        Toast.makeText(getBaseContext(), "Connection failed", Toast.LENGTH_SHORT).show();
+                        if(cConnectedThread!=null) //If there is a Connected Thread initilized
+                            cConnectedThread.cancel();
+                        fileCSV.stopFiles();
+                        mHandler.removeCallbacks(cConnectedThread); //Remove possible conflicts
+                    }
                         //mBluetoothStatus.setText("Connection Failed");
                 }
             }
@@ -153,6 +197,21 @@ public class CowService extends Service {
 
     }
 
+    //RxJava Observable
+    public Observable<String[]> observeString(){
+        if(stringObservable== null) {
+            stringObservable = Observable.create(emitter -> stringObserver = emitter);
+            stringObservable = stringObservable.share();
+        }
+        return stringObservable;
+    }
+
+    //send broadcast from activity to all receivers listening to the action "ACTION_STRING_ACTIVITY"
+    private void sendBroadcast() {
+        Intent new_intent = new Intent();
+        new_intent.setAction(ACTION_STRING_ACTIVITY);
+        sendBroadcast(new_intent);
+    }
     public void initBtMessageFiles(){
         //Initilizing CSV File with stored preferences
         String extStore = System.getenv("EXTERNAL_STORAGE");
@@ -190,6 +249,38 @@ public class CowService extends Service {
         prefixTxt.setText(prefixStr);*/
     }
 
+    //The BroadcastReceiver that listens for bluetooth broadcasts
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+            //Device found
+            }
+            else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
+            //Device is now connected
+            }
+            else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+           //Done searching
+            }
+            else if (BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(action)) {
+            //Device is about to disconnect
+            }
+            else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
+                deviceConnectedStr = "Device has disconnected";
+                Log.d(TAG, deviceConnectedStr);
+                if(cConnectedThread!=null)
+                    cConnectedThread.cancel();
+                //Send back to activity trhoug obsever the disconnected message
+                myEmitter[0] = deviceConnectedStr;
+                stringObserver.onNext(myEmitter);
+            //Device has disconnected
+            }
+        }
+    };
+
     public void bluetoothConnectThread(final String address, final String name){
         if(mBTAdapter.isEnabled()) {
             new Thread()
@@ -213,8 +304,7 @@ public class CowService extends Service {
                     try {
                         Log.d("BluetoothW", "bt socket TRYING TO connect!");
                         mBTSocket.connect();
-                        //mBTSocket.connect();
-                        Log.d("BluetoothW", "bt socket deviceConnected!");
+                        Log.d("BluetoothW", "bt socket intitilized!");
                     } catch (IOException e) {
                         try {
                             fail = true;
@@ -286,6 +376,7 @@ public class CowService extends Service {
             int bytes; // bytes returned from read()
             // Keep listening to the InputStream until an exception occurs
             deviceConnected = true;
+            deviceConnectedStr = CONNECTED;
             while (true) {
                 try {
                     // Read from the InputStream
@@ -301,10 +392,11 @@ public class CowService extends Service {
                 } catch (IOException e) {
                     e.printStackTrace();
                     deviceConnected = false;
+                    deviceConnectedStr = DISCONNECTED;
                     break;
                 }
             }
-            deviceConnected = false;
+
         }
 
         //    Call this from the main activity to send data to the remote device
@@ -320,19 +412,45 @@ public class CowService extends Service {
         // Call this from the main activity to shutdown the connection
         public void cancel() {
             try {
+                deviceConnected = false;
                 mmSocket.close();
             } catch (IOException e) { }
         }
     }
 
+    public void modeSend(String subMode, Boolean state){
+
+        if(cConnectedThread != null) //First check to make sure thread created
+        {
+            String sendFrame = "";
+            Log.d("COW_MODE", "changed");
+            if(state) {
+                sendFrame = subMode+" on";
+                Log.d("COW_MODE",subMode + " ON");
+            }
+            else{
+                sendFrame = subMode+" off";
+                Log.d("COW_MODE",subMode + " Off");
+            }
+            cConnectedThread.write(sendFrame);
+
+        }
+
+
+
+    }
+
+
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         Log.d(TAG, "Cow Service Destroyed and STOPPED");
+        deviceConnectedStr = DISCONNECTED;
         if(cConnectedThread!=null) //If there is a Connected Thread initilized
             cConnectedThread.cancel();
+        fileCSV.stopFiles();
         mHandler.removeCallbacks(cConnectedThread); //Remove possible conflicts
+        super.onDestroy();
         //deviceConnected = false; //make sure it is false
     }
 
