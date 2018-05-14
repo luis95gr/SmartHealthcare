@@ -24,19 +24,6 @@ public class AboutUs extends AppCompatActivity {
         dias();
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     private void menu(){
         SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
         //MENU

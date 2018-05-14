@@ -18,6 +18,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -760,6 +762,11 @@ public class Statistics extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         // do something with the clicked item :D
+                        if (position == 1) {
+                            Intent intent = new Intent(Statistics.this, MainScreen.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
                         if (position == 2) {
                             Intent intent = new Intent(Statistics.this, Profile.class);
                             startActivity(intent);
@@ -770,11 +777,6 @@ public class Statistics extends AppCompatActivity {
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
-                        if (position == 4){
-                            Intent intent = new Intent(Statistics.this, Statistics.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
-                        }
                         if (position == 5){
                             Intent intent = new Intent(Statistics.this, MenuHinfo.class);
                             startActivity(intent);
@@ -782,6 +784,11 @@ public class Statistics extends AppCompatActivity {
                         }
                         if (position == 7){
                             Intent intent = new Intent(Statistics.this, configuracion.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
+                        if (position == 8){
+                            Intent intent = new Intent(Statistics.this, AboutUs.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
@@ -843,5 +850,41 @@ public class Statistics extends AppCompatActivity {
             text_sunday.setBackgroundColor(Color.parseColor("#FFFFFF"));
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////
+    }
+
+    //MENU 3 DOTS
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.settings:
+                startActivity(new Intent(Statistics.this,configuracion.class));
+                return true;
+
+            case R.id.logout:
+                SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
+                SharedPreferences spDataNivel = PreferenceManager.getDefaultSharedPreferences(this);
+                final SharedPreferences.Editor spDataNivelEditor = spDataNivel.edit();
+                SharedPreferences.Editor e = sp.edit();
+                e.clear();
+                e.apply();
+                spDataNivelEditor.clear();
+                spDataNivelEditor.apply();
+                SharedPreferences spLogin = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor spLoginEditor = spLogin.edit();
+                spLoginEditor.putBoolean("success",false);
+                spLoginEditor.apply();
+                startActivity(new Intent(Statistics.this,MainActivity.class));
+                finish();
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
     }
 }

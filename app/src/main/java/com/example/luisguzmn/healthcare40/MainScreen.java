@@ -148,7 +148,7 @@ public class MainScreen extends AppCompatActivity {
     TextView textBpmaxAvg,textBpminAvg,textBrAvg,textHrAvg,textStepsAvg;
     TextView textBpmaxLast,textBpminLast,textBrLast,textHrLast,textStepsLast;
     CardView cardView;
-    Handler handler;
+    Handler handler,handler2;
     SharedPreferences sp;
     //
 
@@ -200,6 +200,7 @@ public class MainScreen extends AppCompatActivity {
         textStepsLast = (TextView)findViewById(R.id.textStepsLast);
         cardView = (CardView)findViewById(R.id.cardView);
         handler = new Handler();
+        handler2 = new Handler();
         //
         //MAIN SCREEN
         Picasso.with(this).load("http://meddata.sytes.net/newuser/profileImg/" + sp.getString("imagen", "No Image"))
@@ -294,37 +295,43 @@ public class MainScreen extends AppCompatActivity {
 
         //
         //CARDVIEW INFO
-        if (spDataNivel.getFloat("avgBpmax",0) != 0) {
-            textBpmaxAvg.setText(decimalFormat.format(spDataNivel.getFloat("avgBpmax", 0)));
-        }else textBpmaxAvg.setText("No hay datos");
-        if (spDataNivel.getFloat("avgBpmin",0) != 0) {
-            textBpminAvg.setText(decimalFormat.format(spDataNivel.getFloat("avgBpmin", 0)));
-        } else textBpminAvg.setText("No hay datos");
-        if (spDataNivel.getFloat("avgBr",0) != 0) {
-            textBrAvg.setText(decimalFormat.format(spDataNivel.getFloat("avgBr", 0)));
-        } else textBrAvg.setText("No hay datos");
-        if (spDataNivel.getFloat("avgHr",0) != 0) {
-            textHrAvg.setText(decimalFormat.format(spDataNivel.getFloat("avgHr", 0)));
-        } else textHrAvg.setText("No hay datos");
-        if (spDataNivel.getFloat("avgSteps",0) != 0) {
-            textStepsAvg.setText(decimalFormat.format(spDataNivel.getFloat("avgSteps", 0)));
-        } else textStepsAvg.setText("No hay datos");
-        //
-        if (spDataNivel.getFloat("lastBpmax",0) != 0) {
-            textBpmaxLast.setText(decimalFormat.format(spDataNivel.getFloat("lastBpmax", 0)));
-        } else textBpmaxLast.setText("No hay datos");
-        if (spDataNivel.getFloat("lastBpmin",0) != 0) {
-            textBpminLast.setText(decimalFormat.format(spDataNivel.getFloat("lastBpmin", 0)));
-        } else textBpminLast.setText("No hay datos");
-        if (spDataNivel.getFloat("lastBr",0) != 0) {
-            textBrLast.setText(decimalFormat.format(spDataNivel.getFloat("lastBr", 0)));
-        } else textBrLast.setText("No hay datos");
-        if (spDataNivel.getFloat("lastHr",0) != 0) {
-            textHrLast.setText(decimalFormat.format(spDataNivel.getFloat("lastHr", 0)));
-        } else textHrLast.setText("No hay datos");
-        if (spDataNivel.getFloat("lastSteps",0) != 0) {
-            textStepsLast.setText(decimalFormat.format(spDataNivel.getFloat("lastSteps", 0)));
-        } else textStepsLast.setText("No hay datos");
+        handler2.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (spDataNivel.getFloat("avgBpmax",0) != 0) {
+                    textBpmaxAvg.setText(decimalFormat.format(spDataNivel.getFloat("avgBpmax", 0)));
+                }else textBpmaxAvg.setText("No hay datos");
+                if (spDataNivel.getFloat("avgBpmin",0) != 0) {
+                    textBpminAvg.setText(decimalFormat.format(spDataNivel.getFloat("avgBpmin", 0)));
+                } else textBpminAvg.setText("No hay datos");
+                if (spDataNivel.getFloat("avgBr",0) != 0) {
+                    textBrAvg.setText(decimalFormat.format(spDataNivel.getFloat("avgBr", 0)));
+                } else textBrAvg.setText("No hay datos");
+                if (spDataNivel.getFloat("avgHr",0) != 0) {
+                    textHrAvg.setText(decimalFormat.format(spDataNivel.getFloat("avgHr", 0)));
+                } else textHrAvg.setText("No hay datos");
+                if (spDataNivel.getFloat("avgSteps",0) != 0) {
+                    textStepsAvg.setText(decimalFormat.format(spDataNivel.getFloat("avgSteps", 0)));
+                } else textStepsAvg.setText("No hay datos");
+                //
+                if (spDataNivel.getFloat("lastBpmax",0) != 0) {
+                    textBpmaxLast.setText(decimalFormat.format(spDataNivel.getFloat("lastBpmax", 0)));
+                } else textBpmaxLast.setText("No hay datos");
+                if (spDataNivel.getFloat("lastBpmin",0) != 0) {
+                    textBpminLast.setText(decimalFormat.format(spDataNivel.getFloat("lastBpmin", 0)));
+                } else textBpminLast.setText("No hay datos");
+                if (spDataNivel.getFloat("lastBr",0) != 0) {
+                    textBrLast.setText(decimalFormat.format(spDataNivel.getFloat("lastBr", 0)));
+                } else textBrLast.setText("No hay datos");
+                if (spDataNivel.getFloat("lastHr",0) != 0) {
+                    textHrLast.setText(decimalFormat.format(spDataNivel.getFloat("lastHr", 0)));
+                } else textHrLast.setText("No hay datos");
+                if (spDataNivel.getFloat("lastSteps",0) != 0) {
+                    textStepsLast.setText(decimalFormat.format(spDataNivel.getFloat("lastSteps", 0)));
+                } else textStepsLast.setText("No hay datos");
+            }
+        },1000);
+
 
 
         //INFO TRASLATION
@@ -1118,7 +1125,7 @@ public class MainScreen extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.settings:
-                startActivity(new Intent(MainScreen.this,MainScreen.class));
+                startActivity(new Intent(MainScreen.this,configuracion.class));
                 return true;
 
             case R.id.logout:

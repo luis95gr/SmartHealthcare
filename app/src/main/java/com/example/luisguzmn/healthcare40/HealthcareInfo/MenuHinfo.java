@@ -2,9 +2,12 @@ package com.example.luisguzmn.healthcare40.HealthcareInfo;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,15 +17,18 @@ import android.widget.AdapterViewFlipper;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.example.luisguzmn.healthcare40.AboutUs;
 import com.example.luisguzmn.healthcare40.GlobalVars;
 import com.example.luisguzmn.healthcare40.MainScreen;
 import com.example.luisguzmn.healthcare40.Profile;
 import com.example.luisguzmn.healthcare40.R;
 import com.example.luisguzmn.healthcare40.Registros;
 import com.example.luisguzmn.healthcare40.Statistics;
+import com.example.luisguzmn.healthcare40.configuracion;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -33,6 +39,9 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
+import com.mikepenz.materialdrawer.util.DrawerImageLoader;
+import com.squareup.picasso.Picasso;
 
 public class MenuHinfo extends AppCompatActivity {
     //VARIABLES
@@ -136,6 +145,9 @@ public class MenuHinfo extends AppCompatActivity {
             //
             horizontalScrollViewSteps.setVisibility(View.INVISIBLE);
             booleanSteps = false;
+            //
+            horizontalScrollViewBp.setVisibility(View.INVISIBLE);
+            booleanBp = false;
             //VISIBLE
             horizontalScrollViewHr.setVisibility(View.VISIBLE);
             booleanHr = true;
@@ -298,28 +310,47 @@ public class MenuHinfo extends AppCompatActivity {
 
 
     private void menu(){
+        SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
         //MENU
         //-----------------------------------------------
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbarMain);
-        setSupportActionBar(toolbar);
         toolbar.setTitle("");
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         GlobalVars g = (GlobalVars) getApplication();
+
         AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
+                .withActivity(this).withCompactStyle(true)
                 .addProfiles(
-                        new ProfileDrawerItem().withName(g.getName()).
-                                withEmail(g.getEmail()).withIcon(getDrawable(R.drawable.profile)))
-                .withSelectionListEnabledForSingleProfile(false).withHeaderBackground(R.drawable.header)
+                        new ProfileDrawerItem().withName(sp.getString("name","no name")).
+                                withEmail(sp.getString("email","no email")).withIcon("http://meddata.sytes.net/newuser/profileImg/"
+                                +sp.getString("imagen", "No Image")))
+                .withSelectionListEnabledForSingleProfile(false).withHeaderBackground(R.drawable.header2)
                 .build();
-        //if you want to update the items at a later time it is recommended to keep it in a variable
-        final PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.drawer_item_main).withIcon(GoogleMaterial.Icon.gmd_accessibility);
-        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withIdentifier(2).withName(R.string.drawer_item_profile).withIcon(GoogleMaterial.Icon.gmd_account_balance);
-        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(3).withName(R.string.drawer_item_records).withIcon(GoogleMaterial.Icon.gmd_add_to_photos);
-        PrimaryDrawerItem item4 = new PrimaryDrawerItem().withIdentifier(4).withName(R.string.drawer_item_statistics).withIcon(GoogleMaterial.Icon.gmd_adb);
-        PrimaryDrawerItem item5 = new PrimaryDrawerItem().withIdentifier(5).withName(R.string.drawer_item_healt).withIcon(GoogleMaterial.Icon.gmd_attach_file);
-        PrimaryDrawerItem item6 = new PrimaryDrawerItem().withIdentifier(6).withName(R.string.drawer_item_settinds).withIcon(GoogleMaterial.Icon.gmd_bluetooth);
-        PrimaryDrawerItem item7 = new PrimaryDrawerItem().withIdentifier(7).withName(R.string.drawer_item_about).withIcon(GoogleMaterial.Icon.gmd_terrain);
+
+        //Image Menu
+        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
+            @Override
+            public void set(ImageView imageView, Uri uri, Drawable placeholder) {
+                SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
+
+                Picasso.with(imageView.getContext()).load("http://meddata.sytes.net/newuser/profileImg/"
+                        + sp.getString("imagen", "No Image"))
+                        .placeholder(placeholder).into(imageView);
+            }
+            @Override
+            public void cancel(ImageView imageView) {
+                Picasso.with(imageView.getContext()).cancelRequest(imageView);
+            }
+        });
+
+        final PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.drawer_item_main).withIcon(GoogleMaterial.Icon.gmd_home);
+        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withIdentifier(2).withName(R.string.drawer_item_profile).withIcon(GoogleMaterial.Icon.gmd_account_circle);
+        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(3).withName(R.string.drawer_item_records).withIcon(GoogleMaterial.Icon.gmd_assignment);
+        PrimaryDrawerItem item4 = new PrimaryDrawerItem().withIdentifier(4).withName(R.string.drawer_item_statistics).withIcon(GoogleMaterial.Icon.gmd_insert_chart);
+        PrimaryDrawerItem item5 = new PrimaryDrawerItem().withIdentifier(5).withName(R.string.drawer_item_healt).withIcon(GoogleMaterial.Icon.gmd_local_hospital);
+        PrimaryDrawerItem item6 = new PrimaryDrawerItem().withIdentifier(6).withName(R.string.drawer_item_settinds).withIcon(GoogleMaterial.Icon.gmd_settings);
+        PrimaryDrawerItem item7 = new PrimaryDrawerItem().withIdentifier(7).withName(R.string.drawer_item_about).withIcon(GoogleMaterial.Icon.gmd_more);
 
         new DrawerBuilder()
                 .withAccountHeader(headerResult)
@@ -341,11 +372,6 @@ public class MenuHinfo extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         // do something with the clicked item :D
-                        if (position == 1) {
-                            Intent intent = new Intent(MenuHinfo.this, MainScreen.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
-                        }
                         if (position == 2) {
                             Intent intent = new Intent(MenuHinfo.this, Profile.class);
                             startActivity(intent);
@@ -356,11 +382,28 @@ public class MenuHinfo extends AppCompatActivity {
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
-                        if (position == 4) {
+                        if (position == 4){
                             Intent intent = new Intent(MenuHinfo.this, Statistics.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
+                        if (position == 1){
+                            Intent intent = new Intent(MenuHinfo.this, MainScreen.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
+                        if (position == 7){
+                            Intent intent = new Intent(MenuHinfo.this, configuracion.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
+                        if (position == 8){
+                            Intent intent = new Intent(MenuHinfo.this, AboutUs.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
+
+
                         return false;
                     }
                 })

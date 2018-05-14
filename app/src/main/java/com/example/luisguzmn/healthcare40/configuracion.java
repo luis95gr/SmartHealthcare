@@ -44,7 +44,6 @@ public class configuracion extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuracion);
-
         SharedPreferences sp = getSharedPreferences("login",MODE_PRIVATE);
 
         menu();
@@ -244,6 +243,11 @@ public class configuracion extends AppCompatActivity {
                         }
                         if (position == 5){
                             Intent intent = new Intent(configuracion.this, MenuHinfo.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
+                        if (position == 8){
+                            Intent intent = new Intent(configuracion.this, AboutUs.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }

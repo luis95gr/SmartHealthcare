@@ -7,17 +7,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.luisguzmn.healthcare40.configuracion">
-
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-
     <RelativeLayout
         android:layout_width="match_parent"
+
         android:layout_height="match_parent">
-        <!-- DIAS       -->
+
+
         <LinearLayout
             android:id="@+id/linearDias"
             android:layout_width="match_parent"
@@ -125,241 +120,253 @@
             android:layout_height="wrap_content"
             android:background="#01FFFFFF"
             android:layout_below="@id/linearDias"/>
-        <RelativeLayout
-            android:id="@+id/relative"
-            android:layout_below="@id/toolbar"
+
+        <ScrollView
             android:layout_width="match_parent"
+            android:layout_below="@id/toolbar"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/header_cover_image"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/header3" />
+                android:layout_height="match_parent">
+                <!-- DIAS       -->
 
-            <TextView
-                android:id="@+id/swStatus"
-                android:textSize="15dp"
-
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_toLeftOf="@+id/switchK"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Editar"/>
-
-            <Switch
-                android:id="@+id/switchK"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:textSize="10dp" />
-
-
-        </RelativeLayout>
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/profile_image"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="-60dp"
-            android:elevation="5dp"
-            android:padding="20dp"
-            android:layout_below="@+id/relative"
-            android:scaleType="centerCrop"
-            android:src="@drawable/profile"
-            app:civ_border_color="#FF000000"
-            app:civ_border_width="2dp" />
-
-
-
-        <RelativeLayout
-            android:id="@+id/profile_layout"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_below="@+id/relative"
-            android:background="#1687ba"
-            android:elevation="4dp"
-            android:paddingBottom="24dp">
-
-
-
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/txtName"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:textColor="#fff"
-                android:layout_marginTop="70dp"
-                android:hint="Nombre">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/etNombre"
-                    android:layout_width="200dp"
-                    android:textSize="15dp"
-                    android:enabled="false"
-                    android:textColor="#fff"
-                    android:focusable="false"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/txtEmail"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txtName"
-                android:layout_centerHorizontal="true"
-                android:hint="Email">
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/etEmail"
-                    android:layout_width="200dp"
-                    android:textSize="15dp"
-                    android:enabled="false"
-                    android:textColor="#fff"
-                    android:focusable="false"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"/>
-            </android.support.design.widget.TextInputLayout>
-
-
-
-        </RelativeLayout>
-
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/profile_layout"
-            android:layout_marginTop="5dp"
-            android:orientation="vertical">
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/txtPais"
-                android:layout_width="match_parent"
-                android:layout_margin="5dp"
-                android:elevation="4dp"
-                android:layout_marginBottom="3dp"
-                android:background="#fff"
-                android:layout_marginTop="3dp"
-                android:layout_height="wrap_content"
-                android:hint="País">
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/etPais"
+                <RelativeLayout
+                    android:id="@+id/relative"
                     android:layout_width="match_parent"
-                    android:textSize="15dp"
-                    android:enabled="false"
-                    android:focusable="false"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"/>
-            </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/txtGenero"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:elevation="4dp"
-                android:layout_marginBottom="3dp"
-                android:background="#fff"
-                android:layout_marginTop="3dp"
-                android:hint="Genero">
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/etGenero"
-                    android:layout_width="match_parent"
-                    android:textSize="15dp"
-                    android:enabled="false"
-                    android:focusable="false"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"/>
-            </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/txtNacimiento"
-                android:layout_width="match_parent"
-                android:layout_margin="5dp"
-                android:elevation="4dp"
-                android:layout_marginBottom="3dp"
-                android:background="#fff"
-                android:layout_marginTop="3dp"
-                android:layout_height="wrap_content"
-                android:hint="Nacimiento">
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/etNacimiento"
-                    android:layout_width="match_parent"
-                    android:textSize="15dp"
-                    android:enabled="false"
-                    android:focusable="false"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"/>
-            </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/txtAltura"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:elevation="4dp"
-                android:layout_marginBottom="3dp"
-                android:background="#fff"
-                android:layout_marginTop="3dp"
-                android:hint="Altura">
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/etAltura"
-                    android:layout_width="match_parent"
-                    android:textSize="15dp"
-                    android:enabled="false"
-                    android:focusable="false"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"/>
-            </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/txtPeso"
-                android:layout_width="match_parent"
-                android:layout_margin="5dp"
-                android:elevation="4dp"
-                android:layout_marginBottom="3dp"
-                android:background="#fff"
-                android:layout_marginTop="3dp"
-                android:layout_height="wrap_content"
-                android:hint="Peso">
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/etPeso"
-                    android:layout_width="match_parent"
-                    android:textSize="15dp"
-                    android:enabled="false"
-                    android:focusable="false"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"/>
-            </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/txtPass"
-                android:layout_width="match_parent"
-                android:layout_margin="5dp"
-                android:elevation="4dp"
-                android:layout_marginBottom="3dp"
-                android:background="#fff"
-                android:layout_marginTop="3dp"
-                android:layout_height="wrap_content"
-                android:hint="Password">
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/etPass"
-                    android:layout_width="match_parent"
-                    android:textSize="15dp"
-                    android:enabled="false"
-                    android:focusable="false"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"/>
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_height="match_parent">
 
-        </LinearLayout>
+                    <ImageView
+                        android:id="@+id/header_cover_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/header3" />
+
+                    <TextView
+                        android:id="@+id/swStatus"
+                        android:textSize="15dp"
+
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_toLeftOf="@+id/switchK"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Editar"/>
+
+                    <Switch
+                        android:id="@+id/switchK"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:textSize="10dp" />
+
+
+                </RelativeLayout>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/profile_image"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="-60dp"
+                    android:elevation="5dp"
+                    android:padding="20dp"
+                    android:layout_below="@+id/relative"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/profile"
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="2dp" />
+
+
+
+                <RelativeLayout
+                    android:id="@+id/profile_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_below="@+id/relative"
+                    android:background="#1687ba"
+                    android:elevation="4dp"
+                    android:paddingBottom="24dp">
+
+
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtName"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="#fff"
+                        android:layout_marginTop="70dp"
+                        android:hint="Nombre">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/etNombre"
+                            android:layout_width="200dp"
+                            android:textSize="15dp"
+                            android:enabled="false"
+                            android:textColor="#fff"
+                            android:focusable="false"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtEmail"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txtName"
+                        android:layout_centerHorizontal="true"
+                        android:hint="Email">
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/etEmail"
+                            android:layout_width="200dp"
+                            android:textSize="15dp"
+                            android:enabled="false"
+                            android:textColor="#fff"
+                            android:focusable="false"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"/>
+                    </android.support.design.widget.TextInputLayout>
+
+
+
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/profile_layout"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtPais"
+                        android:layout_width="match_parent"
+                        android:layout_margin="5dp"
+                        android:elevation="4dp"
+                        android:layout_marginBottom="3dp"
+                        android:background="#fff"
+                        android:layout_marginTop="3dp"
+                        android:layout_height="wrap_content"
+                        android:hint="País">
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/etPais"
+                            android:layout_width="match_parent"
+                            android:textSize="15dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"/>
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtGenero"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:elevation="4dp"
+                        android:layout_marginBottom="3dp"
+                        android:background="#fff"
+                        android:layout_marginTop="3dp"
+                        android:hint="Genero">
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/etGenero"
+                            android:layout_width="match_parent"
+                            android:textSize="15dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"/>
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtNacimiento"
+                        android:layout_width="match_parent"
+                        android:layout_margin="5dp"
+                        android:elevation="4dp"
+                        android:layout_marginBottom="3dp"
+                        android:background="#fff"
+                        android:layout_marginTop="3dp"
+                        android:layout_height="wrap_content"
+                        android:hint="Nacimiento">
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/etNacimiento"
+                            android:layout_width="match_parent"
+                            android:textSize="15dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"/>
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtAltura"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:elevation="4dp"
+                        android:layout_marginBottom="3dp"
+                        android:background="#fff"
+                        android:layout_marginTop="3dp"
+                        android:hint="Altura">
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/etAltura"
+                            android:layout_width="match_parent"
+                            android:textSize="15dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"/>
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtPeso"
+                        android:layout_width="match_parent"
+                        android:layout_margin="5dp"
+                        android:elevation="4dp"
+                        android:layout_marginBottom="3dp"
+                        android:background="#fff"
+                        android:layout_marginTop="3dp"
+                        android:layout_height="wrap_content"
+                        android:hint="Peso">
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/etPeso"
+                            android:layout_width="match_parent"
+                            android:textSize="15dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"/>
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtPass"
+                        android:layout_width="match_parent"
+                        android:layout_margin="5dp"
+                        android:elevation="4dp"
+                        android:layout_marginBottom="3dp"
+                        android:background="#fff"
+                        android:layout_marginTop="3dp"
+                        android:layout_height="wrap_content"
+                        android:hint="Password">
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/etPass"
+                            android:layout_width="match_parent"
+                            android:textSize="15dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+        </ScrollView>
     </RelativeLayout>
 
-</ScrollView>
 </android.support.constraint.ConstraintLayout>

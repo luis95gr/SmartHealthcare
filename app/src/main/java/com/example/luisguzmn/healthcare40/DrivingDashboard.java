@@ -176,6 +176,7 @@ public class DrivingDashboard extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         registerReceiver(heloMeasurementReceiver2, intentFilter2);
+        Connector.getInstance().stopStepsHRDynamicMeasurement();
     }
 
     //START
@@ -266,16 +267,15 @@ public class DrivingDashboard extends AppCompatActivity {
             }
             speedAvg = speedAvg / speedList.size();
         }
+        date = Calendar.getInstance().getTime();
+        sdfDate = new SimpleDateFormat("yyyy.MM.dd");
+        sdfHour = new SimpleDateFormat("h:mm:a");
+        stringDate = sdfDate.format(date);
+        stringHour = sdfHour.format(date);
+        VolleyPetition("http://" + ip + "/dataVar/registerAuto.php?email=" + stringEmail + "&pass=" + stringPass +
+                "&var=" + "Duracion" + "&value=" + stringTime + "&date=" + stringDate + "&time=" + stringHour + "&viaje=" + conduccion
+                + "&velocidad=" + decimalFormat.format(speedAvg));
         //
-        //handler.postDelayed(new Runnable() {
-          //  @Override
-            //public void run() {
-                VolleyPetition("http://" + ip + "/dataVar/registerAuto.php?email=" + stringEmail + "&pass=" + stringPass +
-                        "&var=" + "Duracion" + "&value=" + stringTime + "&date=" + stringDate + "&time=" + stringHour + "&viaje=" + conduccion
-                        + "&velocidad=" + decimalFormat.format(speedAvg));
-            //}
-        //},500);
-
         conduccion++;
     }
 

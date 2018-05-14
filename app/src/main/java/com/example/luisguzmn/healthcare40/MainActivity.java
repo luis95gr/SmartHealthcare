@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     TextView txtCreateA;
     JSONArray jsonArray;
     int acceso=0;
+    LottieAnimationView animationView;
     //
 
 
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //
         //LOGIN AUTO
         sp = getSharedPreferences("login",MODE_PRIVATE);
         if(sp.contains("email") && sp.contains("pass")){
@@ -68,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //END LOGIN AUTO
-        LottieAnimationView animationView = (LottieAnimationView)findViewById(R.id.animation_view);
+        animationView = (LottieAnimationView)findViewById(R.id.animation_view);
         animationView.setMinAndMaxFrame(0,20);
         animationView.playAnimation();
         etEmail = (EditText) findViewById(R.id.etEmail);
@@ -144,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Bienvenido " + g.getName(), Toast.LENGTH_SHORT).show();
                         LottieAnimationView animationView = (LottieAnimationView)findViewById(R.id.animation_view);
                         //animationView.setMinAndMaxFrame(20,100);
-                        animationView.setSpeed(0.5f);
+                        animationView.setSpeed(1.2f);
                         animationView.playAnimation(20,100);
                         new Handler().postDelayed(new Runnable(){
                             @Override
@@ -152,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                                 Intent intent = new Intent(MainActivity.this,MainScreen.class);
                                 startActivity(intent);
                             }
-                        },3000);
+                        },1500);
                     } else {
                         Toast.makeText(getApplicationContext(), "Contraseña o usuario incorrectos", Toast.LENGTH_SHORT).show();
                     }

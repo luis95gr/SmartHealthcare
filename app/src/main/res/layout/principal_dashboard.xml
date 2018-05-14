@@ -84,7 +84,7 @@
         app:layout_constraintTop_toBottomOf="@id/linearMeasures"
         android:id="@+id/horizontalScrollButtons"
         android:layout_marginTop="25dp"
-        android:scrollIndicators="none"
+        android:scrollbars="none"
         >
 
         <LinearLayout
