@@ -57,6 +57,8 @@ public class DrivingDashboard extends AppCompatActivity {
     //VARIABLES
     TextView text_monday, text_tuesday, text_wednesday, text_thursday, text_friday, text_saturday, text_sunday;
     TextView txtFatiga,txtHr,txtMood,txtBp,txtBr,txtRes;
+    TextView textFatiga,textHr,textMood,textBp,textBr;
+    TextView textBle;
     boolean booleanStart;
     Chronometer chronometer;
     private long timeWhenStopped = 0;
@@ -94,7 +96,7 @@ public class DrivingDashboard extends AppCompatActivity {
     SimpleDateFormat sdfDate;
     TextView textEj,txtDis;
     LocationManager locationManager,locationManagerDis;
-    LocationListener locationListener,locationListenerDis;
+    LocationListener locationListener;
     Location location;
     double longi,lati;
     CountDownTimer countDownTimer,countDownTimerHr,countDownTimerBp,countDownTimerBr,countDownTimerMF;
@@ -129,7 +131,12 @@ public class DrivingDashboard extends AppCompatActivity {
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         handler = new Handler();
         speedList = new ArrayList<Double>();
-        double speedItem,speedAvg;
+        textFatiga = (TextView)findViewById(R.id.textFatigue);
+        textMood = (TextView)findViewById(R.id.textMood);
+        textBr = (TextView)findViewById(R.id.textBr);
+        textBp = (TextView)findViewById(R.id.textBp);
+        textHr = (TextView)findViewById(R.id.textHr);
+        textBle = (TextView)findViewById(R.id.textBle);
         //HELO CAST
         heloMeasurementReceiver2 = new MeasurementReceiver();
         intentFilter2 = new IntentFilter();
@@ -141,8 +148,8 @@ public class DrivingDashboard extends AppCompatActivity {
         intentFilter2.addAction(BROADCAST_ACTION_HR_MEASUREMENT);
         intentFilter2.addAction(BROADCAST_ACTION_MEASUREMENT_WRITE_FAILURE);
         //
+        Connector.getInstance().getStepsData();
         chronometer.setText("00:00:00");
-
         // Acquire a reference to the system Location Manager
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         // Define a listener that responds to location updates
@@ -180,8 +187,16 @@ public class DrivingDashboard extends AppCompatActivity {
     }
 
     //START
-    public void start(View view){
+    public void start(View view) {
         Connector.getInstance().measureMF();
+        //TEXTS
+        textMood.setTextColor(Color.parseColor("#FF6347"));
+        textFatiga.setTextColor(Color.parseColor("#FF6347"));
+        //
+        textHr.setTextColor(getResources().getColor(R.color.green));
+        textBr.setTextColor(getResources().getColor(R.color.green));
+        textBp.setTextColor(getResources().getColor(R.color.green));
+        //
         startcountDownTimerHr();
         booleanStart = true;
         //VIEWS
@@ -196,51 +211,16 @@ public class DrivingDashboard extends AppCompatActivity {
             @Override
             public void onChronometerTick(Chronometer chronometer) {
                 long time = SystemClock.elapsedRealtime() - chronometer.getBase();
-                int h   = (int)(time /3600000);
-                int m = (int)(time - h*3600000)/60000;
-                int s= (int)(time - h*3600000- m*60000)/1000 ;
-                String t = (h < 10 ? "0"+h: h)+":"+(m < 10 ? "0"+m: m)+":"+ (s < 10 ? "0"+s: s);
+                int h = (int) (time / 3600000);
+                int m = (int) (time - h * 3600000) / 60000;
+                int s = (int) (time - h * 3600000 - m * 60000) / 1000;
+                String t = (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
                 chronometer.setText(t);
             }
         });
         chronometer.setBase(SystemClock.elapsedRealtime());
         chronometer.start();
-        //DISTANCE
-        locationManagerDis = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        //PERMISSION
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-        } else {
-            location = locationManagerDis.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        }
-        //
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                longi = location.getLongitude();
-                lati = location.getLatitude();
-                Toast.makeText(DrivingDashboard.this, "LO: " + longi + "LA: " + lati, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
     }
-
     //
     //STOP
     public void stop(View view){
@@ -276,6 +256,7 @@ public class DrivingDashboard extends AppCompatActivity {
                 "&var=" + "Duracion" + "&value=" + stringTime + "&date=" + stringDate + "&time=" + stringHour + "&viaje=" + conduccion
                 + "&velocidad=" + decimalFormat.format(speedAvg));
         //
+        speedList.clear();
         conduccion++;
     }
 
@@ -287,7 +268,6 @@ public class DrivingDashboard extends AppCompatActivity {
                 long pr = (millisUntilFinished / 1000) * 100000 / 60000;
                 int progress = (int) pr;
                 progressBar.setProgress(progress);
-                String timeRemain = Long.toString(millisUntilFinished / 1000);
             }
 
             @Override
@@ -306,6 +286,14 @@ public class DrivingDashboard extends AppCompatActivity {
             @Override
             public void onFinish() {
                 Connector.getInstance().measureHR();
+                //TEXTS
+                textHr.setTextColor(Color.parseColor("#FF6347"));
+                //
+                textMood.setTextColor(getResources().getColor(R.color.green));
+                textFatiga.setTextColor(getResources().getColor(R.color.green));
+                textBr.setTextColor(getResources().getColor(R.color.green));
+                textBp.setTextColor(getResources().getColor(R.color.green));
+                //
                 startcountDownTimerBp();
             }
         }.start();
@@ -319,6 +307,14 @@ public class DrivingDashboard extends AppCompatActivity {
             @Override
             public void onFinish() {
                 Connector.getInstance().measureBP();
+                //TEXTS
+                textBp.setTextColor(Color.parseColor("#FF6347"));
+                //
+                textMood.setTextColor(getResources().getColor(R.color.green));
+                textFatiga.setTextColor(getResources().getColor(R.color.green));
+                textBr.setTextColor(getResources().getColor(R.color.green));
+                textHr.setTextColor(getResources().getColor(R.color.green));
+                //
                 startcountDownTimerBr();
             }
         }.start();
@@ -332,6 +328,14 @@ public class DrivingDashboard extends AppCompatActivity {
             @Override
             public void onFinish() {
                 Connector.getInstance().measureBr();
+                //TEXTS
+                textBr.setTextColor(Color.parseColor("#FF6347"));
+                //
+                textMood.setTextColor(getResources().getColor(R.color.green));
+                textFatiga.setTextColor(getResources().getColor(R.color.green));
+                textHr.setTextColor(getResources().getColor(R.color.green));
+                textBp.setTextColor(getResources().getColor(R.color.green));
+                //
                 startcountDownTimerMF();
             }
         }.start();
@@ -345,6 +349,14 @@ public class DrivingDashboard extends AppCompatActivity {
             @Override
             public void onFinish() {
                 Connector.getInstance().measureMF();
+                //TEXTS
+                textMood.setTextColor(Color.parseColor("#FF6347"));
+                textFatiga.setTextColor(Color.parseColor("#FF6347"));
+                //
+                textHr.setTextColor(getResources().getColor(R.color.green));
+                textBr.setTextColor(getResources().getColor(R.color.green));
+                textBp.setTextColor(getResources().getColor(R.color.green));
+                //
                 startcountDownTimerHr();
             }
         }.start();
@@ -446,8 +458,10 @@ public class DrivingDashboard extends AppCompatActivity {
                     Toast.makeText(DrivingDashboard.this, message, Toast.LENGTH_LONG).show();
                 } else if (intent.getAction().equals(BROADCAST_ACTION_STEPS_MEASUREMENT)) {
                     String steps = intent.getStringExtra(INTENT_KEY_STEPS_MEASUREMENT);
-                    Toast.makeText(DrivingDashboard.this, "" + steps, Toast.LENGTH_SHORT).show();
-                    textEj.setText("Pasos: " + steps);
+                    if (!steps.isEmpty()){
+                        textBle.setText("Conectado");
+                        textBle.setTextColor(Color.parseColor("#90EE90"));
+                    }
                 }
             }
         }
