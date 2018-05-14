@@ -140,7 +140,7 @@ public class MainScreen extends AppCompatActivity {
     float minBr,minBpmax,minBpmin,minHr,minSteps;
     float avgBr,avgBpmax,avgBpmin,avgHr,avgSteps;
     float lastBr,lastBpmax,lastBpmin,lastHr,lastSteps;
-    float totalMeasures;
+    float totalMeasures = 0;
     int nivel,top,bottom;
     int fromPercentage,toPercentage;
     Animation animationBlink;
@@ -738,7 +738,12 @@ public class MainScreen extends AppCompatActivity {
                         moodList.add(value);
                     }
                     if (!moodList.isEmpty()) {
-                        spDataNivelEditor.putFloat("sizeMood", moodList.size());
+                        if (moodList.get(0).equals("null")) {
+                            spDataNivelEditor.putFloat("sizeMood", moodList.size()-1);
+                        }
+                        if (!moodList.get(0).equals("null")){
+                            spDataNivelEditor.putFloat("sizeMood", moodList.size());
+                        }
                         spDataNivelEditor.apply();
                     }
                     //Toast.makeText(MainScreen.this, ""+moodList.size(), Toast.LENGTH_LONG).show();
@@ -773,7 +778,13 @@ public class MainScreen extends AppCompatActivity {
                         fatigueList.add(value);
                     }
                     if (!fatigueList.isEmpty()) {
-                        spDataNivelEditor.putFloat("sizeFatigue", fatigueList.size());
+                        if (fatigueList.get(0).equals("null")) {
+                            spDataNivelEditor.putFloat("sizeFatigue", fatigueList.size()-1);
+                        }
+                        if (!fatigueList.get(0).equals("null")){
+                            spDataNivelEditor.putFloat("sizeFatigue", fatigueList.size());
+                        }
+
                         spDataNivelEditor.apply();
                     }
                     //Toast.makeText(MainScreen.this, ""+fatigueList.size(), Toast.LENGTH_LONG).show();
@@ -810,7 +821,12 @@ public class MainScreen extends AppCompatActivity {
                         ecgList.add(value);
                     }
                     if (!ecgList.isEmpty()) {
-                        spDataNivelEditor.putFloat("sizeEcg", ecgList.size());
+                        if (ecgList.get(0).equals("null")) {
+                            spDataNivelEditor.putFloat("sizeEcg", ecgList.size()-1);
+                        }
+                        if (!ecgList.get(0).equals("null")){
+                            spDataNivelEditor.putFloat("sizeEcg", ecgList.size());
+                        }
                         spDataNivelEditor.apply();
                     }
                     //Toast.makeText(MainScreen.this, ""+ecgList.size(), Toast.LENGTH_LONG).show();
