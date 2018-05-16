@@ -2,6 +2,7 @@ package com.example.luisguzmn.healthcare40;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,9 +26,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,6 +69,9 @@ public class DrivingDashboard extends AppCompatActivity {
     StringTokenizer stringTokenizer;
     String tokenH,tokenM,tokenS;
     static final int REQUEST_LOCATION = 1;
+    int progressValue;
+    String coments;
+    Button buttonStart,buttonStop,buttonReanu,buttonPause;
     //
     //HELO VARIABLES
     IntentFilter intentFilter2;
@@ -137,6 +144,10 @@ public class DrivingDashboard extends AppCompatActivity {
         textBp = (TextView)findViewById(R.id.textBp);
         textHr = (TextView)findViewById(R.id.textHr);
         textBle = (TextView)findViewById(R.id.textBle);
+        buttonStart = (Button)findViewById(R.id.buttonStart);
+        buttonStop = (Button)findViewById(R.id.buttonStop);
+        buttonPause = (Button)findViewById(R.id.buttonPause);
+        buttonReanu = (Button)findViewById(R.id.buttonReanu);
         //HELO CAST
         heloMeasurementReceiver2 = new MeasurementReceiver();
         intentFilter2 = new IntentFilter();
@@ -147,9 +158,14 @@ public class DrivingDashboard extends AppCompatActivity {
         intentFilter2.addAction(BROADCAST_ACTION_MOOD_MEASUREMENT);
         intentFilter2.addAction(BROADCAST_ACTION_HR_MEASUREMENT);
         intentFilter2.addAction(BROADCAST_ACTION_MEASUREMENT_WRITE_FAILURE);
-        //
+        //START
         Connector.getInstance().getStepsData();
         chronometer.setText("00:00:00");
+        buttonStop.setEnabled(false);
+        buttonReanu.setEnabled(false);
+        buttonPause.setEnabled(false);
+        //
+        //
         // Acquire a reference to the system Location Manager
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         // Define a listener that responds to location updates
@@ -189,6 +205,11 @@ public class DrivingDashboard extends AppCompatActivity {
     //START
     public void start(View view) {
         Connector.getInstance().measureMF();
+        //BUTTONS
+        buttonStart.setEnabled(false);
+        buttonStop.setEnabled(true);
+        buttonPause.setEnabled(true);
+        buttonReanu.setEnabled(true);
         //TEXTS
         textMood.setTextColor(Color.parseColor("#FF6347"));
         textFatiga.setTextColor(Color.parseColor("#FF6347"));
@@ -224,6 +245,12 @@ public class DrivingDashboard extends AppCompatActivity {
     //
     //STOP
     public void stop(View view){
+        //BUTTONS
+        buttonStart.setEnabled(true);
+        buttonStop.setEnabled(false);
+        buttonPause.setEnabled(false);
+        buttonReanu.setEnabled(false);
+        //
         progressBar.setVisibility(View.INVISIBLE);
         countDownTimer.cancel();
         booleanStart = false;
@@ -252,9 +279,51 @@ public class DrivingDashboard extends AppCompatActivity {
         sdfHour = new SimpleDateFormat("h:mm:a");
         stringDate = sdfDate.format(date);
         stringHour = sdfHour.format(date);
-        VolleyPetition("http://" + ip + "/dataVar/registerAuto.php?email=" + stringEmail + "&pass=" + stringPass +
-                "&var=" + "Duracion" + "&value=" + stringTime + "&date=" + stringDate + "&time=" + stringHour + "&viaje=" + conduccion
-                + "&velocidad=" + decimalFormat.format(speedAvg));
+        //DIALOG
+        AlertDialog.Builder builder = new AlertDialog.Builder(DrivingDashboard.this);
+        View view2 = getLayoutInflater().inflate(R.layout.custom_dialog_drive,null);
+        SeekBar seekBar = (SeekBar)view2.findViewById(R.id.seekBar);
+        final TextView textSeek = (TextView)view2.findViewById(R.id.textSeek);
+        final EditText editText = (EditText)view2.findViewById(R.id.editText);
+        Button button = (Button)view2.findViewById(R.id.buttonSend);
+        //
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progressValue = progress;
+                if (progressValue == 0) textSeek.setText("No hay tráfico");
+                if (progressValue == 1) textSeek.setText("Poco tráfico");
+                if (progressValue == 2) textSeek.setText("Más tráfico de lo normal");
+                if (progressValue == 3) textSeek.setText("Tráfico moderado");
+                if (progressValue == 4) textSeek.setText("Mucho tráfico");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        builder.setView(view2);
+        final AlertDialog dialog = builder.create();
+        dialog.setCancelable(false);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                coments = editText.getText().toString();
+                dialog.dismiss();
+                Toast.makeText(DrivingDashboard.this, coments+progressValue, Toast.LENGTH_SHORT).show();
+                VolleyPetition("http://" + ip + "/dataVar/registerAuto.php?email=" + stringEmail + "&pass=" + stringPass +
+                        "&var=" + "Duracion" + "&value=" + stringTime + "&date=" + stringDate + "&time=" + stringHour + "&viaje=" + conduccion
+                        + "&velocidad=" + decimalFormat.format(speedAvg)+ "&trafico=" + progressValue + "&comentarios=" + coments);
+            }
+        });
+        dialog.show();
+        //
         //
         speedList.clear();
         conduccion++;
@@ -373,14 +442,25 @@ public class DrivingDashboard extends AppCompatActivity {
         }
     }
 
-
     public void pause(View view){
+        //BUTTONS
+        buttonStart.setEnabled(false);
+        buttonStop.setEnabled(true);
+        buttonPause.setEnabled(false);
+        buttonReanu.setEnabled(true);
+        //
         booleanStart = false;
         chronometer.stop();
         timeWhenStopped = chronometer.getBase() - SystemClock.elapsedRealtime();
         chronometer.stop();
     }
     public void reanudar(View view){
+        //BUTTONS
+        buttonStart.setEnabled(false);
+        buttonStop.setEnabled(true);
+        buttonPause.setEnabled(true);
+        buttonReanu.setEnabled(false);
+        //
         booleanStart = true;
         Connector.getInstance().measureMF();
         chronometer.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
@@ -466,6 +546,8 @@ public class DrivingDashboard extends AppCompatActivity {
             }
         }
     }
+
+
 
 
     private void VolleyPetition(String URL) {

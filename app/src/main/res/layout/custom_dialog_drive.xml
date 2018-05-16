@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#b8ddcd">
+
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Selecciona el nivel de tráfico"
+        android:textColor="@color/blue"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:progressDrawable="@drawable/seek_bar_progress"
+        android:thumb="@drawable/seek_bar_thumb"
+        android:max="4"
+        android:progress="0"
+        app:layout_constraintTop_toBottomOf="@id/textTitle"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="30dp"
+        />
+
+    <TextView
+        android:id="@+id/textSeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No hay tráfico"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/seekBar"
+        />
+
+    <TextView
+        android:id="@+id/textTitle2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Escribe un comentario"
+        android:textColor="@color/blue"
+        android:textStyle="bold"
+        android:textSize="19sp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/textSeek"
+        android:layout_marginTop="20dp"
+        />
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Tráfico, choques, caminos, etc"
+        android:inputType="textMultiLine"
+        app:layout_constraintTop_toBottomOf="@id/textTitle2"
+        android:layout_marginTop="10dp"
+        />
+    <Button
+        android:id="@+id/buttonSend"
+        android:layout_width="match_parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/editText"
+        android:textSize="15sp"
+        android:background="@color/md_blue_300"
+        android:text="ENVIAR"
+        />
+
+
+</android.support.constraint.ConstraintLayout>

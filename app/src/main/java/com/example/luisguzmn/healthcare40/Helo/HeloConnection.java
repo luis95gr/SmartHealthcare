@@ -115,7 +115,9 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
         intentFilter.addAction(BROADCAST_ACTION_HELO_DEVICE_RESET);
         intentFilter.addAction(BROADCAST_ACTION_MEASUREMENT_WRITE_FAILURE);
         //
-
+        //START
+        scan.setEnabled(false);
+        //
         principalDash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -405,6 +407,7 @@ public class HeloConnection extends AppCompatActivity implements ScanCallBack {
     }
 
     public void unpair(View view) {
+        scan.setEnabled(true);
         Connector.getInstance().unbindDevice();
         progressBar.setVisibility(View.INVISIBLE);
         textScanning.setVisibility(View.INVISIBLE);

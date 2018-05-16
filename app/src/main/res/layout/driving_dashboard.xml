@@ -254,7 +254,7 @@
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@id/linearPausar">
         <Button
-            android:id="@+id/on"
+            android:id="@+id/buttonStart"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -265,7 +265,7 @@
             android:onClick="start"
             />
         <Button
-            android:id="@+id/off"
+            android:id="@+id/buttonStop"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -285,7 +285,7 @@
         android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toBottomOf="parent">
     <Button
-        android:id="@+id/reanudar"
+        android:id="@+id/buttonReanu"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
@@ -299,7 +299,7 @@
         app:layout_constraintRight_toRightOf="parent"
         />
         <Button
-            android:id="@+id/pause"
+            android:id="@+id/buttonPause"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
