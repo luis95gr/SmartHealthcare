@@ -36,6 +36,8 @@ public class IDObject {
         Byte6 = new LinkedList<Number>();
         Byte7 = new LinkedList<Number>();
         Byte8 = new LinkedList<Number>();
+        Number[] trm = {0,0,0,0,0,0,0,0,0,0,0};
+        addTram(trm);
     }
 
     public IDObject(Number objID, Number[] currentTram) {
@@ -65,6 +67,7 @@ public class IDObject {
 
     // Methods -----------------------------
     public void addTram(Number[] tram){
+        int tramLength = tram.length;
         CurrentTram = tram;
         double t2 = Double.parseDouble(CurrentTram[0].toString())/1000.0;
         //double t2 = CurrentTram[0].toString())/1000.0;
@@ -72,17 +75,35 @@ public class IDObject {
         CanID.addLast(CurrentTram[1]);
         Len.addLast(CurrentTram[2]);
         Byte1.addLast(CurrentTram[3]);
-        Byte2.addLast(CurrentTram[4]);
-        Byte3.addLast(CurrentTram[5]);
-        Byte4.addLast(CurrentTram[6]);
-        Byte5.addLast(CurrentTram[7]);
-        Byte6.addLast(CurrentTram[8]);
-        Byte7.addLast(CurrentTram[9]);
-        Byte8.addLast(CurrentTram[10]);
+        if(tramLength>4)    Byte2.addLast(CurrentTram[4]);
+        else return;
+        if(tramLength>5)    Byte3.addLast(CurrentTram[5]);
+        else return;
+        if(tramLength>6)    Byte4.addLast(CurrentTram[6]);
+        else return;
+        if(tramLength>7)    Byte5.addLast(CurrentTram[7]);
+        else return;
+        if(tramLength>8)    Byte6.addLast(CurrentTram[8]);
+        else return;
+        if(tramLength>9)    Byte7.addLast(CurrentTram[9]);
+        else return;
+        if(tramLength>10)    Byte8.addLast(CurrentTram[10]);
     }
 
     public void removeFirstItemInLists(){
 
+        removeFirstItem(Time);
+        removeFirstItem(CanID);
+        removeFirstItem(Len);
+        removeFirstItem(Byte1);
+        removeFirstItem(Byte2);
+        removeFirstItem(Byte3);
+        removeFirstItem(Byte4);
+        removeFirstItem(Byte5);
+        removeFirstItem(Byte6);
+        removeFirstItem(Byte7);
+        removeFirstItem(Byte8);
+/*
         Time.removeFirst();
         CanID.removeFirst();
         Len.removeFirst();
@@ -94,6 +115,12 @@ public class IDObject {
         Byte6.removeFirst();
         Byte7.removeFirst();
         Byte8.removeFirst();
+*/
+    }
+
+    public void removeFirstItem(LinkedList <Number> lst){
+        if(lst.size() >= 1)
+            lst.removeFirst();
     }
 
     public void removeAll(){

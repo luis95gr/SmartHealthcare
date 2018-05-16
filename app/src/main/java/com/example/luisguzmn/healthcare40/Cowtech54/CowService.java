@@ -165,9 +165,9 @@ public class CowService extends Service{
                         String fileStr = "";
                         if(fileCSV!=null)
                             fileStr = fileCSV.getFilePathStr();
-                        String lat = btMessageManager.MatIDs.get(200).getByte5().getLast().toString();
-                        String lon = btMessageManager.MatIDs.get(200).getByte6().getLast().toString();
-                        String sat = btMessageManager.MatIDs.get(200).getByte1().getLast().toString();
+                        String lat = btMessageManager.MatIDs.get(2222).getByte5().getLast().toString();
+                        String lon = btMessageManager.MatIDs.get(2222).getByte6().getLast().toString();
+                        String sat = btMessageManager.MatIDs.get(2222).getByte1().getLast().toString();
                         myEmitter[0] = deviceConnectedStr;
                         myEmitter[1] = fileStr;
                         myEmitter[2] = lat;

@@ -229,7 +229,8 @@ public class CowTabFragment1 extends Fragment implements View.OnClickListener{
                 if(sBound){
                     String filePathStr;
                     filePathStr = cowService.getFileCSV().getFilePathStr();
-                    Toast.makeText(getActivity().getApplicationContext(), filePathStr, Toast.LENGTH_LONG).show();
+                    String byteFirst = cowService.btMessageManager.MatIDs.get(2222).getByte1().getFirst().toString();
+                    Toast.makeText(getActivity().getApplicationContext(), byteFirst, Toast.LENGTH_LONG).show();
                 }
             }
         });
