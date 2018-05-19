@@ -12,6 +12,7 @@ import android.graphics.YuvImage;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -160,7 +161,9 @@ public class PrincipalDashboard extends AppCompatActivity {
     //
     //POPUP
     SharedPreferences spPopup;
-    //
+    //TEST
+    Handler handlerBp,handlerBr,handlerMood,handlerFatiga;
+
 
 
 
@@ -170,6 +173,10 @@ public class PrincipalDashboard extends AppCompatActivity {
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.principal_dashboard);
         dias();
+        handlerBp = new Handler();
+        handlerBr = new Handler();
+        handlerMood = new Handler();
+        handlerFatiga = new Handler();
         //SHARED PREFERENCES
         spMeasuresSaved = PreferenceManager.getDefaultSharedPreferences(this);
         spLogin = getSharedPreferences("login", MODE_PRIVATE);
@@ -256,8 +263,8 @@ public class PrincipalDashboard extends AppCompatActivity {
         //ANIMATION OF BUTTONS
         animationBlink = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
         //DYNAMIC
-        Connector.getInstance().startStepsHRDynamicMeasurement();
-        booleanDynamic = true;
+        //Connector.getInstance().startStepsHRDynamicMeasurement();
+        //booleanDynamic = true;
         //STEPS
        /* timerSteps.scheduleAtFixedRate(new TimerTask() {
                 @Override
@@ -387,6 +394,8 @@ public class PrincipalDashboard extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         registerReceiver(heloMeasurementReceiver, intentFilter);
+        Connector.getInstance().startStepsHRDynamicMeasurement();
+        booleanDynamic = true;
     }
 
 
@@ -518,7 +527,13 @@ public class PrincipalDashboard extends AppCompatActivity {
                     bpmin = intent.getStringExtra(INTENT_KEY_BP_MEASUREMENT_MIN);
                     textReloj.setVisibility(View.INVISIBLE);
                     textBP.setVisibility(View.VISIBLE);
-                    textBP.setText("BP max: " + bpmax + "\n BP min: " + bpmin);
+                    handlerBp.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            textBP.setText("BP max: " + bpmax + "\n BP min: " + bpmin);
+                        }
+                    },500);
+
                     Connector.getInstance().startStepsHRDynamicMeasurement();
                     booleanDynamic = true;
                     booleanBpMeasure = true;
@@ -550,7 +565,12 @@ public class PrincipalDashboard extends AppCompatActivity {
                     ////////////////////////BREATH RATE////////////////////////////////////////
                 } else if (intent.getAction().equals(BROADCAST_ACTION_BR_MEASUREMENT)) {
                     br = intent.getStringExtra(INTENT_KEY_BR_MEASUREMENT);
-                    textBR.setText("Frec Respiratoria:" + br);
+                    handlerBr.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            textBR.setText("Frec Respiratoria:" + br);
+                        }
+                    },500);
                     textReloj.setVisibility(View.INVISIBLE);
                     textBR.setVisibility(View.VISIBLE);
                     Connector.getInstance().startStepsHRDynamicMeasurement();
@@ -575,7 +595,12 @@ public class PrincipalDashboard extends AppCompatActivity {
                 } else if (intent.getAction().equals(BROADCAST_ACTION_FATIGUE_MEASUREMENT)) {
                     fatigue = intent.getStringExtra(INTENT_KEY_FATIGUE_MEASUREMENT);
                     if (!fatigue.isEmpty()) {
-                        textFatigue.setText("Fatiga: " + fatigue);
+                        handlerFatiga.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                textFatigue.setText("Fatiga: " + fatigue);
+                            }
+                        },500);
                         //
                         animationInfo.setVisibility(View.VISIBLE);
                         animationInfo.playAnimation();
@@ -604,7 +629,12 @@ public class PrincipalDashboard extends AppCompatActivity {
                 } else if (intent.getAction().equals(BROADCAST_ACTION_MOOD_MEASUREMENT)) {
                     mood = intent.getStringExtra(INTENT_KEY_MOOD_MEASUREMENT);
                     if (!mood.isEmpty()) {
-                        textMood.setText("Humor: " + mood);
+                        handlerMood.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                textMood.setText("Humor: " + mood);
+                            }
+                        },500);
                         //
                         animationInfo.setVisibility(View.VISIBLE);
                         animationInfo.playAnimation();

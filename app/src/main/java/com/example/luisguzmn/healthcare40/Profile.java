@@ -216,7 +216,16 @@ public class Profile extends AppCompatActivity {
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
-
+                        if (position == 7){
+                            Intent intent = new Intent(Profile.this, configuracion.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
+                        if (position == 8){
+                            Intent intent = new Intent(Profile.this, AboutUs.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
                         return false;
                     }
                 })
@@ -643,13 +652,14 @@ public class Profile extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu,menu);
         return true;
-        }
+
+    }
 
         @Override
     public boolean onOptionsItemSelected(MenuItem item){
             switch (item.getItemId()){
                 case R.id.settings:
-                    startActivity(new Intent(Profile.this,MainScreen.class));
+                    startActivity(new Intent(Profile.this,configuracion.class));
                     return true;
 
                 case R.id.logout:

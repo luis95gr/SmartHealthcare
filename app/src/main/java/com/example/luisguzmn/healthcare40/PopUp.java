@@ -249,7 +249,7 @@ public class PopUp extends AppCompatActivity {
         //
 
         //BLOOD PRESSURE
-        if(!stringBpmax.equals("0") && stringHr.equals("0") && stringHr.equals("0")) {
+        if(!stringBpmax.equals("0") && stringHr.equals("0") && stringSteps.equals("0")) {
             getSupportActionBar().setTitle("Info Presión Sanguínea");
             textBPtitle.setVisibility(View.VISIBLE);
             textMeasureBp.setVisibility(View.VISIBLE);
@@ -393,7 +393,7 @@ public class PopUp extends AppCompatActivity {
             stringDiagSend = textStatus.getText().toString();
         }
         //BREATH RATE
-        if(!stringBr.equals("0") && stringHr.equals("0") && stringHr.equals("0")) {
+        if(!stringBr.equals("0") && stringHr.equals("0") && stringSteps.equals("0")) {
             getSupportActionBar().setTitle("Info de frec respiratoria");
             textBRtitle.setVisibility(View.VISIBLE);
             textMeasureBr.setText(stringBr + " bpm");
@@ -452,14 +452,14 @@ public class PopUp extends AppCompatActivity {
             stringDiagSend = textStatus.getText().toString();
         }
         //MOOD
-        if(!stringMood.equals("0") && MFdecision == 1 && stringHr.equals("0") && stringHr.equals("0")) {
+        if(!stringMood.equals("0") && MFdecision == 1 && stringHr.equals("0") && stringSteps.equals("0")) {
             getSupportActionBar().setTitle("Info de humor");
             textMoodTitle.setVisibility(View.VISIBLE);
             textMeasureMood.setText(stringMood);
             textMeasureMood.setVisibility(View.VISIBLE);
         }
         //FATIGUE
-        if(!stringFatigue.equals("0") && MFdecision == 2 && stringHr.equals("0") && stringHr.equals("0")) {
+        if(!stringFatigue.equals("0") && MFdecision == 2 && stringHr.equals("0") && stringSteps.equals("0")) {
             getSupportActionBar().setTitle("Info de fatiga");
             textFatigueTitle.setVisibility(View.VISIBLE);
             textMeasureFatigue.setText(stringFatigue);

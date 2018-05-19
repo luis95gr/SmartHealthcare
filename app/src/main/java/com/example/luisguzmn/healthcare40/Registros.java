@@ -10,9 +10,12 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.luisguzmn.healthcare40.HealthcareInfo.MenuHinfo;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -104,6 +108,11 @@ public class Registros extends AppCompatActivity {
         btnMS = (Button)findViewById(R.id.txtSMood);
 
 
+        //MENU
+        //-----------------------------------------------
+        toolbar.setTitle("Registros");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         GlobalVars g = (GlobalVars) getApplication();
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this).withCompactStyle(true)
@@ -168,13 +177,23 @@ public class Registros extends AppCompatActivity {
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
-                        if (position == 3) {
-                            Intent intent = new Intent(Registros.this, Registros.class);
+                        if (position == 4){
+                            Intent intent = new Intent(Registros.this, Statistics.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
-                        if (position == 4){
-                            Intent intent = new Intent(Registros.this, Statistics.class);
+                        if (position == 5){
+                            Intent intent = new Intent(Registros.this, MenuHinfo.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
+                        if (position == 7){
+                            Intent intent = new Intent(Registros.this, configuracion.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
+                        if (position == 8){
+                            Intent intent = new Intent(Registros.this, AboutUs.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.left_in, R.anim.left_out);
                         }
@@ -612,6 +631,40 @@ txtBR.setOnClickListener(new View.OnClickListener() {
             }
         });
         queue.add(stringRequest);
+    }
+
+    //MENU 3 DOTS
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.settings:
+                startActivity(new Intent(Registros.this,configuracion.class));
+                return true;
+
+            case R.id.logout:
+                SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
+                SharedPreferences spDataNivel = PreferenceManager.getDefaultSharedPreferences(this);
+                final SharedPreferences.Editor spDataNivelEditor = spDataNivel.edit();
+                SharedPreferences.Editor e = sp.edit();
+                e.clear();
+                e.apply();
+                spDataNivelEditor.clear();
+                spDataNivelEditor.apply();
+                SharedPreferences spLogin = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor spLoginEditor = spLogin.edit();
+                spLoginEditor.putBoolean("success",false);
+                spLoginEditor.apply();
+                startActivity(new Intent(Registros.this,MainActivity.class));
+                finish();
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 
