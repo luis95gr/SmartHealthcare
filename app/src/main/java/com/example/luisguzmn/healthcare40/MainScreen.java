@@ -391,6 +391,8 @@ public class MainScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(MainScreen.this, "Sensores emparejados", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainScreen.this,PantallaLozoya.class);
+                startActivity(intent);
             }
         });
 

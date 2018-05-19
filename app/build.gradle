@@ -54,5 +54,6 @@ dependencies {
     implementation 'de.codecrafters.tableview:tableview:2.8.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.appyvet:materialrangebar:1.4.1'
+    //jasa
 
 }

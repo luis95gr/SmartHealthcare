@@ -100,7 +100,8 @@ import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 public class PantallaLozoya extends AppCompatActivity {
 
     TextView text_monday,text_tuesday,text_wednesday,text_thursday,text_friday,text_saturday,text_sunday;
-    String email;
+    String email,edad;
+    float percent;
     SeekBar seekBar;
     TextView textValue,textSV;
     FloatingActionButton btnRefresh;
@@ -110,6 +111,7 @@ public class PantallaLozoya extends AppCompatActivity {
     JSONArray jsonArrayF;
     private String f,timeF,varF,dateF,valueF;
     ArrayList<String> mylistF = new ArrayList<String>();
+    ArrayList<String> mylistFP = new ArrayList<String>();
     ArrayList<String> mylistDatesF = new ArrayList<String>();
     ArrayList<String> mylistVarF = new ArrayList<String>();
     ArrayList<String> mylistTimeF = new ArrayList<String>();
@@ -119,6 +121,7 @@ public class PantallaLozoya extends AppCompatActivity {
     JSONArray jsonArrayM;
     private String m,timeM,varM,dateM,valueM;
     ArrayList<String> mylistM = new ArrayList<String>();
+    ArrayList<String> mylistP = new ArrayList<String>();
     ArrayList<String> mylistDatesM = new ArrayList<String>();
     ArrayList<String> mylistVarM = new ArrayList<String>();
     ArrayList<String> mylistTimeM = new ArrayList<String>();
@@ -128,6 +131,7 @@ public class PantallaLozoya extends AppCompatActivity {
     JSONArray jsonArrayHR;
     private String hr,timeHR,varHR,dateHR,valueHR;
     ArrayList<String> mylistHR = new ArrayList<String>();
+    ArrayList<String> mylistHRP = new ArrayList<String>();
     ArrayList<String> mylistDatesHR = new ArrayList<String>();
     ArrayList<String> mylistVarHR = new ArrayList<String>();
     ArrayList<String> mylistTimeHR = new ArrayList<String>();
@@ -137,6 +141,7 @@ public class PantallaLozoya extends AppCompatActivity {
     JSONArray jsonArrayBR;
     private String br,timeBR,varBR,dateBR,valueBR;
     ArrayList<String> mylistBR = new ArrayList<String>();
+    ArrayList<String> mylistBRP = new ArrayList<String>();
     ArrayList<String> mylistDatesBR = new ArrayList<String>();
     ArrayList<String> mylistVarBR = new ArrayList<String>();
     ArrayList<String> mylistTimeBR = new ArrayList<String>();
@@ -146,6 +151,7 @@ public class PantallaLozoya extends AppCompatActivity {
     JSONArray jsonArrayBP;
     private String bp,timeBP,varBP,dateBP,valueBP;
     ArrayList<String> mylistBP = new ArrayList<String>();
+    ArrayList<String> mylistBPP = new ArrayList<String>();
     ArrayList<String> mylistDatesBP = new ArrayList<String>();
     ArrayList<String> mylistVarBP = new ArrayList<String>();
     ArrayList<String> mylistTimeBP = new ArrayList<String>();
@@ -170,6 +176,7 @@ public class PantallaLozoya extends AppCompatActivity {
         SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
 
         email = sp.getString("email","no email");
+        edad = sp.getString("birth","birth");
 
         seekBar = (SeekBar)findViewById(R.id.seek);
         btnRefresh = (FloatingActionButton) findViewById(R.id.btnSend);
@@ -186,6 +193,7 @@ public class PantallaLozoya extends AppCompatActivity {
         tableViewM = (TableView) findViewById(R.id.tableView2);
 
 
+        percent=1;
         tableViewF.setColumnCount(3);
         tableViewM.setColumnCount(3);
 
@@ -199,6 +207,8 @@ public class PantallaLozoya extends AppCompatActivity {
             public void onDataClicked(int rowIndex, String[] clickedData) {
                 Toast.makeText(getApplicationContext(),"Valor: "+clickedData[0]+"\nFecha: "+clickedData[1]+"\nHora: "+clickedData[2],
                         Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),edad, Toast.LENGTH_LONG).show();
+
             }
         });
 
@@ -225,7 +235,8 @@ public class PantallaLozoya extends AppCompatActivity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                textValue.setText(progress+" %");
+                percent = (float)progress/100;
+                textValue.setText(percent*100+" %");
                 btnRefresh.setVisibility(View.VISIBLE);
             }
 //
@@ -243,7 +254,17 @@ public class PantallaLozoya extends AppCompatActivity {
         btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                clear();
                 Toast.makeText(getApplicationContext(),"Datos Actualizados",Toast.LENGTH_SHORT).show();
+                pChartHR.clear();
+                pChartBP.clear();
+                pChartBR.clear();
+                VolleyPetitionFatigue("http://meddata.sytes.net/grafico/dataShow.php?email="+email+"&var=Fatigue");
+                VolleyPetitionMood("http://meddata.sytes.net/grafico/dataShow.php?email="+email+"&var=mood");
+                VolleyPetitionHR("http://meddata.sytes.net/grafico/dataShow.php?email="+email+"&var=HR");
+                VolleyPetitionBR("http://meddata.sytes.net/grafico/dataShow.php?email="+email+"&var=BR");
+                VolleyPetitionBP("http://meddata.sytes.net/grafico/dataShow.php?email="+email+"&var=BP");
+
             }
         });
 
@@ -265,6 +286,7 @@ public class PantallaLozoya extends AppCompatActivity {
         VolleyPetitionBR("http://meddata.sytes.net/grafico/dataShow.php?email="+email+"&var=BR");
         VolleyPetitionBP("http://meddata.sytes.net/grafico/dataShow.php?email="+email+"&var=BP");
 
+
     }
     public void VolleyPetitionFatigue(String URL) {
         Log.i("url", "" + URL);
@@ -273,6 +295,11 @@ public class PantallaLozoya extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 try {
+                    ArrayList<String> mylistF = new ArrayList<String>();
+                    ArrayList<String> mylistFP = new ArrayList<String>();
+                    ArrayList<String> mylistDatesF = new ArrayList<String>();
+                    ArrayList<String> mylistVarF = new ArrayList<String>();
+                    ArrayList<String> mylistTimeF = new ArrayList<String>();
                     jsonArrayF = new JSONArray(response);
                     for (int i = 0; i < jsonArrayF.length(); i++) {
                         f = jsonArrayF.getString(i);
@@ -286,22 +313,26 @@ public class PantallaLozoya extends AppCompatActivity {
                         mylistTimeF.add(timeF);
                         mylistVarF.add(varF);
                     }
-                    for(int i = 0; i<mylistF.size();i++) {
-                        if(mylistF.get(i).equals("Calm")){
+                    for(int i = 0; i<((int)(mylistF.size()*percent));i++) {
+                        mylistFP.add(mylistF.get(i));
+                    }
+                    for(int i = 0; i<mylistFP.size();i++) {
+                        if(mylistFP.get(i).equals("Calm")){
                             vCalmF++;
-                        } else if(mylistF.get(i).equals("Tired")){
+                        } else if(mylistFP.get(i).equals("Tired")){
                             vTiredF++;
-                        } else if(mylistF.get(i).equals("Normal")){
+                        } else if(mylistFP.get(i).equals("Normal")){
                             vNormalF++;
                         }
                     }
-                    String[][] DATA_TO_SHOW = new String[mylistF.size()][4];
+                    String[][] DATA_TO_SHOW = new String[mylistFP.size()][4];
 
-                    for (int i = 0; i < mylistF.size(); i++) {
-                        DATA_TO_SHOW[i][0] = mylistF.get(i).toString();
+                    for (int i = 0; i < mylistFP.size(); i++) {
+                        DATA_TO_SHOW[i][0] = mylistFP.get(i).toString();
                         DATA_TO_SHOW[i][1] = mylistDatesF.get(i).toString();
                         DATA_TO_SHOW[i][2] = mylistTimeF.get(i).toString();
                     }
+
 
                     tableViewF.setDataAdapter(new SimpleTableDataAdapter(getApplicationContext(), DATA_TO_SHOW));
 
@@ -325,6 +356,11 @@ public class PantallaLozoya extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 try {
+                    ArrayList<String> mylistHR = new ArrayList<String>();
+                    ArrayList<String> mylistHRP = new ArrayList<String>();
+                    ArrayList<String> mylistDatesHR = new ArrayList<String>();
+                    ArrayList<String> mylistVarHR = new ArrayList<String>();
+                    ArrayList<String> mylistTimeHR = new ArrayList<String>();
                     jsonArrayHR   = new JSONArray(response);
                     for (int i = 0; i < jsonArrayHR.length(); i++) {
                         hr = jsonArrayHR.getString(i);
@@ -338,16 +374,19 @@ public class PantallaLozoya extends AppCompatActivity {
                         mylistTimeHR.add(timeHR);
                         mylistVarHR.add(varHR);
                     }
-                    for(int i = 0; i<mylistHR.size();i++) {
-                        if(mylistHR.get(i).equals("VALOR NORMAL")){
+                    for(int i = 0; i<((int)(mylistHR.size()*percent));i++) {
+                        mylistHRP.add(mylistHR.get(i));
+                    }
+                    for(int i = 0; i<mylistHRP.size();i++) {
+                        if(mylistHRP.get(i).equals("VALOR NORMAL")){
                             ValorN++;
-                        } else if(mylistHR.get(i).equals("BRADICARDIA")){
+                        } else if(mylistHRP.get(i).equals("BRADICARDIA")){
                             Bradi++;
-                        } else if(mylistHR.get(i).equals("TAQUICARDIA")){
+                        } else if(mylistHRP.get(i).equals("TAQUICARDIA")){
                             Taqui++;
-                        } else if(mylistHR.get(i).equals("LIGERA TAQUICARDIA")){
+                        } else if(mylistHRP.get(i).equals("LIGERA TAQUICARDIA")){
                             LigTaqui++;
-                        } else if(mylistHR.get(i).equals("LIGERA BRADICARDIA")){
+                        } else if(mylistHRP.get(i).equals("LIGERA BRADICARDIA")){
                             LigBradi++;
                         }
                     }
@@ -372,6 +411,11 @@ public class PantallaLozoya extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 try {
+                    ArrayList<String> mylistBR = new ArrayList<String>();
+                    ArrayList<String> mylistBRP = new ArrayList<String>();
+                    ArrayList<String> mylistDatesBR = new ArrayList<String>();
+                    ArrayList<String> mylistVarBR = new ArrayList<String>();
+                    ArrayList<String> mylistTimeBR = new ArrayList<String>();
                     jsonArrayBR   = new JSONArray(response);
                     for (int i = 0; i < jsonArrayBR.length(); i++) {
                         br = jsonArrayBR.getString(i);
@@ -385,20 +429,23 @@ public class PantallaLozoya extends AppCompatActivity {
                         mylistTimeBR.add(timeBR);
                         mylistVarBR.add(varBR);
                     }
-                    for(int i = 0; i<mylistBR.size();i++) {
-                        if(mylistBR.get(i).equals("FRECUENCIA RESPIRATORIA NORMAL ALTA")){
+                    for(int i = 0; i<((int)(mylistBR.size()*percent));i++) {
+                        mylistBRP.add(mylistBR.get(i));
+                    }
+                    for(int i = 0; i<mylistBRP.size();i++) {
+                        if(mylistBRP.get(i).equals("FRECUENCIA RESPIRATORIA NORMAL ALTA")){
                             frecAN++;
-                        } else if(mylistBR.get(i).equals("FRECUENCIA RESPIRATORIA NORMAL BAJA")){
+                        } else if(mylistBRP.get(i).equals("FRECUENCIA RESPIRATORIA NORMAL BAJA")){
                             frecBN++;
-                        } else if(mylistBR.get(i).equals("FRECUENCIA RESPIRATORIA NORMAL")){
+                        } else if(mylistBRP.get(i).equals("FRECUENCIA RESPIRATORIA NORMAL")){
                             frecN++;
-                        } else if(mylistBR.get(i).equals("TAQUIPNEA LIGERA")){
+                        } else if(mylistBRP.get(i).equals("TAQUIPNEA LIGERA")){
                             taquiL++;
-                        } else if(mylistBR.get(i).equals("BRADIPNEA LIGERA")){
+                        } else if(mylistBRP.get(i).equals("BRADIPNEA LIGERA")){
                             bradiL++;
-                        } else if(mylistBR.get(i).equals("TAQUIPNEA SEVERA")){
+                        } else if(mylistBRP.get(i).equals("TAQUIPNEA SEVERA")){
                             taquiS++;
-                        } else if(mylistBR.get(i).equals("BRADIPNEA SEVERA")){
+                        } else if(mylistBRP.get(i).equals("BRADIPNEA SEVERA")){
                             bradiS++;
                         }
                     }
@@ -422,6 +469,12 @@ public class PantallaLozoya extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 try {
+
+                    ArrayList<String> mylistM = new ArrayList<String>();
+                    ArrayList<String> mylistP = new ArrayList<String>();
+                    ArrayList<String> mylistDatesM = new ArrayList<String>();
+                    ArrayList<String> mylistVarM = new ArrayList<String>();
+                    ArrayList<String> mylistTimeM = new ArrayList<String>();
                     jsonArrayM   = new JSONArray(response);
                     for (int i = 0; i < jsonArrayM.length(); i++) {
                         m = jsonArrayM.getString(i);
@@ -434,20 +487,22 @@ public class PantallaLozoya extends AppCompatActivity {
                         mylistDatesM.add(dateM);
                         mylistTimeM.add(timeM);
                         mylistVarM.add(varM);
+                    }for(int i = 0; i<((int)(mylistM.size()*percent));i++) {
+                        mylistP.add(mylistM.get(i));
                     }
-                    for(int i = 0; i<mylistM.size();i++) {
-                        if(mylistM.get(i).equals("Calm")){
+                    for(int i = 0; i<mylistP.size();i++) {
+                        if(mylistP.get(i).equals("Calm")){
                             vCalmM++;
-                        } else if(mylistM.get(i).equals("Depression")){
+                        } else if(mylistP.get(i).equals("Depression")){
                             vTiredM++;
-                        } else if(mylistM.get(i).equals("Normal")){
+                        } else if(mylistP.get(i).equals("Normal")){
                             vNormalM++;
                         }
                     }
-                    String[][] DATA_TO_SHOW2 = new String[mylistM.size()][4];
+                    String[][] DATA_TO_SHOW2 = new String[mylistP.size()][4];
 
-                    for (int i = 0; i < mylistM.size(); i++) {
-                        DATA_TO_SHOW2[i][0] = mylistM.get(i).toString();
+                    for (int i = 0; i < mylistP.size(); i++) {
+                        DATA_TO_SHOW2[i][0] = mylistP.get(i).toString();
                         DATA_TO_SHOW2[i][1] = mylistDatesM.get(i).toString();
                         DATA_TO_SHOW2[i][2] = mylistTimeM.get(i).toString();
                     }
@@ -474,6 +529,11 @@ public class PantallaLozoya extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 try {
+                    ArrayList<String> mylistBP = new ArrayList<String>();
+                    ArrayList<String> mylistBPP = new ArrayList<String>();
+                    ArrayList<String> mylistDatesBP = new ArrayList<String>();
+                    ArrayList<String> mylistVarBP = new ArrayList<String>();
+                    ArrayList<String> mylistTimeBP = new ArrayList<String>();
                     jsonArrayBP   = new JSONArray(response);
                     for (int i = 0; i < jsonArrayBP.length(); i++) {
                         bp = jsonArrayBP.getString(i);
@@ -487,38 +547,41 @@ public class PantallaLozoya extends AppCompatActivity {
                         mylistTimeBP.add(timeBP);
                         mylistVarBP.add(varBP);
                     }
-                    for(int i = 0; i<mylistBP.size();i++) {
-                        if(mylistBP.get(i).equals("ALTA PRESION NORMAL")){
+                    for(int i = 0; i<((int)(mylistBP.size()*percent));i++) {
+                        mylistBPP.add(mylistBP.get(i));
+                    }
+                    for(int i = 0; i<mylistBPP.size();i++) {
+                        if(mylistBPP.get(i).equals("ALTA PRESION NORMAL")){
                             APN++;
-                        } else if(mylistBP.get(i).equals("PRESION NORMAL")){
+                        } else if(mylistBPP.get(i).equals("PRESION NORMAL")){
                             PN++;
-                        } else if(mylistBP.get(i).equals("BAJA PRESION NORMAL")){
+                        } else if(mylistBPP.get(i).equals("BAJA PRESION NORMAL")){
                             BPN++;
-                        } else if(mylistBP.get(i).equals("PRESION PELIGROSAMENTE BAJA")){
+                        } else if(mylistBPP.get(i).equals("PRESION PELIGROSAMENTE BAJA")){
                             PPB++;
-                        } else if(mylistBP.get(i).equals("PRESION MUY BAJA")){
+                        } else if(mylistBPP.get(i).equals("PRESION MUY BAJA")){
                             PMB++;
-                        } else if(mylistBP.get(i).equals("LIMITE DE PRESION BAJA")){
+                        } else if(mylistBPP.get(i).equals("LIMITE DE PRESION BAJA")){
                             LPB++;
-                        } else if(mylistBP.get(i).equals("HIPERTENSION: NIVEL 1")){
+                        } else if(mylistBPP.get(i).equals("HIPERTENSION: NIVEL 1")){
                             HN1++;
-                        } else if(mylistBP.get(i).equals("HIPERTENSION: NIVEL 2")){
+                        } else if(mylistBPP.get(i).equals("HIPERTENSION: NIVEL 2")){
                             HN2++;
-                        } else if(mylistBP.get(i).equals("HIPERTENSION: NIVEL 3")){
+                        } else if(mylistBPP.get(i).equals("HIPERTENSION: NIVEL 3")){
                             HN3++;
-                        } else if(mylistBP.get(i).equals("HIPERTENSION SISTOLICA AISLADA NIVEL 1")){
+                        } else if(mylistBPP.get(i).equals("HIPERTENSION SISTOLICA AISLADA NIVEL 1")){
                             HSA1++;
-                        } else if(mylistBP.get(i).equals("HIPERTENSION SISTOLICA AISLADA NIVEL 2")){
+                        } else if(mylistBPP.get(i).equals("HIPERTENSION SISTOLICA AISLADA NIVEL 2")){
                             HSA2++;
-                        } else if(mylistBP.get(i).equals("HIPERTENSION SISTOLICA AISLADA NIVEL 3")){
+                        } else if(mylistBPP.get(i).equals("HIPERTENSION SISTOLICA AISLADA NIVEL 3")){
                             HSA3++;
-                        } else if(mylistBP.get(i).equals("HIPERTENSION SISTOLICA AISLADA NIVEL 4")){
+                        } else if(mylistBPP.get(i).equals("HIPERTENSION SISTOLICA AISLADA NIVEL 4")){
                             HSA4++;
-                        } else if(mylistBP.get(i).equals("LIMITE DE HIPOTENSION SISTOLICA AISLADA")){
+                        } else if(mylistBPP.get(i).equals("LIMITE DE HIPOTENSION SISTOLICA AISLADA")){
                             LHSA++;
-                        } else if(mylistBP.get(i).equals("HIPOTENSION SISTOLICA AISLADA MUY BAJA")){
+                        } else if(mylistBPP.get(i).equals("HIPOTENSION SISTOLICA AISLADA MUY BAJA")){
                             HSAMB++;
-                        } else if(mylistBP.get(i).equals("HIPOTENSION SISTOLICA PELIGROSA")){
+                        } else if(mylistBPP.get(i).equals("HIPOTENSION SISTOLICA PELIGROSA")){
                             HSP++;
                         }
                     }
@@ -926,4 +989,47 @@ public class PantallaLozoya extends AppCompatActivity {
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////
     }
+    public void clear(){
+        ValorN=0;
+        Bradi=0;
+        Taqui=0;
+        LigBradi=0;
+        LigTaqui=0;
+
+        vCalmF=0;
+        vTiredF=0;
+        vNormalF=0;
+
+        vCalmM=0;
+        vTiredM=0;
+        vNormalM=0;
+
+        frecN=0;
+        frecAN=0;
+        frecBN=0;
+        taquiL=0;
+        taquiS=0;
+        bradiL=0;
+        bradiS=0;
+
+        APN=0;
+        PN=0;
+        BPN=0;
+        PPB=0;
+        PMB=0;
+        LPB=0;
+        HSA1=0;
+        HSA2=0;
+        HSA3=0;
+        HSA4=0;
+        LHSA=0;
+        HSAMB=0;
+        HSP=0;
+        HN1=0;
+        HN2=0;
+        HN3=0;
+
+
+    }
+
 }
