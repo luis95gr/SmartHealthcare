@@ -228,7 +228,7 @@ public class PantallaLozoya extends AppCompatActivity {
                 textValue.setText(progress+" %");
                 btnRefresh.setVisibility(View.VISIBLE);
             }
-
+//
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
 
