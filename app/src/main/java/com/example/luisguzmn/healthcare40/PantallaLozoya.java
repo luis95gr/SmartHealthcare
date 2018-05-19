@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -101,12 +102,13 @@ import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 public class PantallaLozoya extends AppCompatActivity {
 
     TextView text_monday,text_tuesday,text_wednesday,text_thursday,text_friday,text_saturday,text_sunday;
-    String email,edad;
-    float percent;
+    String email,edad,genero;
+    float percent,HRmean;
     SeekBar seekBar;
     TextView textValue,textSV;
     FloatingActionButton btnRefresh;
     SharedPreferences sp;
+    ImageButton imageButtonHR;
 
 
 
@@ -137,6 +139,7 @@ public class PantallaLozoya extends AppCompatActivity {
     ArrayList<String> mylistHRP = new ArrayList<String>();
     ArrayList<String> mylistDatesHR = new ArrayList<String>();
     ArrayList<String> mylistVarHR = new ArrayList<String>();
+    ArrayList<String> mylistVarHRP = new ArrayList<String>();
     ArrayList<String> mylistTimeHR = new ArrayList<String>();
     int ValorN,Bradi,Taqui,LigTaqui,LigBradi;
 
@@ -180,18 +183,17 @@ public class PantallaLozoya extends AppCompatActivity {
         sp= getSharedPreferences("login", MODE_PRIVATE);
 
 
-        Toast.makeText(getApplicationContext(),String.valueOf("edad: "+age()),Toast.LENGTH_SHORT).show();
 
         email = sp.getString("email","no email");
         edad = sp.getString("birth","birth");
+        genero = sp.getString("gender","no gender");
 
         seekBar = (SeekBar)findViewById(R.id.seek);
         btnRefresh = (FloatingActionButton) findViewById(R.id.btnSend);
         pChartBP = (PieChart)findViewById(R.id.piechart);
         pChartHR = (PieChart)findViewById(R.id.piechart3);
         pChartBR = (PieChart)findViewById(R.id.piechart4);
-
-
+        imageButtonHR = (ImageButton)findViewById(R.id.imageButtonHR);
 
         textValue = (TextView)findViewById(R.id.textValue);
         textSV = (TextView)findViewById(R.id.textSV);
@@ -399,6 +401,7 @@ public class PantallaLozoya extends AppCompatActivity {
                 try {
                     ArrayList<String> mylistHR = new ArrayList<String>();
                     ArrayList<String> mylistHRP = new ArrayList<String>();
+                    ArrayList<String> mylistVarHRP = new ArrayList<String>();
                     ArrayList<String> mylistDatesHR = new ArrayList<String>();
                     ArrayList<String> mylistVarHR = new ArrayList<String>();
                     ArrayList<String> mylistTimeHR = new ArrayList<String>();
@@ -409,15 +412,19 @@ public class PantallaLozoya extends AppCompatActivity {
                         valueHR = jsonObj.getString("diagnostic");
                         dateHR = jsonObj.getString("date");
                         timeHR = jsonObj.getString("time");
-                        varHR = jsonObj.getString("var");
+                        varHR = jsonObj.getString("value");
                         mylistHR.add(valueHR);
                         mylistDatesHR.add(dateHR);
                         mylistTimeHR.add(timeHR);
                         mylistVarHR.add(varHR);
                     }
                     for(int i = 0; i<((int)(mylistHR.size()*percent));i++) {
+                        mylistVarHRP.add(mylistVarHR.get(i));
                         mylistHRP.add(mylistHR.get(i));
+                        HRmean=Float.parseFloat(mylistVarHR.get(i))+HRmean;
                     }
+                    HRmean=HRmean/mylistVarHRP.size();
+                    textSV.setText(String.valueOf(HRmean));
                     for(int i = 0; i<mylistHRP.size();i++) {
                         if(mylistHRP.get(i).equals("VALOR NORMAL")){
                             ValorN++;
@@ -432,6 +439,7 @@ public class PantallaLozoya extends AppCompatActivity {
                         }
                     }
                     PsetDataHR();
+                    estado();
                 }
                 catch (JSONException e) {
                     e.printStackTrace();
@@ -1030,6 +1038,8 @@ public class PantallaLozoya extends AppCompatActivity {
         //////////////////////////////////////////////////////////////////////////////////////////////////
     }
     public void clear(){
+        HRmean=0;
+
         ValorN=0;
         Bradi=0;
         Taqui=0;
@@ -1068,8 +1078,6 @@ public class PantallaLozoya extends AppCompatActivity {
         HN1=0;
         HN2=0;
         HN3=0;
-
-
     }
     private int age() {
 
@@ -1103,6 +1111,204 @@ public class PantallaLozoya extends AppCompatActivity {
             ageYears = ageYears-1;
         }
         return ageYears;
+    }
+
+    public void estado(){
+        //Hombres
+        //18-25
+        if((HRmean>49 && HRmean<61) && (age()>18 && age()<25) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.corri2);
+        }
+        if((HRmean>62 && HRmean<69) && (age()>18 && age()<25) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.cami2);
+        }
+        if((HRmean>70 && HRmean<73) && (age()>18 && age()<25) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.parad2);
+        }
+        if((HRmean>74 && HRmean<81) && (age()>18 && age()<25) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.sentad2);
+        }
+        if((HRmean>82) && (age()>18 && age()<25) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.acos);
+        }
+        //26-35
+        if((HRmean>49 && HRmean<61) && (age()>26 && age()<35) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.corri2);
+        }
+        if((HRmean>62 && HRmean<70) && (age()>26 && age()<35) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.cami2);
+        }
+        if((HRmean>71 && HRmean<74) && (age()>26 && age()<35) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.parad2);
+        }
+        if((HRmean>75 && HRmean<81) && (age()>26 && age()<35) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.sentad2);
+        }
+        if((HRmean>82) && (age()>26 && age()<35) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.acos);
+        }
+        //36-45
+        if((HRmean>50 && HRmean<62) && (age()>36 && age()<45) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.corri2);
+        }
+        if((HRmean>63 && HRmean<70) && (age()>36 && age()<45) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.cami2);
+        }
+        if((HRmean>71 && HRmean<75) && (age()>36 && age()<45) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.parad2);
+        }
+        if((HRmean>76 && HRmean<82) && (age()>36 && age()<45) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.sentad2);
+        }
+        if((HRmean>83) && (age()>36 && age()<45) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.acos);
+        }
+        //46-55
+        if((HRmean>50 && HRmean<63) && (age()>46 && age()<55) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.corri2);
+        }
+        if((HRmean>64 && HRmean<71) && (age()>46 && age()<55) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.cami2);
+        }
+        if((HRmean>72 && HRmean<76) && (age()>46 && age()<55) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.parad2);
+        }
+        if((HRmean>77 && HRmean<83) && (age()>46 && age()<55) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.sentad2);
+        }
+        if((HRmean>84) && (age()>46 && age()<55) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.acos);
+        }
+        //56-65
+        if((HRmean>51 && HRmean<61) && (age()>56 && age()<65) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.corri2);
+        }
+        if((HRmean>62 && HRmean<71) && (age()>56 && age()<65) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.cami2);
+        }
+        if((HRmean>72 && HRmean<75) && (age()>56 && age()<65) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.parad2);
+        }
+        if((HRmean>76 && HRmean<81) && (age()>56 && age()<65) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.sentad2);
+        }
+        if((HRmean>82) && (age()>56 && age()<65) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.acos);
+        }
+        //65+
+        if((HRmean>50 && HRmean<61) && (age()>65) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.corri2);
+        }
+        if((HRmean>62 && HRmean<69) && (age()>65) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.cami2);
+        }
+        if((HRmean>70 && HRmean<73) && (age()>65) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.parad2);
+        }
+        if((HRmean>74 && HRmean<79) && (age()>65) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.sentad2);
+        }
+        if((HRmean>80) && (age()>65) && genero.equals("Male")){
+            imageButtonHR.setImageResource(R.drawable.acos);
+        }
+
+        //Mujeres
+        //18-25
+        if((HRmean>54 && HRmean<65) && (age()>18 && age()<25) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.corri2);
+        }
+        if((HRmean>66 && HRmean<73) && (age()>18 && age()<25) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.cami2);
+        }
+        if((HRmean>74 && HRmean<78) && (age()>18 && age()<25) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.parad2);
+        }
+        if((HRmean>79 && HRmean<84) && (age()>18 && age()<25) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.sentad2);
+        }
+        if((HRmean>85) && (age()>18 && age()<25) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.acos);
+        }
+        //26-35
+        if((HRmean>54 && HRmean<64) && (age()>26 && age()<35) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.corri2);
+        }
+        if((HRmean>65 && HRmean<72) && (age()>26 && age()<35) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.cami2);
+        }
+        if((HRmean>73 && HRmean<76) && (age()>26 && age()<35) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.parad2);
+        }
+        if((HRmean>77 && HRmean<82) && (age()>26 && age()<35) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.sentad2);
+        }
+        if((HRmean>83) && (age()>26 && age()<35) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.acos);
+        }
+        //36-45
+        if((HRmean>54 && HRmean<64) && (age()>36 && age()<45) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.corri2);
+        }
+        if((HRmean>65 && HRmean<73) && (age()>36 && age()<45) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.cami2);
+        }
+        if((HRmean>74 && HRmean<78) && (age()>36 && age()<45) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.parad2);
+        }
+        if((HRmean>79 && HRmean<84) && (age()>36 && age()<45) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.sentad2);
+        }
+        if((HRmean>85) && (age()>36 && age()<45) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.acos);
+        }
+        //46-55
+        if((HRmean>54 && HRmean<65) && (age()>46 && age()<55) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.corri2);
+        }
+        if((HRmean>66 && HRmean<73) && (age()>46 && age()<55) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.cami2);
+        }
+        if((HRmean>74 && HRmean<77) && (age()>46 && age()<55) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.parad2);
+        }
+        if((HRmean>78 && HRmean<83) && (age()>46 && age()<55) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.sentad2);
+        }
+        if((HRmean>84) && (age()>46 && age()<55) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.acos);
+        }
+        //56-65
+        if((HRmean>54 && HRmean<64) && (age()>56 && age()<65) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.corri2);
+        }
+        if((HRmean>65 && HRmean<73) && (age()>56 && age()<65) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.cami2);
+        }
+        if((HRmean>74 && HRmean<77) && (age()>56 && age()<65) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.parad2);
+        }
+        if((HRmean>78 && HRmean<83) && (age()>56 && age()<65) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.sentad2);
+        }
+        if((HRmean>84) && (age()>56 && age()<65) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.acos);
+        }
+        //65+
+        if((HRmean>54 && HRmean<64) && (age()>65) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.corri2);
+        }
+        if((HRmean>65 && HRmean<72) && (age()>65) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.cami2);
+        }
+        if((HRmean>73 && HRmean<76) && (age()>65) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.parad2);
+        }
+        if((HRmean>77 && HRmean<84) && (age()>65) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.sentad2);
+        }
+        if((HRmean>85) && (age()>65) && genero.equals("Female")){
+            imageButtonHR.setImageResource(R.drawable.acos);
+        }
     }
 
 }

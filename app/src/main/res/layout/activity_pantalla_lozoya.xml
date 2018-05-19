@@ -131,7 +131,7 @@
             android:layout_height="100dp">
             <ImageButton
                 android:layout_gravity="center"
-                android:id="@+id/imageButtonSen"
+                android:id="@+id/imageButtonHR"
                 android:layout_height="90dp"
                 android:layout_marginLeft="10dp"
                 app:srcCompat="@drawable/sentad2"
@@ -183,7 +183,7 @@
                         android:gravity="center"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Total Pasos: "/>
+                        android:text="HR promedio: "/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:id="@+id/textSV"
@@ -221,8 +221,22 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="360dp"
+                    android:layout_height="370dp"
+                    android:orientation="vertical"
                     android:layout_weight=".5">
+
+
+                    <TextView
+                        android:id="@+id/text_titleInt22"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="________________Presión Sanguinea________________"
+                        android:textAlignment="center"
+                        android:layout_marginTop="3dp"
+                        android:textSize="15dp"
+                        android:textColor="@color/blue"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
 
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/piechart"
@@ -235,6 +249,38 @@
                         android:background="@drawable/border" />
 
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/text_titleInt232"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="______Frecuencia Cardiaca____"
+                        android:textAlignment="center"
+                        android:layout_marginTop="3dp"
+                        android:layout_weight=".5"
+                        android:textSize="12dp"
+                        android:textColor="@color/blue"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+                    <TextView
+                        android:id="@+id/text_titleI2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:text="_________Frecuencia Respiratoria___"
+                        android:textAlignment="center"
+                        android:layout_marginTop="3dp"
+                        android:textSize="12dp"
+                        android:textColor="@color/blue"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:id="@+id/two"
@@ -273,7 +319,8 @@
         android:id="@+id/text_titleInt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="______________________Fatiga_______________________"
+        android:text="______________________Fatiga______________________"
+        android:background="@drawable/border"
         android:textAlignment="center"
         android:textSize="15dp"
         android:textColor="@color/blue"
@@ -305,8 +352,7 @@
         android:textColor="@color/blue"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linear3"
-        />
+        app:layout_constraintTop_toBottomOf="@id/linear3" />
 
     <de.codecrafters.tableview.TableView
         xmlns:table="http://schemas.android.com/apk/res-auto"
