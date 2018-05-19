@@ -469,7 +469,6 @@ public class PantallaLozoya extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 try {
-
                     ArrayList<String> mylistM = new ArrayList<String>();
                     ArrayList<String> mylistP = new ArrayList<String>();
                     ArrayList<String> mylistDatesM = new ArrayList<String>();
