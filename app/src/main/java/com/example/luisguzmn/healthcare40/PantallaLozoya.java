@@ -656,6 +656,7 @@ public class PantallaLozoya extends AppCompatActivity {
 
         pChartHR.getLegend().setWordWrapEnabled(true);
         pChartHR.getLegend().setTextSize(7f);
+        pChartHR.getLegend().setEnabled(false);
 
 
 
@@ -706,6 +707,7 @@ public class PantallaLozoya extends AppCompatActivity {
     }
     private void PsetDataBR() {
 
+        pChartBR.getLegend().setEnabled(false);
 
         pChartBR.setUsePercentValues(true);
         pChartBR.getDescription().setEnabled(false);
@@ -778,6 +780,7 @@ public class PantallaLozoya extends AppCompatActivity {
     }
     private void PsetDataBP() {
 
+        pChartBP.getLegend().setEnabled(false);
 
         pChartBP.setUsePercentValues(true);
         pChartBP.getDescription().setEnabled(false);
