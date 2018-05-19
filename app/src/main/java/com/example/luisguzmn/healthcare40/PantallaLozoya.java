@@ -293,6 +293,39 @@ public class PantallaLozoya extends AppCompatActivity {
         VolleyPetitionBR("http://meddata.sytes.net/grafico/dataShow.php?email="+email+"&var=BR");
         VolleyPetitionBP("http://meddata.sytes.net/grafico/dataShow.php?email="+email+"&var=BP");
 
+        pChartBR.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                PieEntry pe = (PieEntry) e;
+                pe.getLabel();
+                Toast.makeText(getApplicationContext(),pe.getLabel(),Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onNothingSelected() {
+            }
+        });
+        pChartBP.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                PieEntry pe = (PieEntry) e;
+                pe.getLabel();
+                Toast.makeText(getApplicationContext(),pe.getLabel(),Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onNothingSelected() {
+            }
+        });
+        pChartHR.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                PieEntry pe = (PieEntry) e;
+                pe.getLabel();
+                Toast.makeText(getApplicationContext(),pe.getLabel(),Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onNothingSelected() {
+            }
+        });
 
 
     }
