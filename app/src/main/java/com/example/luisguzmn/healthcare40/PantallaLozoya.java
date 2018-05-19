@@ -605,9 +605,9 @@ public class PantallaLozoya extends AppCompatActivity {
         pChartHR.setUsePercentValues(true);
         pChartHR.getDescription().setEnabled(false);
         pChartHR.setExtraOffsets(0, 0, 0, 0);
-        pChartHR.setDragDecelerationFrictionCoef(.9f);
+        pChartHR.setDragDecelerationFrictionCoef(0f);
         pChartHR.setRotationAngle(0);
-        pChartHR.setRotationEnabled(true);
+        pChartHR.setRotationEnabled(false);
         pChartHR.setHighlightPerTapEnabled(true);
         pChartHR.animateY(1500, Easing.EasingOption.EaseInOutQuad);
 
@@ -671,9 +671,9 @@ public class PantallaLozoya extends AppCompatActivity {
         pChartBR.setUsePercentValues(true);
         pChartBR.getDescription().setEnabled(false);
         pChartBR.setExtraOffsets(0, 0, 0, 0);
-        pChartBR.setDragDecelerationFrictionCoef(.9f);
+        pChartBR.setDragDecelerationFrictionCoef(0f);
         pChartBR.setRotationAngle(0);
-        pChartBR.setRotationEnabled(true);
+        pChartBR.setRotationEnabled(false);
         pChartBR.setHighlightPerTapEnabled(true);
         pChartBR.animateY(1500, Easing.EasingOption.EaseInOutQuad);
 
@@ -743,9 +743,9 @@ public class PantallaLozoya extends AppCompatActivity {
         pChartBP.setUsePercentValues(true);
         pChartBP.getDescription().setEnabled(false);
         pChartBP.setExtraOffsets(0, 0, 0, 0);
-        pChartBP.setDragDecelerationFrictionCoef(.9f);
+        pChartBP.setDragDecelerationFrictionCoef(0f);
         pChartBP.setRotationAngle(0);
-        pChartBP.setRotationEnabled(true);
+        pChartBP.setRotationEnabled(false);
         pChartBP.setHighlightPerTapEnabled(true);
         pChartBP.animateY(1500, Easing.EasingOption.EaseInOutQuad);
 
@@ -765,7 +765,7 @@ public class PantallaLozoya extends AppCompatActivity {
         pChartBP.setTransparentCircleAlpha(50);
         pChartBP.setHoleColor(Color.WHITE);
         pChartBP.setDrawCenterText(true);
-        pChartBP.setCenterText("BR");
+        pChartBP.setCenterText("BP");
         pChartBP.setCenterTextSize(8f);
         pChartBP.setCenterTextColor(Color.RED);
 
