@@ -87,6 +87,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.concurrent.ExecutionException;
 
 import de.codecrafters.tableview.TableView;
@@ -105,6 +106,8 @@ public class PantallaLozoya extends AppCompatActivity {
     SeekBar seekBar;
     TextView textValue,textSV;
     FloatingActionButton btnRefresh;
+    SharedPreferences sp;
+
 
 
     //Fatiga
@@ -173,7 +176,11 @@ public class PantallaLozoya extends AppCompatActivity {
 
         menu();
         dias();
-        SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
+
+        sp= getSharedPreferences("login", MODE_PRIVATE);
+
+
+        Toast.makeText(getApplicationContext(),String.valueOf("edad: "+age()),Toast.LENGTH_SHORT).show();
 
         email = sp.getString("email","no email");
         edad = sp.getString("birth","birth");
@@ -285,6 +292,7 @@ public class PantallaLozoya extends AppCompatActivity {
         VolleyPetitionHR("http://meddata.sytes.net/grafico/dataShow.php?email="+email+"&var=HR");
         VolleyPetitionBR("http://meddata.sytes.net/grafico/dataShow.php?email="+email+"&var=BR");
         VolleyPetitionBP("http://meddata.sytes.net/grafico/dataShow.php?email="+email+"&var=BP");
+
 
 
     }
@@ -597,8 +605,6 @@ public class PantallaLozoya extends AppCompatActivity {
         });
         queue.add(stringRequest);
     }
-
-
     private void PsetDataHR() {
 
 
@@ -639,11 +645,11 @@ public class PantallaLozoya extends AppCompatActivity {
         colors.add(Color.parseColor("#33ffd6"));
         colors.add(Color.parseColor("#00b38f"));
 
-        PieEntry valorN = new PieEntry(ValorN, "Normal");
-        PieEntry bradi = new PieEntry(Bradi, "Bradicardia");
-        PieEntry taqui = new PieEntry(Taqui, "Taquicardia");
-        PieEntry ligBrad = new PieEntry(LigBradi, "Ligera Bradicardia");
-        PieEntry ligTaqui = new PieEntry(LigTaqui,"Ligera Taquicardia");
+        PieEntry valorN = new PieEntry(ValorN, "FRECUENCIA CARDIACA NORMAL");
+        PieEntry bradi = new PieEntry(Bradi, "BRADICARDIA");
+        PieEntry taqui = new PieEntry(Taqui, "TAQUICARDIA");
+        PieEntry ligBrad = new PieEntry(LigBradi, "LIGERA BRADICARDIA");
+        PieEntry ligTaqui = new PieEntry(LigTaqui,"LIGERA TAQUICARDIA");
         pieEntryList.add(valorN);
         pieEntryList.add(bradi);
         pieEntryList.add(taqui);
@@ -707,13 +713,13 @@ public class PantallaLozoya extends AppCompatActivity {
         colors.add(Color.parseColor("#80ff80"));
         colors.add(Color.parseColor("#00cc00"));
 
-        PieEntry vfrecN = new PieEntry(frecN, "F. Normal");
-        PieEntry vfrecAN = new PieEntry(frecAN, "F. Alta");
-        PieEntry vfrecBN = new PieEntry(frecBN, "F. Baja");
-        PieEntry vtaquiL = new PieEntry(taquiL, "Taqui. Ligera");
-        PieEntry vtaquiS = new PieEntry(taquiS,"Taqui. Severa");
-        PieEntry vbradiL = new PieEntry(bradiL, "Bradi. Ligera");
-        PieEntry vbradiS = new PieEntry(bradiS,"Bradi. Severa");
+        PieEntry vfrecN = new PieEntry(frecN, "FRECUENCIA RESPIRATORIA NORMAL");
+        PieEntry vfrecAN = new PieEntry(frecAN, "FRECUENCIA RESPIRATORIA ALTA NORMAL");
+        PieEntry vfrecBN = new PieEntry(frecBN, "FRECUENCIA RESPIRATORIA BAJA NORMAL");
+        PieEntry vtaquiL = new PieEntry(taquiL, "TAQUIPNEA LIGERA");
+        PieEntry vtaquiS = new PieEntry(taquiS,"TAQUIPNEA SEVERA");
+        PieEntry vbradiL = new PieEntry(bradiL, "BRADIPNEA LIGERA");
+        PieEntry vbradiS = new PieEntry(bradiS,"BRADIPNEA SEVERA");
         pieEntryList.add(vfrecN);
         pieEntryList.add(vfrecAN);
         pieEntryList.add(vfrecBN);
@@ -788,22 +794,22 @@ public class PantallaLozoya extends AppCompatActivity {
         colors.add(Color.parseColor("#d6d6c2"));
         colors.add(Color.parseColor("#b1b1cd"));
 
-        PieEntry vAPN = new PieEntry(APN, "ALTA P. N.");
+        PieEntry vAPN = new PieEntry(APN, "ALTA PRESIÓN NORMAL");
         PieEntry vPN = new PieEntry(PN, "PRESION NORMAL");
-        PieEntry vBPN = new PieEntry(BPN, "BAJA P. N.");
-        PieEntry vPPB = new PieEntry(PPB, "PRESION P. B.");
-        PieEntry vPMB = new PieEntry(PMB,"PRESION M. B.");
-        PieEntry vLPB = new PieEntry(LPB, "LIMITE P. B.");
-        PieEntry vHSA1 = new PieEntry(HSA1,"H. S. A. N1");
-        PieEntry vHSA2 = new PieEntry(HSA2,"H. S. A. N2");
-        PieEntry vHSA3 = new PieEntry(HSA3,"H. S. A. N3");
-        PieEntry vHSA4 = new PieEntry(HSA4,"H. S. A. N4");
-        PieEntry vLHSA = new PieEntry(LHSA,"L. H. S. A.");
-        PieEntry vHSAMB = new PieEntry(HSAMB,"H. S. A. M. B.");
-        PieEntry vHSP = new PieEntry(HSP,"H. S. P.");
-        PieEntry vHN1 = new PieEntry(HN1,"H. N1");
-        PieEntry vHN2 = new PieEntry(HN2,"H. N2");
-        PieEntry vHN3 = new PieEntry(HN3,"H. N3");
+        PieEntry vBPN = new PieEntry(BPN, "BAJA PRESIÓN NORMAL");
+        PieEntry vPPB = new PieEntry(PPB, "PRESIÓN PPELIGROSAMENTE BAJA");
+        PieEntry vPMB = new PieEntry(PMB,"PRESIÓN MUY BAJA");
+        PieEntry vLPB = new PieEntry(LPB, "LIMITE DE PRESIÓN BAJA");
+        PieEntry vHSA1 = new PieEntry(HSA1,"HIPERTENSIóN SISTOLICA AISLADA NIVEL 1");
+        PieEntry vHSA2 = new PieEntry(HSA2,"HIPERTENSIóN SISTOLICA AISLADA NIVEL 2");
+        PieEntry vHSA3 = new PieEntry(HSA3,"HIPERTENSIóN SISTOLICA AISLADA NIVEL 3");
+        PieEntry vHSA4 = new PieEntry(HSA4,"HIPERTENSIóN SISTOLICA AISLADA NIVEL 4");
+        PieEntry vLHSA = new PieEntry(LHSA,"LIMITE DE HIPOTENSIÓN SISTOLICA AISLADA");
+        PieEntry vHSAMB = new PieEntry(HSAMB,"HIPOTENSIÓN SISTOLICA AISLADA MUY BAJA");
+        PieEntry vHSP = new PieEntry(HSP,"HIPOTENSIÓN SISTOLICA PELIGROSA");
+        PieEntry vHN1 = new PieEntry(HN1,"HIPERTENSIÓN: NIVEL 1");
+        PieEntry vHN2 = new PieEntry(HN2,"HIPERTENSIÓN: NIVEL 2");
+        PieEntry vHN3 = new PieEntry(HN3,"HIPERTENSIÓN: NIVEL 3");
 
 
 
@@ -840,7 +846,6 @@ public class PantallaLozoya extends AppCompatActivity {
         pChartBP.highlightValues(null);
         pChartBP.invalidate();
     }
-
     private void menu(){
         SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
         //MENU
@@ -1029,6 +1034,39 @@ public class PantallaLozoya extends AppCompatActivity {
         HN3=0;
 
 
+    }
+    private int age() {
+
+        //YEAR,MONTH,DAY
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy");
+        String stringYear = sdfDate.format(date);
+        sdfDate = new SimpleDateFormat("MM");
+        String stringMonth = sdfDate.format(date);
+        sdfDate = new SimpleDateFormat("dd");
+        String stringDay = sdfDate.format(date);
+        int intYearActual = Integer.parseInt(stringYear);
+        int intMonthActual = Integer.parseInt(stringMonth);
+        int intDayActual = Integer.parseInt(stringDay);
+        //
+        //BIRTH
+        String stringBirth = sp.getString("birth","Birth");
+        StringTokenizer tokenBirth = new StringTokenizer(stringBirth, "-");
+        //TOKENS
+        String tokenYear = tokenBirth.nextToken();
+        String tokenMonth = tokenBirth.nextToken();
+        String tokenDay = tokenBirth.nextToken();
+        int year = Integer.parseInt(tokenYear);
+        int month = Integer.parseInt(tokenMonth);
+        int day = Integer.parseInt(tokenDay);
+        //
+        //CALCULATE AGE
+        int ageYears = intYearActual - year;
+        //
+        if (intMonthActual-month < 0) {
+            ageYears = ageYears-1;
+        }
+        return ageYears;
     }
 
 }
