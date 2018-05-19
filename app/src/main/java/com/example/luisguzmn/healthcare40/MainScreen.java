@@ -2,6 +2,7 @@ package com.example.luisguzmn.healthcare40;
 
 import android.Manifest;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -369,6 +370,8 @@ public class MainScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(MainScreen.this, "Sensores emparejados", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainScreen.this,PantallaLozoya.class);
+                startActivity(intent);
             }
         });
 
@@ -822,6 +825,7 @@ public class MainScreen extends AppCompatActivity {
                         JSONObject jsonObj = new JSONObject(json);
                         value = jsonObj.getString("value");
                         stepsList.add(value);
+                        //
                     }if(stepsList.get(0).equals("null")){}
                     else{
                     floatSteps = new float[stepsList.size()];
@@ -876,7 +880,153 @@ public class MainScreen extends AppCompatActivity {
 
     ////////////// END VOLLEYS/////////////////////////////////////
 
+    private void menu(){
+        SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
+        //MENU
+        //-----------------------------------------------
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbarMain);
+        toolbar.setTitle("Principal");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        GlobalVars g = (GlobalVars) getApplication();
 
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this).withCompactStyle(true)
+                .addProfiles(
+                        new ProfileDrawerItem().withName(sp.getString("name","no name")).
+                                withEmail(sp.getString("email","no email")).withIcon("http://meddata.sytes.net/newuser/profileImg/"
+                                +sp.getString("imagen", "No Image")))
+                .withSelectionListEnabledForSingleProfile(false).withHeaderBackground(R.drawable.header2)
+                .build();
+
+        //Image Menu
+        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
+            @Override
+            public void set(ImageView imageView, Uri uri, Drawable placeholder) {
+                SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
+
+                Picasso.with(imageView.getContext()).load("http://meddata.sytes.net/newuser/profileImg/"
+                        + sp.getString("imagen", "No Image"))
+                        .placeholder(placeholder).into(imageView);
+            }
+            @Override
+            public void cancel(ImageView imageView) {
+                Picasso.with(imageView.getContext()).cancelRequest(imageView);
+            }
+        });
+
+        final PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.drawer_item_main).withIcon(GoogleMaterial.Icon.gmd_home);
+        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withIdentifier(2).withName(R.string.drawer_item_profile).withIcon(GoogleMaterial.Icon.gmd_account_circle);
+        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(3).withName(R.string.drawer_item_records).withIcon(GoogleMaterial.Icon.gmd_assignment);
+        PrimaryDrawerItem item4 = new PrimaryDrawerItem().withIdentifier(4).withName(R.string.drawer_item_statistics).withIcon(GoogleMaterial.Icon.gmd_insert_chart);
+        PrimaryDrawerItem item5 = new PrimaryDrawerItem().withIdentifier(5).withName(R.string.drawer_item_healt).withIcon(GoogleMaterial.Icon.gmd_local_hospital);
+        PrimaryDrawerItem item6 = new PrimaryDrawerItem().withIdentifier(6).withName(R.string.drawer_item_settinds).withIcon(GoogleMaterial.Icon.gmd_settings);
+        PrimaryDrawerItem item7 = new PrimaryDrawerItem().withIdentifier(7).withName(R.string.drawer_item_about).withIcon(GoogleMaterial.Icon.gmd_more);
+
+        new DrawerBuilder()
+                .withAccountHeader(headerResult)
+                .withActivity(this)
+                .withTranslucentStatusBar(false)
+                .withToolbar(toolbar).withActionBarDrawerToggle(true)
+                .withActionBarDrawerToggleAnimated(true)
+                .addDrawerItems(
+                        item1,
+                        item2,
+                        item3,
+                        item4,
+                        item5,
+                        new DividerDrawerItem(),
+                        item6,
+                        item7
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        // do something with the clicked item :D
+                        if (position == 2) {
+                            Intent intent = new Intent(MainScreen.this, Profile.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
+                        if (position == 3) {
+                            Intent intent = new Intent(MainScreen.this, Registros.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
+                        if (position == 4){
+                            Intent intent = new Intent(MainScreen.this, Statistics.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
+                        if (position == 5){
+                            Intent intent = new Intent(MainScreen.this, MenuHinfo.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
+                        if (position == 7){
+                            Intent intent = new Intent(MainScreen.this, configuracion.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+                        }
+
+
+                        return false;
+                    }
+                })
+                .build();
+    }
+    public void dias(){
+        //
+        text_monday = (TextView) findViewById(R.id.text_monday);
+        text_tuesday = (TextView) findViewById(R.id.text_tuesday);
+        text_wednesday = (TextView) findViewById(R.id.text_wednesday);
+        text_thursday = (TextView) findViewById(R.id.text_thursday);
+        text_friday = (TextView) findViewById(R.id.text_friday);
+        text_saturday = (TextView) findViewById(R.id.text_saturday);
+        text_sunday = (TextView) findViewById(R.id.text_sunday);
+        //
+        //DIAS
+        Date today = Calendar.getInstance().getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("EEEE");
+        String currentDateTimeStrin = formatter.format(today);
+
+        if (currentDateTimeStrin.equalsIgnoreCase("Monday") || currentDateTimeStrin.equalsIgnoreCase("Lunes")) {
+            text_monday.setBackgroundColor(Color.parseColor("#b8ddcd"));
+        } else {
+            text_monday.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        if (currentDateTimeStrin.equalsIgnoreCase("Tuesday") || currentDateTimeStrin.equalsIgnoreCase("Martes")) {
+            text_tuesday.setBackgroundColor(Color.parseColor("#b8ddcd"));
+        } else {
+            text_tuesday.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        if (currentDateTimeStrin.equalsIgnoreCase("Wednesday") || currentDateTimeStrin.equalsIgnoreCase("Miércoles")) {
+            text_wednesday.setBackgroundColor(Color.parseColor("#b8ddcd"));
+        } else {
+            text_wednesday.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        if (currentDateTimeStrin.equalsIgnoreCase("Thursday") || currentDateTimeStrin.equalsIgnoreCase("Jueves")) {
+            text_thursday.setBackgroundColor(Color.parseColor("#b8ddcd"));
+        } else {
+            text_thursday.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        if (currentDateTimeStrin.equalsIgnoreCase("Friday") || currentDateTimeStrin.equalsIgnoreCase("Viernes")) {
+            text_friday.setBackgroundColor(Color.parseColor("#b8ddcd"));
+        } else {
+            text_friday.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        if (currentDateTimeStrin.equalsIgnoreCase("Saturday") || currentDateTimeStrin.equalsIgnoreCase("Sábado")) {
+            text_saturday.setBackgroundColor(Color.parseColor("#b8ddcd"));
+        } else {
+            text_saturday.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        if (currentDateTimeStrin.equalsIgnoreCase("Sunday") || currentDateTimeStrin.equalsIgnoreCase("Domingo")) {
+            text_sunday.setBackgroundColor(Color.parseColor("#b8ddcd"));
+        } else {
+            text_sunday.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+    }
     private void startCountAnimation(int from, int to) {
         ValueAnimator animator = ValueAnimator.ofInt(from, to);
         animator.setDuration(1500);
@@ -1132,153 +1282,7 @@ public class MainScreen extends AppCompatActivity {
     }
     //END MENU 3 DOTS
 
-    private void menu(){
-        SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
-        //MENU
-        //-----------------------------------------------
-        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbarMain);
-        toolbar.setTitle("Principal");
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        GlobalVars g = (GlobalVars) getApplication();
 
-        AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(this).withCompactStyle(true)
-                .addProfiles(
-                        new ProfileDrawerItem().withName(sp.getString("name","no name")).
-                                withEmail(sp.getString("email","no email")).withIcon("http://meddata.sytes.net/newuser/profileImg/"
-                                +sp.getString("imagen", "No Image")))
-                .withSelectionListEnabledForSingleProfile(false).withHeaderBackground(R.drawable.header2)
-                .build();
-
-        //Image Menu
-        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
-            @Override
-            public void set(ImageView imageView, Uri uri, Drawable placeholder) {
-                SharedPreferences sp= getSharedPreferences("login", MODE_PRIVATE);
-
-                Picasso.with(imageView.getContext()).load("http://meddata.sytes.net/newuser/profileImg/"
-                        + sp.getString("imagen", "No Image"))
-                        .placeholder(placeholder).into(imageView);
-            }
-            @Override
-            public void cancel(ImageView imageView) {
-                Picasso.with(imageView.getContext()).cancelRequest(imageView);
-            }
-        });
-
-        final PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.drawer_item_main).withIcon(GoogleMaterial.Icon.gmd_home);
-        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withIdentifier(2).withName(R.string.drawer_item_profile).withIcon(GoogleMaterial.Icon.gmd_account_circle);
-        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(3).withName(R.string.drawer_item_records).withIcon(GoogleMaterial.Icon.gmd_assignment);
-        PrimaryDrawerItem item4 = new PrimaryDrawerItem().withIdentifier(4).withName(R.string.drawer_item_statistics).withIcon(GoogleMaterial.Icon.gmd_insert_chart);
-        PrimaryDrawerItem item5 = new PrimaryDrawerItem().withIdentifier(5).withName(R.string.drawer_item_healt).withIcon(GoogleMaterial.Icon.gmd_local_hospital);
-        PrimaryDrawerItem item6 = new PrimaryDrawerItem().withIdentifier(6).withName(R.string.drawer_item_settinds).withIcon(GoogleMaterial.Icon.gmd_settings);
-        PrimaryDrawerItem item7 = new PrimaryDrawerItem().withIdentifier(7).withName(R.string.drawer_item_about).withIcon(GoogleMaterial.Icon.gmd_more);
-
-        new DrawerBuilder()
-                .withAccountHeader(headerResult)
-                .withActivity(this)
-                .withTranslucentStatusBar(false)
-                .withToolbar(toolbar).withActionBarDrawerToggle(true)
-                .withActionBarDrawerToggleAnimated(true)
-                .addDrawerItems(
-                        item1,
-                        item2,
-                        item3,
-                        item4,
-                        item5,
-                        new DividerDrawerItem(),
-                        item6,
-                        item7
-                )
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        // do something with the clicked item :D
-                        if (position == 2) {
-                            Intent intent = new Intent(MainScreen.this, Profile.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
-                        }
-                        if (position == 3) {
-                            Intent intent = new Intent(MainScreen.this, Registros.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
-                        }
-                        if (position == 4){
-                            Intent intent = new Intent(MainScreen.this, Statistics.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
-                        }
-                        if (position == 5){
-                            Intent intent = new Intent(MainScreen.this, MenuHinfo.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
-                        }
-                        if (position == 7){
-                            Intent intent = new Intent(MainScreen.this, configuracion.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.left_in, R.anim.left_out);
-                        }
-
-
-                        return false;
-                    }
-                })
-                .build();
-    }
-    public void dias(){
-        //
-        text_monday = (TextView) findViewById(R.id.text_monday);
-        text_tuesday = (TextView) findViewById(R.id.text_tuesday);
-        text_wednesday = (TextView) findViewById(R.id.text_wednesday);
-        text_thursday = (TextView) findViewById(R.id.text_thursday);
-        text_friday = (TextView) findViewById(R.id.text_friday);
-        text_saturday = (TextView) findViewById(R.id.text_saturday);
-        text_sunday = (TextView) findViewById(R.id.text_sunday);
-        //
-        //DIAS
-        Date today = Calendar.getInstance().getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("EEEE");
-        String currentDateTimeStrin = formatter.format(today);
-
-        if (currentDateTimeStrin.equalsIgnoreCase("Monday") || currentDateTimeStrin.equalsIgnoreCase("Lunes")) {
-            text_monday.setBackgroundColor(Color.parseColor("#b8ddcd"));
-        } else {
-            text_monday.setBackgroundColor(Color.parseColor("#FFFFFF"));
-        }
-        if (currentDateTimeStrin.equalsIgnoreCase("Tuesday") || currentDateTimeStrin.equalsIgnoreCase("Martes")) {
-            text_tuesday.setBackgroundColor(Color.parseColor("#b8ddcd"));
-        } else {
-            text_tuesday.setBackgroundColor(Color.parseColor("#FFFFFF"));
-        }
-        if (currentDateTimeStrin.equalsIgnoreCase("Wednesday") || currentDateTimeStrin.equalsIgnoreCase("Miércoles")) {
-            text_wednesday.setBackgroundColor(Color.parseColor("#b8ddcd"));
-        } else {
-            text_wednesday.setBackgroundColor(Color.parseColor("#FFFFFF"));
-        }
-        if (currentDateTimeStrin.equalsIgnoreCase("Thursday") || currentDateTimeStrin.equalsIgnoreCase("Jueves")) {
-            text_thursday.setBackgroundColor(Color.parseColor("#b8ddcd"));
-        } else {
-            text_thursday.setBackgroundColor(Color.parseColor("#FFFFFF"));
-        }
-        if (currentDateTimeStrin.equalsIgnoreCase("Friday") || currentDateTimeStrin.equalsIgnoreCase("Viernes")) {
-            text_friday.setBackgroundColor(Color.parseColor("#b8ddcd"));
-        } else {
-            text_friday.setBackgroundColor(Color.parseColor("#FFFFFF"));
-        }
-        if (currentDateTimeStrin.equalsIgnoreCase("Saturday") || currentDateTimeStrin.equalsIgnoreCase("Sábado")) {
-            text_saturday.setBackgroundColor(Color.parseColor("#b8ddcd"));
-        } else {
-            text_saturday.setBackgroundColor(Color.parseColor("#FFFFFF"));
-        }
-        if (currentDateTimeStrin.equalsIgnoreCase("Sunday") || currentDateTimeStrin.equalsIgnoreCase("Domingo")) {
-            text_sunday.setBackgroundColor(Color.parseColor("#b8ddcd"));
-        } else {
-            text_sunday.setBackgroundColor(Color.parseColor("#FFFFFF"));
-        }
-        //////////////////////////////////////////////////////////////////////////////////////////////////
-    }
 
 }
 

@@ -339,7 +339,7 @@ public class PopUp extends AppCompatActivity {
                 if (intMeasureBpmax >= intNormalBpmax+90 && intMeasureBpmin >= intNormalBpmin+40){
                     textMessage.setText("PELIGRO!");
                     textMessage.setTextColor(Color.parseColor("#8B0000")); //RED
-                    textStatus.setText("HIPERTENSIÓN: NIVEL 3");
+                    textStatus.setText("HIPERTENSIÓN: NIVEL 4");
                 }
             }
             //ISOLATED VALUES
